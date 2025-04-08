@@ -1,4 +1,3 @@
-
 import { Internship, Course, CountryWithCities, Category, MockInterview } from "@/types";
 
 export const categories: Category[] = [
