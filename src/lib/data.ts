@@ -295,6 +295,7 @@ export const mockCourses: Course[] = [
     level: "Beginner",
     instructor: "Sarah Johnson",
     image: "https://images.unsplash.com/photo-1498050108023-c5249f4df085",
+    imageUrl: "https://images.unsplash.com/photo-1498050108023-c5249f4df085",
     enrolled: 1250,
     rating: 4.7,
     topics: ["HTML5", "CSS3", "JavaScript", "Responsive Design", "DOM Manipulation"]
@@ -308,6 +309,7 @@ export const mockCourses: Course[] = [
     level: "Intermediate",
     instructor: "David Chen",
     image: "https://images.unsplash.com/photo-1488590528505-98d2b5aba04b",
+    imageUrl: "https://images.unsplash.com/photo-1488590528505-98d2b5aba04b",
     enrolled: 980,
     rating: 4.8,
     topics: ["Python", "Pandas", "NumPy", "Scikit-Learn", "TensorFlow", "Data Visualization"]
@@ -321,6 +323,7 @@ export const mockCourses: Course[] = [
     level: "Beginner",
     instructor: "Emily Roberts",
     image: "https://images.unsplash.com/photo-1486312338219-ce68d2c6f44d",
+    imageUrl: "https://images.unsplash.com/photo-1486312338219-ce68d2c6f44d",
     enrolled: 760,
     rating: 4.5,
     topics: ["SEO", "SEM", "Social Media Marketing", "Content Strategy", "Analytics"]
@@ -334,6 +337,7 @@ export const mockCourses: Course[] = [
     level: "Intermediate",
     instructor: "Michael Patel",
     image: "https://images.unsplash.com/photo-1518770660439-4636190af475",
+    imageUrl: "https://images.unsplash.com/photo-1518770660439-4636190af475",
     enrolled: 650,
     rating: 4.6,
     topics: ["Excel", "Financial Statements", "Valuation", "Forecasting", "Risk Analysis"]
@@ -347,6 +351,7 @@ export const mockCourses: Course[] = [
     level: "Beginner",
     instructor: "Lisa Kim",
     image: "https://images.unsplash.com/photo-1461749280684-dccba630e2f6",
+    imageUrl: "https://images.unsplash.com/photo-1461749280684-dccba630e2f6",
     enrolled: 890,
     rating: 4.9,
     topics: ["Design Thinking", "Wireframing", "Prototyping", "User Research", "Visual Design"]
@@ -360,6 +365,7 @@ export const mockCourses: Course[] = [
     level: "Intermediate",
     instructor: "James Wilson",
     image: "https://images.unsplash.com/photo-1581091226825-a6a2a5aee158",
+    imageUrl: "https://images.unsplash.com/photo-1581091226825-a6a2a5aee158",
     enrolled: 520,
     rating: 4.4,
     topics: ["Recruitment", "Performance Management", "Employment Law", "Compensation", "Employee Development"]
