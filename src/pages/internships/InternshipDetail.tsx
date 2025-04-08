@@ -102,13 +102,14 @@ const InternshipDetail = () => {
   };
   
   const submitApplication = async () => {
-    if (!isAuthenticated || !user || user.role !== "student") return;
+    if (!isAuthenticated || !user || user.role !== "student" || !internship) return;
     
     setIsSubmitting(true);
     
     try {
       await applyToInternship(internship.id, {
         studentId: user.id,
+        internshipId: internship.id, // Add the missing internshipId property
         status: "pending",
         coverLetter,
       });

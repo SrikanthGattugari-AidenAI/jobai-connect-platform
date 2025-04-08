@@ -1,4 +1,3 @@
-
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
@@ -71,9 +70,9 @@ const EmployerDashboard = () => {
     loadDashboardData();
   }, [user]);
   
-  const handleStatusChange = async (applicationId: string, status: string) => {
+  const handleStatusChange = async (applicationId: string, status: Application["status"]) => {
     try {
-      await updateApplicationStatus(applicationId, status as any);
+      await updateApplicationStatus(applicationId, status);
       
       // Update local state to reflect the change
       const updatedApplications = { ...applications };
@@ -244,7 +243,7 @@ const EmployerDashboard = () => {
                                 <div className="flex flex-col md:items-end gap-2">
                                   <Select
                                     value={application.status}
-                                    onValueChange={(value) => handleStatusChange(application.id, value)}
+                                    onValueChange={(value) => handleStatusChange(application.id, value as Application["status"])}
                                   >
                                     <SelectTrigger className="w-36">
                                       <SelectValue placeholder="Status" />
