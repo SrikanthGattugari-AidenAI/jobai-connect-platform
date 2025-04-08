@@ -1,94 +1,77 @@
-
-export type UserRole = 'student' | 'employer';
-
 export interface User {
   id: string;
   name: string;
   email: string;
-  role: UserRole;
-  profileImage?: string;
+  role: "student" | "employer";
+  profileImage: string;
 }
 
 export interface Student extends User {
-  role: 'student';
-  education?: string;
-  skills?: string[];
-  resume?: string;
-  appliedInternships?: string[];
-  savedInternships?: string[];
-  completedCourses?: string[];
-  inProgressCourses?: string[];
+  role: "student";
+  major?: string;
+  university?: string;
 }
 
 export interface Employer extends User {
-  role: 'employer';
+  role: "employer";
   company: string;
-  industry?: string;
-  location?: string;
-  companyLogo?: string;
-  postedInternships?: string[];
 }
 
 export interface Internship {
   id: string;
+  employerId: string;
   title: string;
   company: string;
-  companyLogo?: string;
-  employerId: string;
-  location: string;
-  isRemote: boolean;
-  country: string;
-  city: string;
   category: string;
   role: string;
-  stipend: {
-    amount: number;
-    currency: string;
-    isPaid: boolean;
-  };
+  description: string;
+  location: string;
+  isRemote: boolean;
+  city: string;
+  country: string;
   duration: string;
-  startDate: string;
-  applicationDeadline: string;
+  stipend: {
+    isPaid: boolean;
+    amount?: number;
+    currency?: string;
+  };
   responsibilities: string[];
   requirements: string[];
-  applications?: string[];
-  description: string;
   postedDate: string;
-}
-
-export interface Application {
-  id: string;
-  internshipId: string;
-  studentId: string;
-  status: 'pending' | 'reviewing' | 'shortlisted' | 'rejected' | 'accepted';
-  appliedDate: string;
-  coverLetter?: string;
-  resume?: string;
 }
 
 export interface Course {
   id: string;
   title: string;
-  category: string;
   description: string;
-  duration: string;
-  level: 'beginner' | 'intermediate' | 'advanced';
   instructor: string;
-  image?: string;
-  enrolled: number;
-  rating: number;
-  topics: string[];
+  category: string;
+  duration: string;
+  level: "Beginner" | "Intermediate" | "Advanced";
+  imageUrl: string;
+}
+
+export interface Application {
+  id: string;
+  studentId: string;
+  internshipId: string;
+  coverLetter: string;
+  resumeUrl?: string;
+  appliedDate: string;
+  status: "pending" | "reviewing" | "shortlisted" | "rejected" | "accepted";
+}
+
+export interface MockInterviewQuestion {
+  id: string;
+  question: string;
+  answer?: string;
+  feedback?: string;
 }
 
 export interface MockInterview {
   id: string;
   role: string;
-  questions: {
-    id: string;
-    question: string;
-    answer?: string;
-    feedback?: string;
-  }[];
+  questions: MockInterviewQuestion[];
   feedback?: {
     strengths: string[];
     improvements: string[];
@@ -98,13 +81,10 @@ export interface MockInterview {
   completedAt?: string;
 }
 
-export type CountryWithCities = {
-  country: string;
-  cities: string[];
-};
-
-export type Category = {
+// Chatbot types
+export interface ChatMessage {
   id: string;
-  name: string;
-  roles: string[];
-};
+  content: string;
+  sender: "user" | "bot";
+  timestamp: string;
+}

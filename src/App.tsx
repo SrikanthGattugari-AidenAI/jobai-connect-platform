@@ -9,6 +9,8 @@ import { AuthProvider } from "@/context/AuthContext";
 import { InternshipProvider } from "@/context/InternshipContext";
 import { CourseProvider } from "@/context/CourseContext";
 import { AIProvider } from "@/context/AIContext";
+import { ChatbotProvider } from "@/context/ChatbotContext";
+import { Chatbot } from "@/components/chatbot/Chatbot";
 
 // Pages
 import Index from "./pages/Index";
@@ -33,26 +35,29 @@ const App = () => (
         <InternshipProvider>
           <CourseProvider>
             <AIProvider>
-              <TooltipProvider>
-                <Toaster />
-                <Sonner />
-                <BrowserRouter>
-                  <Routes>
-                    <Route path="/" element={<Index />} />
-                    <Route path="/login/:role" element={<Login />} />
-                    <Route path="/register/:role" element={<Register />} />
-                    <Route path="/internships" element={<Internships />} />
-                    <Route path="/internships/:id" element={<InternshipDetail />} />
-                    <Route path="/post-internship" element={<PostInternship />} />
-                    <Route path="/courses" element={<Courses />} />
-                    <Route path="/courses/:id" element={<CourseDetail />} />
-                    <Route path="/mock-interview" element={<MockInterview />} />
-                    <Route path="/mock-interview/:id" element={<MockInterviewSession />} />
-                    <Route path="/dashboard" element={<Dashboard />} />
-                    <Route path="*" element={<NotFound />} />
-                  </Routes>
-                </BrowserRouter>
-              </TooltipProvider>
+              <ChatbotProvider>
+                <TooltipProvider>
+                  <Toaster />
+                  <Sonner />
+                  <BrowserRouter>
+                    <Routes>
+                      <Route path="/" element={<Index />} />
+                      <Route path="/login/:role" element={<Login />} />
+                      <Route path="/register/:role" element={<Register />} />
+                      <Route path="/internships" element={<Internships />} />
+                      <Route path="/internships/:id" element={<InternshipDetail />} />
+                      <Route path="/post-internship" element={<PostInternship />} />
+                      <Route path="/courses" element={<Courses />} />
+                      <Route path="/courses/:id" element={<CourseDetail />} />
+                      <Route path="/mock-interview" element={<MockInterview />} />
+                      <Route path="/mock-interview/:id" element={<MockInterviewSession />} />
+                      <Route path="/dashboard" element={<Dashboard />} />
+                      <Route path="*" element={<NotFound />} />
+                    </Routes>
+                    <Chatbot />
+                  </BrowserRouter>
+                </TooltipProvider>
+              </ChatbotProvider>
             </AIProvider>
           </CourseProvider>
         </InternshipProvider>
