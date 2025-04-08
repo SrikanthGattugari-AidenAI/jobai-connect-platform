@@ -101,9 +101,11 @@ export interface ChatMessage {
 export interface CountryWithCities {
   name: string;
   cities: string[];
+  country?: string; // Adding to fix type error
 }
 
 export interface Category {
   id: string;
   name: string;
+  roles?: string[]; // Adding to fix type error
 }
