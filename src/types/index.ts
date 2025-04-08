@@ -1,3 +1,4 @@
+
 export interface User {
   id: string;
   name: string;
@@ -38,6 +39,9 @@ export interface Internship {
   responsibilities: string[];
   requirements: string[];
   postedDate: string;
+  companyLogo?: string;
+  startDate: string;
+  applicationDeadline: string;
 }
 
 export interface Course {
@@ -49,6 +53,10 @@ export interface Course {
   duration: string;
   level: "Beginner" | "Intermediate" | "Advanced";
   imageUrl: string;
+  image?: string;
+  rating?: number;
+  enrolled?: number;
+  topics?: string[];
 }
 
 export interface Application {
@@ -87,4 +95,15 @@ export interface ChatMessage {
   content: string;
   sender: "user" | "bot";
   timestamp: string;
+}
+
+// Additional types needed for filters
+export interface CountryWithCities {
+  name: string;
+  cities: string[];
+}
+
+export interface Category {
+  id: string;
+  name: string;
 }
