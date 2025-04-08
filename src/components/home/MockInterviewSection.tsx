@@ -59,7 +59,7 @@ export const MockInterviewSection = () => {
           </div>
           <div className="relative h-[400px]">
             <img
-              src="https://images.unsplash.com/photo-1488590528505-98d2b5aba04b"
+              src="https://images.unsplash.com/photo-1605810230434-7631ac76ec81"
               alt="AI Interview"
               className="rounded-lg shadow-xl h-full w-full object-cover"
             />

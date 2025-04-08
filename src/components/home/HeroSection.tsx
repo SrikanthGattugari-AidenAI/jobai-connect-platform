@@ -52,7 +52,7 @@ export const HeroSection = () => {
           
           <div className="relative lg:h-[500px] animation-fade-up">
             <img
-              src="https://images.unsplash.com/photo-1517486808906-6ca8b3f04490"
+              src="https://images.unsplash.com/photo-1519389950473-47ba0277781c"
               alt="Students collaborating"
               className="rounded-lg shadow-xl h-full w-full object-cover"
             />
