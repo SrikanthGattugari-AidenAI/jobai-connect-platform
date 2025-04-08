@@ -1,4 +1,5 @@
 
+import React from "react";
 import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
@@ -26,36 +27,38 @@ import Dashboard from "./pages/dashboard/Dashboard";
 const queryClient = new QueryClient();
 
 const App = () => (
-  <QueryClientProvider client={queryClient}>
-    <AuthProvider>
-      <InternshipProvider>
-        <CourseProvider>
-          <AIProvider>
-            <TooltipProvider>
-              <Toaster />
-              <Sonner />
-              <BrowserRouter>
-                <Routes>
-                  <Route path="/" element={<Index />} />
-                  <Route path="/login/:role" element={<Login />} />
-                  <Route path="/register/:role" element={<Register />} />
-                  <Route path="/internships" element={<Internships />} />
-                  <Route path="/internships/:id" element={<InternshipDetail />} />
-                  <Route path="/post-internship" element={<PostInternship />} />
-                  <Route path="/courses" element={<Courses />} />
-                  <Route path="/courses/:id" element={<CourseDetail />} />
-                  <Route path="/mock-interview" element={<MockInterview />} />
-                  <Route path="/mock-interview/:id" element={<MockInterviewSession />} />
-                  <Route path="/dashboard" element={<Dashboard />} />
-                  <Route path="*" element={<NotFound />} />
-                </Routes>
-              </BrowserRouter>
-            </TooltipProvider>
-          </AIProvider>
-        </CourseProvider>
-      </InternshipProvider>
-    </AuthProvider>
-  </QueryClientProvider>
+  <React.StrictMode>
+    <QueryClientProvider client={queryClient}>
+      <AuthProvider>
+        <InternshipProvider>
+          <CourseProvider>
+            <AIProvider>
+              <TooltipProvider>
+                <Toaster />
+                <Sonner />
+                <BrowserRouter>
+                  <Routes>
+                    <Route path="/" element={<Index />} />
+                    <Route path="/login/:role" element={<Login />} />
+                    <Route path="/register/:role" element={<Register />} />
+                    <Route path="/internships" element={<Internships />} />
+                    <Route path="/internships/:id" element={<InternshipDetail />} />
+                    <Route path="/post-internship" element={<PostInternship />} />
+                    <Route path="/courses" element={<Courses />} />
+                    <Route path="/courses/:id" element={<CourseDetail />} />
+                    <Route path="/mock-interview" element={<MockInterview />} />
+                    <Route path="/mock-interview/:id" element={<MockInterviewSession />} />
+                    <Route path="/dashboard" element={<Dashboard />} />
+                    <Route path="*" element={<NotFound />} />
+                  </Routes>
+                </BrowserRouter>
+              </TooltipProvider>
+            </AIProvider>
+          </CourseProvider>
+        </InternshipProvider>
+      </AuthProvider>
+    </QueryClientProvider>
+  </React.StrictMode>
 );
 
 export default App;
