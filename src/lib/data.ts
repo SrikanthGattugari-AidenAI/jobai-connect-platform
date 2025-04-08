@@ -36,30 +36,37 @@ export const categories: Category[] = [
 
 export const countriesWithCities: CountryWithCities[] = [
   {
+    name: "United States",
     country: "United States",
     cities: ["New York", "San Francisco", "Chicago", "Los Angeles", "Boston", "Seattle", "Austin"]
   },
   {
+    name: "United Kingdom",
     country: "United Kingdom",
     cities: ["London", "Manchester", "Birmingham", "Edinburgh", "Glasgow", "Bristol"]
   },
   {
+    name: "Canada",
     country: "Canada",
     cities: ["Toronto", "Vancouver", "Montreal", "Calgary", "Ottawa"]
   },
   {
+    name: "Australia",
     country: "Australia",
     cities: ["Sydney", "Melbourne", "Brisbane", "Perth", "Adelaide"]
   },
   {
+    name: "India",
     country: "India",
     cities: ["Bangalore", "Mumbai", "Delhi", "Hyderabad", "Pune", "Chennai"]
   },
   {
+    name: "Germany",
     country: "Germany",
     cities: ["Berlin", "Munich", "Hamburg", "Frankfurt", "Cologne"]
   },
   {
+    name: "Remote",
     country: "Remote",
     cities: ["Remote"]
   }
@@ -285,7 +292,7 @@ export const mockCourses: Course[] = [
     category: "Technology",
     description: "Learn the essentials of web development including HTML, CSS, and JavaScript to build responsive websites from scratch.",
     duration: "8 weeks",
-    level: "beginner",
+    level: "Beginner",
     instructor: "Sarah Johnson",
     image: "https://images.unsplash.com/photo-1498050108023-c5249f4df085",
     enrolled: 1250,
@@ -298,7 +305,7 @@ export const mockCourses: Course[] = [
     category: "Technology",
     description: "Master the fundamentals of data science, machine learning, and data visualization with Python and popular libraries.",
     duration: "12 weeks",
-    level: "intermediate",
+    level: "Intermediate",
     instructor: "David Chen",
     image: "https://images.unsplash.com/photo-1488590528505-98d2b5aba04b",
     enrolled: 980,
@@ -311,7 +318,7 @@ export const mockCourses: Course[] = [
     category: "Marketing",
     description: "Develop comprehensive digital marketing strategies that drive growth using the latest tools and techniques in the industry.",
     duration: "6 weeks",
-    level: "beginner",
+    level: "Beginner",
     instructor: "Emily Roberts",
     image: "https://images.unsplash.com/photo-1486312338219-ce68d2c6f44d",
     enrolled: 760,
@@ -324,7 +331,7 @@ export const mockCourses: Course[] = [
     category: "Finance",
     description: "Learn financial analysis techniques and build sophisticated financial models to support investment decisions and business planning.",
     duration: "10 weeks",
-    level: "intermediate",
+    level: "Intermediate",
     instructor: "Michael Patel",
     image: "https://images.unsplash.com/photo-1518770660439-4636190af475",
     enrolled: 650,
@@ -337,7 +344,7 @@ export const mockCourses: Course[] = [
     category: "Design",
     description: "Master the principles of user interface and user experience design to create intuitive, engaging, and accessible digital products.",
     duration: "8 weeks",
-    level: "beginner",
+    level: "Beginner",
     instructor: "Lisa Kim",
     image: "https://images.unsplash.com/photo-1461749280684-dccba630e2f6",
     enrolled: 890,
@@ -350,7 +357,7 @@ export const mockCourses: Course[] = [
     category: "Human Resources",
     description: "Develop essential HR skills including recruitment, performance management, employee relations, and strategic HR planning.",
     duration: "6 weeks",
-    level: "intermediate",
+    level: "Intermediate",
     instructor: "James Wilson",
     image: "https://images.unsplash.com/photo-1581091226825-a6a2a5aee158",
     enrolled: 520,

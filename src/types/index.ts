@@ -97,15 +97,15 @@ export interface ChatMessage {
   timestamp: string;
 }
 
-// Additional types needed for filters
+// Updated type definitions to match usage in the codebase
 export interface CountryWithCities {
   name: string;
   cities: string[];
-  country?: string; // Adding to fix type error
+  country: string; // Adding the country property to match current usage
 }
 
 export interface Category {
   id: string;
   name: string;
-  roles?: string[]; // Adding to fix type error
+  roles: string[]; // Adding the roles property to match current usage
 }
