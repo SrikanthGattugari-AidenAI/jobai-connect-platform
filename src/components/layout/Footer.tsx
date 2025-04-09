@@ -12,7 +12,7 @@ export function Footer() {
           <div className="lg:col-span-4">
             <Link to="/" className="inline-flex items-center space-x-2">
               <GraduationCap className="h-6 w-6 text-brand-purple" />
-              <span className="text-xl font-bold">InternAI</span>
+              <span className="text-xl font-bold">AidenIntern</span>
             </Link>
             <p className="mt-4 text-sm text-muted-foreground max-w-xs">
               Connecting talented students with high-quality internships and skills development opportunities, powered by AI.
@@ -56,8 +56,8 @@ export function Footer() {
                 </Link>
               </li>
               <li>
-                <Link to="/register/student" className="text-muted-foreground hover:text-foreground transition-colors">
-                  Create Account
+                <Link to="/resume-builder" className="text-muted-foreground hover:text-foreground transition-colors">
+                  Resume Builder
                 </Link>
               </li>
             </ul>
@@ -93,14 +93,14 @@ export function Footer() {
             <h3 className="text-sm font-semibold">Resources</h3>
             <ul className="mt-4 space-y-2 text-sm">
               <li>
-                <a href="#" className="text-muted-foreground hover:text-foreground transition-colors">
+                <Link to="/blog" className="text-muted-foreground hover:text-foreground transition-colors">
                   Blog
-                </a>
+                </Link>
               </li>
               <li>
-                <a href="#" className="text-muted-foreground hover:text-foreground transition-colors">
+                <Link to="/career-path" className="text-muted-foreground hover:text-foreground transition-colors">
                   Career Advice
-                </a>
+                </Link>
               </li>
               <li>
                 <a href="#" className="text-muted-foreground hover:text-foreground transition-colors">
@@ -143,7 +143,7 @@ export function Footer() {
         </div>
         <div className="mt-12 border-t pt-6">
           <p className="text-center text-xs text-muted-foreground">
-            &copy; {currentYear} InternAI. All rights reserved.
+            &copy; {currentYear} AidenIntern. All rights reserved.
           </p>
         </div>
       </div>
