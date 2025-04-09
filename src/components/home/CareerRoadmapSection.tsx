@@ -58,7 +58,7 @@ export const CareerRoadmapSection = () => {
                   </div>
                 </div>
               </div>
-              <Button onClick={() => navigate("/career-roadmaps/frontend")} className="w-full flex items-center justify-center gap-2">
+              <Button onClick={() => navigate("/career-path")} className="w-full flex items-center justify-center gap-2">
                 <span>Follow this Path</span>
                 <ChevronRight className="h-4 w-4" />
               </Button>
@@ -101,7 +101,7 @@ export const CareerRoadmapSection = () => {
                   </div>
                 </div>
               </div>
-              <Button onClick={() => navigate("/career-roadmaps/data-science")} className="w-full flex items-center justify-center gap-2">
+              <Button onClick={() => navigate("/career-path")} className="w-full flex items-center justify-center gap-2">
                 <span>Follow this Path</span>
                 <ChevronRight className="h-4 w-4" />
               </Button>
@@ -144,7 +144,7 @@ export const CareerRoadmapSection = () => {
                   </div>
                 </div>
               </div>
-              <Button onClick={() => navigate("/career-roadmaps/product-management")} className="w-full flex items-center justify-center gap-2">
+              <Button onClick={() => navigate("/career-path")} className="w-full flex items-center justify-center gap-2">
                 <span>Follow this Path</span>
                 <ChevronRight className="h-4 w-4" />
               </Button>
@@ -156,7 +156,7 @@ export const CareerRoadmapSection = () => {
           <Button 
             variant="outline" 
             size="lg" 
-            onClick={() => navigate("/career-roadmaps")}
+            onClick={() => navigate("/career-path")}
             className="flex items-center gap-2"
           >
             <span>View All Career Paths</span>

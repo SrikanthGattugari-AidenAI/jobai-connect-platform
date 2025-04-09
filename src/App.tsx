@@ -56,6 +56,8 @@ const App = () => (
                       <Route path="/dashboard" element={<Dashboard />} />
                       <Route path="/market-trends" element={<MarketTrends />} />
                       <Route path="/career-path" element={<CareerPath />} />
+                      <Route path="/career-roadmaps/:id" element={<CareerPath />} />
+                      <Route path="/career-roadmaps" element={<CareerPath />} />
                       <Route path="*" element={<NotFound />} />
                     </Routes>
                     <Chatbot />
