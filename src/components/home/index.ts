@@ -8,3 +8,6 @@ export * from "./CallToAction";
 export * from "./MarketInsightsSection";
 export * from "./CareerPathwaySection";
 export * from "./HackathonSection";
+export * from "./CareerRoadmapSection";
+export * from "./MarketTrendsSection";
+export * from "./TopCompaniesSection";

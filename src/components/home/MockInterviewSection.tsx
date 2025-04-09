@@ -1,7 +1,7 @@
 
 import { Button } from "@/components/ui/button";
 import { useNavigate } from "react-router-dom";
-import { Sparkles, Clock, Video, CheckCircle, BadgeCheck } from "lucide-react";
+import { Sparkles, Clock, Video, CheckCircle, BadgeCheck, Mic, Code } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 
 export const MockInterviewSection = () => {
@@ -35,27 +35,31 @@ export const MockInterviewSection = () => {
               </li>
               <li className="flex items-start">
                 <CheckCircle className="h-5 w-5 text-primary mr-2 flex-shrink-0" />
-                <span>Personalized skill development recommendations</span>
+                <span>Unlock technical challenges after successful interviews</span>
               </li>
               <li className="flex items-start">
                 <CheckCircle className="h-5 w-5 text-primary mr-2 flex-shrink-0" />
-                <span>Video interviews with facial expression analysis</span>
+                <span>Personalized skill development recommendations</span>
               </li>
             </ul>
             <div className="flex flex-col sm:flex-row gap-4">
               <Button onClick={() => navigate("/mock-interview")} className="flex items-center gap-2">
-                <BadgeCheck className="h-4 w-4" />
-                Try AI Text Interview
+                <Mic className="h-4 w-4" />
+                Try AI Audio Interview
               </Button>
               <Button variant="outline" onClick={() => navigate("/mock-interview/video")} className="flex items-center gap-2">
                 <Video className="h-4 w-4" />
-                Try AI Video Interview
+                Video Interview (Coming Soon)
+              </Button>
+              <Button variant="secondary" onClick={() => navigate("/technical-challenges")} className="flex items-center gap-2">
+                <Code className="h-4 w-4" />
+                Technical Challenges
               </Button>
             </div>
           </div>
           <div className="relative h-[400px]">
             <img
-              src="https://images.unsplash.com/photo-1573496528736-aab9c5272117"
+              src="https://images.unsplash.com/photo-1560439514-e960a3ef5019"
               alt="AI Interview"
               className="rounded-lg shadow-xl h-full w-full object-cover"
             />
