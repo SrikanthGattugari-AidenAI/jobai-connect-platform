@@ -1,4 +1,3 @@
-
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
@@ -9,6 +8,7 @@ import { useInternships } from "@/context/InternshipContext";
 import { useCourses } from "@/context/CourseContext";
 import { useAI } from "@/context/AIContext";
 import { Internship, Course, Application } from "@/types";
+import { Badge } from "@/components/ui/badge";
 import { 
   BookOpen, 
   Briefcase, 
@@ -32,8 +32,7 @@ const StudentDashboard = () => {
   const { 
     internships, 
     getSavedInternships, 
-    getStudentApplications,
-    getTotalJobsCount
+    getStudentApplications
   } = useInternships();
   const { 
     courses, 
