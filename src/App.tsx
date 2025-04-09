@@ -25,7 +25,6 @@ import CourseDetail from "./pages/courses/CourseDetail";
 import MockInterview from "./pages/mock-interview/MockInterview";
 import MockInterviewSession from "./pages/mock-interview/MockInterviewSession";
 import Dashboard from "./pages/dashboard/Dashboard";
-import MarketTrends from "./pages/market-trends/MarketTrends"; // New import
 
 const queryClient = new QueryClient();
 
@@ -53,7 +52,6 @@ const App = () => (
                       <Route path="/mock-interview" element={<MockInterview />} />
                       <Route path="/mock-interview/:id" element={<MockInterviewSession />} />
                       <Route path="/dashboard" element={<Dashboard />} />
-                      <Route path="/market-trends" element={<MarketTrends />} /> {/* New route */}
                       <Route path="*" element={<NotFound />} />
                     </Routes>
                     <Chatbot />
