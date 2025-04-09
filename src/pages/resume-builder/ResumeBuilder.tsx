@@ -1,5 +1,4 @@
-
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { MainLayout } from "@/components/layout/MainLayout";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -145,6 +144,13 @@ const ResumeBuilder = () => {
     improvementsNeeded: 3
   });
   
+  // Fix the navigation issue - use useEffect for conditional navigation
+  useEffect(() => {
+    if (!isLoading && !isAuthenticated) {
+      navigate("/login/student");
+    }
+  }, [isLoading, isAuthenticated, navigate]);
+  
   const handlePersonalInfoChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const { name, value } = e.target;
     setResumeData(prev => ({
@@ -276,9 +282,10 @@ const ResumeBuilder = () => {
     return <div>Loading...</div>;
   }
   
+  // Remove direct navigation to avoid the React Router warning
+  // and let the useEffect handle it instead
   if (!isAuthenticated || !user) {
-    navigate("/login/student");
-    return null;
+    return <div>Loading...</div>;
   }
   
   return (
@@ -857,141 +864,4 @@ const ResumeBuilder = () => {
                           </Button>
                         </div>
                         
-                        <h3 className="font-medium mb-4">Experience #{index + 1}</h3>
-                        
-                        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                          <div className="space-y-2">
-                            <Label htmlFor={`company-${exp.id}`}>Company</Label>
-                            <Input
-                              id={`company-${exp.id}`}
-                              value={exp.company}
-                              onChange={(e) => updateExperience(exp.id, "company", e.target.value)}
-                            />
-                          </div>
-                          <div className="space-y-2">
-                            <Label htmlFor={`position-${exp.id}`}>Position</Label>
-                            <Input
-                              id={`position-${exp.id}`}
-                              value={exp.position}
-                              onChange={(e) => updateExperience(exp.id, "position", e.target.value)}
-                            />
-                          </div>
-                          <div className="space-y-2">
-                            <Label htmlFor={`startDate-${exp.id}`}>Start Date</Label>
-                            <Input
-                              id={`startDate-${exp.id}`}
-                              type="month"
-                              value={exp.startDate}
-                              onChange={(e) => updateExperience(exp.id, "startDate", e.target.value)}
-                            />
-                          </div>
-                          <div className="space-y-2">
-                            <Label htmlFor={`endDate-${exp.id}`}>End Date</Label>
-                            <Input
-                              id={`endDate-${exp.id}`}
-                              type="month"
-                              value={exp.endDate}
-                              onChange={(e) => updateExperience(exp.id, "endDate", e.target.value)}
-                            />
-                          </div>
-                          <div className="space-y-2">
-                            <Label htmlFor={`location-${exp.id}`}>Location</Label>
-                            <Input
-                              id={`location-${exp.id}`}
-                              value={exp.location}
-                              onChange={(e) => updateExperience(exp.id, "location", e.target.value)}
-                            />
-                          </div>
-                        </div>
-                        
-                        <div className="space-y-2 mt-4">
-                          <Label htmlFor={`description-${exp.id}`}>Description</Label>
-                          <textarea
-                            id={`description-${exp.id}`}
-                            className="min-h-[80px] w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
-                            value={exp.description}
-                            onChange={(e) => updateExperience(exp.id, "description", e.target.value)}
-                          />
-                        </div>
-                      </div>
-                    ))}
-                    
-                    <Button 
-                      variant="outline" 
-                      className="w-full"
-                      onClick={addExperience}
-                    >
-                      <Plus className="mr-2 h-4 w-4" />
-                      Add Experience
-                    </Button>
-                  </div>
-                )}
-                
-                {/* Skills Form */}
-                {activeSection === "skills" && (
-                  <div className="space-y-6">
-                    {resumeData.skills.map((skill, index) => (
-                      <div key={skill.id} className="border rounded-lg p-4 relative">
-                        <div className="absolute top-4 right-4 flex space-x-2">
-                          <Button 
-                            variant="ghost" 
-                            size="icon"
-                            onClick={() => removeSkill(skill.id)}
-                          >
-                            <Trash className="h-4 w-4 text-destructive" />
-                          </Button>
-                        </div>
-                        
-                        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                          <div className="space-y-2">
-                            <Label htmlFor={`skillName-${skill.id}`}>Skill</Label>
-                            <Input
-                              id={`skillName-${skill.id}`}
-                              value={skill.name}
-                              onChange={(e) => updateSkill(skill.id, "name", e.target.value)}
-                            />
-                          </div>
-                          <div className="space-y-2">
-                            <Label htmlFor={`skillLevel-${skill.id}`}>
-                              Proficiency Level: {skill.level}%
-                            </Label>
-                            <input
-                              id={`skillLevel-${skill.id}`}
-                              type="range"
-                              min="0"
-                              max="100"
-                              value={skill.level}
-                              className="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer"
-                              onChange={(e) => updateSkill(skill.id, "level", parseInt(e.target.value))}
-                            />
-                          </div>
-                        </div>
-                      </div>
-                    ))}
-                    
-                    <Button 
-                      variant="outline" 
-                      className="w-full"
-                      onClick={addSkill}
-                    >
-                      <Plus className="mr-2 h-4 w-4" />
-                      Add Skill
-                    </Button>
-                  </div>
-                )}
-              </CardContent>
-              <CardFooter className="flex justify-end">
-                <Button>
-                  <Save className="mr-2 h-4 w-4" />
-                  Save Changes
-                </Button>
-              </CardFooter>
-            </Card>
-          </div>
-        </div>
-      </div>
-    </MainLayout>
-  );
-};
-
-export default ResumeBuilder;
+                        <h3 className="font-medium mb-4">Experience #{index +
