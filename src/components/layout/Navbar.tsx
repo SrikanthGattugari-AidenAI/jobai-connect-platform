@@ -28,7 +28,7 @@ export function Navbar() {
       <div className="container-custom flex h-16 items-center justify-between">
         <Link to="/" className="flex items-center space-x-2">
           <GraduationCap className="h-6 w-6 text-brand-purple" />
-          <span className="text-xl font-bold">InternAI</span>
+          <span className="text-xl font-bold">AidenIntern</span>
         </Link>
 
         {/* Desktop Navigation */}

@@ -26,15 +26,7 @@ export const UserMenu = () => {
       <DropdownMenuTrigger asChild>
         <Button variant="ghost" className="relative h-10 w-10 rounded-full">
           <div className="flex h-10 w-10 items-center justify-center rounded-full bg-muted">
-            {user?.profileImage ? (
-              <img 
-                src={user.profileImage} 
-                alt={user.name} 
-                className="h-9 w-9 rounded-full object-cover"
-              />
-            ) : (
-              <User className="h-5 w-5" />
-            )}
+            <User className="h-5 w-5" />
           </div>
         </Button>
       </DropdownMenuTrigger>

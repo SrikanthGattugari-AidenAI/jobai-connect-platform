@@ -18,7 +18,11 @@ import {
   MapPin, 
   Sparkles, 
   UserCheck,
-  BarChart
+  BarChart,
+  Mic,
+  Video,
+  Code,
+  Trophy
 } from "lucide-react";
 import { format } from "date-fns";
 
@@ -28,7 +32,8 @@ const StudentDashboard = () => {
   const { 
     internships, 
     getSavedInternships, 
-    getStudentApplications 
+    getStudentApplications,
+    getTotalJobsCount
   } = useInternships();
   const { 
     courses, 
@@ -43,6 +48,18 @@ const StudentDashboard = () => {
   const [recommendedInternships, setRecommendedInternships] = useState<Internship[]>([]);
   const [recommendedSkills, setRecommendedSkills] = useState<string[]>([]);
   const [isLoading, setIsLoading] = useState(true);
+  const [totalJobs, setTotalJobs] = useState(0);
+  const [jobsByCategory, setJobsByCategory] = useState({
+    engineering: 0,
+    design: 0,
+    marketing: 0,
+    business: 0,
+    other: 0
+  });
+  const [jobsByLocation, setJobsByLocation] = useState({
+    remote: 0,
+    onsite: 0
+  });
   
   useEffect(() => {
     const loadDashboardData = async () => {
@@ -79,6 +96,50 @@ const StudentDashboard = () => {
       } catch (error) {
         console.error("Error getting skill recommendations:", error);
       }
+      
+      // Get total jobs count and analytics
+      const totalJobsCount = internships.length;
+      setTotalJobs(totalJobsCount);
+      
+      // Calculate jobs by category
+      const engineeringJobs = internships.filter(job => 
+        job.category?.toLowerCase().includes('engineer') || 
+        job.category?.toLowerCase().includes('developer') || 
+        job.category?.toLowerCase().includes('programming')
+      ).length;
+      
+      const designJobs = internships.filter(job => 
+        job.category?.toLowerCase().includes('design') || 
+        job.category?.toLowerCase().includes('ui') || 
+        job.category?.toLowerCase().includes('ux')
+      ).length;
+      
+      const marketingJobs = internships.filter(job => 
+        job.category?.toLowerCase().includes('marketing') || 
+        job.category?.toLowerCase().includes('content') || 
+        job.category?.toLowerCase().includes('social')
+      ).length;
+      
+      const businessJobs = internships.filter(job => 
+        job.category?.toLowerCase().includes('business') || 
+        job.category?.toLowerCase().includes('finance') || 
+        job.category?.toLowerCase().includes('operations')
+      ).length;
+      
+      setJobsByCategory({
+        engineering: engineeringJobs,
+        design: designJobs,
+        marketing: marketingJobs,
+        business: businessJobs,
+        other: totalJobsCount - (engineeringJobs + designJobs + marketingJobs + businessJobs)
+      });
+      
+      // Calculate jobs by location
+      const remoteJobs = internships.filter(job => job.isRemote).length;
+      setJobsByLocation({
+        remote: remoteJobs,
+        onsite: totalJobsCount - remoteJobs
+      });
       
       setIsLoading(false);
     };
@@ -123,6 +184,7 @@ const StudentDashboard = () => {
               Browse Internships
             </Button>
             <Button onClick={() => navigate("/mock-interview")}>
+              <Mic className="mr-2 h-4 w-4" />
               Practice Interview
             </Button>
           </div>
@@ -131,10 +193,10 @@ const StudentDashboard = () => {
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
           <Card>
             <CardHeader className="pb-2">
-              <CardTitle className="text-sm font-medium text-muted-foreground">Saved Internships</CardTitle>
+              <CardTitle className="text-sm font-medium text-muted-foreground">Total Jobs Available</CardTitle>
             </CardHeader>
             <CardContent>
-              <div className="text-3xl font-bold">{savedInternships.length}</div>
+              <div className="text-3xl font-bold">{totalJobs}</div>
             </CardContent>
           </Card>
           
@@ -158,16 +220,144 @@ const StudentDashboard = () => {
           
           <Card>
             <CardHeader className="pb-2">
-              <CardTitle className="text-sm font-medium text-muted-foreground">Mock Interviews</CardTitle>
+              <CardTitle className="text-sm font-medium text-muted-foreground">Saved Internships</CardTitle>
             </CardHeader>
             <CardContent>
-              <div className="text-3xl font-bold">0</div>
+              <div className="text-3xl font-bold">{savedInternships.length}</div>
             </CardContent>
           </Card>
         </div>
         
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
           <div className="lg:col-span-2 space-y-8">
+            {/* Job Analytics Section */}
+            <Card>
+              <CardHeader>
+                <div className="flex items-center justify-between">
+                  <CardTitle>Job Analytics</CardTitle>
+                  <Button variant="ghost" size="sm" onClick={() => navigate("/market-trends")}>
+                    View All
+                  </Button>
+                </div>
+                <CardDescription>
+                  Current job market analytics and trends
+                </CardDescription>
+              </CardHeader>
+              <CardContent>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                  <div>
+                    <h3 className="text-sm font-medium mb-2">Jobs by Category</h3>
+                    <div className="space-y-2">
+                      <div className="flex justify-between items-center">
+                        <span className="text-sm">Engineering/Dev</span>
+                        <span className="text-sm font-medium">{jobsByCategory.engineering}</span>
+                      </div>
+                      <div className="h-2 bg-gray-100 rounded-full overflow-hidden">
+                        <div 
+                          className="h-full bg-blue-500" 
+                          style={{ width: `${(jobsByCategory.engineering / totalJobs) * 100}%` }}
+                        ></div>
+                      </div>
+                      
+                      <div className="flex justify-between items-center">
+                        <span className="text-sm">Design</span>
+                        <span className="text-sm font-medium">{jobsByCategory.design}</span>
+                      </div>
+                      <div className="h-2 bg-gray-100 rounded-full overflow-hidden">
+                        <div 
+                          className="h-full bg-purple-500" 
+                          style={{ width: `${(jobsByCategory.design / totalJobs) * 100}%` }}
+                        ></div>
+                      </div>
+                      
+                      <div className="flex justify-between items-center">
+                        <span className="text-sm">Marketing</span>
+                        <span className="text-sm font-medium">{jobsByCategory.marketing}</span>
+                      </div>
+                      <div className="h-2 bg-gray-100 rounded-full overflow-hidden">
+                        <div 
+                          className="h-full bg-green-500" 
+                          style={{ width: `${(jobsByCategory.marketing / totalJobs) * 100}%` }}
+                        ></div>
+                      </div>
+                      
+                      <div className="flex justify-between items-center">
+                        <span className="text-sm">Business</span>
+                        <span className="text-sm font-medium">{jobsByCategory.business}</span>
+                      </div>
+                      <div className="h-2 bg-gray-100 rounded-full overflow-hidden">
+                        <div 
+                          className="h-full bg-yellow-500" 
+                          style={{ width: `${(jobsByCategory.business / totalJobs) * 100}%` }}
+                        ></div>
+                      </div>
+                      
+                      <div className="flex justify-between items-center">
+                        <span className="text-sm">Other</span>
+                        <span className="text-sm font-medium">{jobsByCategory.other}</span>
+                      </div>
+                      <div className="h-2 bg-gray-100 rounded-full overflow-hidden">
+                        <div 
+                          className="h-full bg-gray-500" 
+                          style={{ width: `${(jobsByCategory.other / totalJobs) * 100}%` }}
+                        ></div>
+                      </div>
+                    </div>
+                  </div>
+                  
+                  <div>
+                    <h3 className="text-sm font-medium mb-2">Jobs by Location</h3>
+                    <div className="space-y-2">
+                      <div className="flex justify-between items-center">
+                        <span className="text-sm">Remote</span>
+                        <span className="text-sm font-medium">{jobsByLocation.remote}</span>
+                      </div>
+                      <div className="h-2 bg-gray-100 rounded-full overflow-hidden">
+                        <div 
+                          className="h-full bg-teal-500" 
+                          style={{ width: `${(jobsByLocation.remote / totalJobs) * 100}%` }}
+                        ></div>
+                      </div>
+                      
+                      <div className="flex justify-between items-center">
+                        <span className="text-sm">On-site</span>
+                        <span className="text-sm font-medium">{jobsByLocation.onsite}</span>
+                      </div>
+                      <div className="h-2 bg-gray-100 rounded-full overflow-hidden">
+                        <div 
+                          className="h-full bg-orange-500" 
+                          style={{ width: `${(jobsByLocation.onsite / totalJobs) * 100}%` }}
+                        ></div>
+                      </div>
+                    </div>
+                    
+                    <h3 className="text-sm font-medium mt-6 mb-2">Top Companies Hiring</h3>
+                    <div className="space-y-2">
+                      <div className="flex justify-between items-center">
+                        <span className="text-sm">Tech Giants</span>
+                        <span className="text-sm font-medium">42</span>
+                      </div>
+                      <div className="flex justify-between items-center">
+                        <span className="text-sm">Startups</span>
+                        <span className="text-sm font-medium">78</span>
+                      </div>
+                      <div className="flex justify-between items-center">
+                        <span className="text-sm">Mid-Size Companies</span>
+                        <span className="text-sm font-medium">63</span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                
+                <div className="mt-6 pt-4 border-t">
+                  <Button variant="outline" className="w-full" onClick={() => navigate("/market-trends")}>
+                    <BarChart className="mr-2 h-4 w-4" />
+                    View Detailed Job Market Analytics
+                  </Button>
+                </div>
+              </CardContent>
+            </Card>
+            
             <Card>
               <CardHeader>
                 <div className="flex items-center justify-between">
@@ -280,6 +470,78 @@ const StudentDashboard = () => {
                 </div>
               </CardFooter>
             </Card>
+            
+            {/* Hackathons Section */}
+            <Card>
+              <CardHeader>
+                <div className="flex items-center justify-between">
+                  <CardTitle>Relevant Hackathons</CardTitle>
+                  <Button variant="ghost" size="sm" onClick={() => navigate("/hackathons")}>
+                    View All
+                  </Button>
+                </div>
+                <CardDescription>
+                  Job-specific hackathons matching your profile
+                </CardDescription>
+              </CardHeader>
+              <CardContent>
+                <div className="space-y-4">
+                  <div className="border rounded-lg p-4 hover:border-primary transition-colors cursor-pointer" onClick={() => navigate("/hackathons/1")}>
+                    <div className="flex flex-col md:flex-row gap-4">
+                      <div className="md:w-3/4">
+                        <div className="flex items-center">
+                          <h3 className="font-medium">Frontend Challenge Hackathon</h3>
+                          <Badge variant="outline" className="ml-2 bg-blue-100 text-blue-800 border-blue-200">Matched To Your Skills</Badge>
+                        </div>
+                        <p className="text-sm text-muted-foreground">Hosted by TechCorp Inc.</p>
+                        <div className="flex flex-wrap gap-3 mt-2">
+                          <div className="flex items-center text-sm">
+                            <Clock className="mr-1 h-4 w-4 text-muted-foreground" />
+                            <span>Ends in 7 days</span>
+                          </div>
+                          <div className="flex items-center text-sm">
+                            <Trophy className="mr-1 h-4 w-4 text-muted-foreground" />
+                            <span>Internship opportunity for winners</span>
+                          </div>
+                        </div>
+                      </div>
+                      <div className="md:w-1/4 flex items-center justify-end">
+                        <Button size="sm">
+                          Join Now
+                        </Button>
+                      </div>
+                    </div>
+                  </div>
+                  
+                  <div className="border rounded-lg p-4 hover:border-primary transition-colors cursor-pointer" onClick={() => navigate("/hackathons/2")}>
+                    <div className="flex flex-col md:flex-row gap-4">
+                      <div className="md:w-3/4">
+                        <div className="flex items-center">
+                          <h3 className="font-medium">Data Science Hackathon</h3>
+                          <Badge variant="outline" className="ml-2 bg-green-100 text-green-800 border-green-200">Beginner Friendly</Badge>
+                        </div>
+                        <p className="text-sm text-muted-foreground">Hosted by AI Research Labs</p>
+                        <div className="flex flex-wrap gap-3 mt-2">
+                          <div className="flex items-center text-sm">
+                            <Clock className="mr-1 h-4 w-4 text-muted-foreground" />
+                            <span>Ends in 14 days</span>
+                          </div>
+                          <div className="flex items-center text-sm">
+                            <Trophy className="mr-1 h-4 w-4 text-muted-foreground" />
+                            <span>Cash prizes + interviews</span>
+                          </div>
+                        </div>
+                      </div>
+                      <div className="md:w-1/4 flex items-center justify-end">
+                        <Button size="sm">
+                          Join Now
+                        </Button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
           </div>
           
           <div className="space-y-8">
@@ -372,24 +634,28 @@ const StudentDashboard = () => {
               </CardHeader>
               <CardContent className="space-y-2">
                 <Button variant="outline" className="w-full justify-start" onClick={() => navigate("/mock-interview")}>
-                  <UserCheck className="mr-2 h-4 w-4" />
-                  Practice Mock Interview
+                  <Mic className="mr-2 h-4 w-4" />
+                  Practice Audio Interview
+                </Button>
+                <Button variant="outline" className="w-full justify-start" onClick={() => navigate("/mock-interview")} disabled>
+                  <Video className="mr-2 h-4 w-4" />
+                  Video Interview (Coming Soon)
+                </Button>
+                <Button variant="outline" className="w-full justify-start" onClick={() => navigate("/technical-challenge")}>
+                  <Code className="mr-2 h-4 w-4" />
+                  Technical Challenges
+                </Button>
+                <Button variant="outline" className="w-full justify-start" onClick={() => navigate("/hackathons")}>
+                  <Trophy className="mr-2 h-4 w-4" />
+                  Browse Hackathons
                 </Button>
                 <Button variant="outline" className="w-full justify-start" onClick={() => navigate("/internships")}>
                   <Briefcase className="mr-2 h-4 w-4" />
                   Browse Internships
                 </Button>
-                <Button variant="outline" className="w-full justify-start" onClick={() => navigate("/courses")}>
-                  <BookOpen className="mr-2 h-4 w-4" />
-                  Explore Courses
-                </Button>
-                <Button variant="outline" className="w-full justify-start" disabled>
+                <Button variant="outline" className="w-full justify-start" onClick={() => navigate("/resume-builder")}>
                   <FileText className="mr-2 h-4 w-4" />
                   Update Resume
-                </Button>
-                <Button variant="outline" className="w-full justify-start" disabled>
-                  <BarChart className="mr-2 h-4 w-4" />
-                  View Analytics
                 </Button>
               </CardContent>
             </Card>

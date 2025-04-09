@@ -47,9 +47,11 @@ export const MockInterviewSection = () => {
                 <Mic className="h-4 w-4" />
                 Try AI Audio Interview
               </Button>
-              <Button variant="outline" onClick={() => navigate("/mock-interview/video")} className="flex items-center gap-2">
+              <Button variant="outline" onClick={() => navigate("/mock-interview/video")} className="flex items-center gap-2" disabled>
                 <Video className="h-4 w-4" />
-                Video Interview (Coming Soon)
+                <span className="flex items-center gap-1">
+                  Video Interview <span className="text-xs bg-yellow-100 text-yellow-800 px-1.5 py-0.5 rounded-full">Coming Soon</span>
+                </span>
               </Button>
               <Button variant="secondary" onClick={() => navigate("/technical-challenges")} className="flex items-center gap-2">
                 <Code className="h-4 w-4" />

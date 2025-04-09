@@ -8,7 +8,8 @@ import { useAI } from "@/context/AIContext";
 import { useAuth } from "@/context/AuthContext";
 import { useToast } from "@/hooks/use-toast";
 import { InterviewQuestion } from "@/components/mock-interview/InterviewQuestion";
-import { ChevronLeft, CheckCircle, Loader2 } from "lucide-react";
+import { ChevronLeft, CheckCircle, Loader2, Video } from "lucide-react";
+import { Switch } from "@/components/ui/switch";
 
 const MockInterviewSession = () => {
   const { id } = useParams<{ id: string }>();
@@ -22,6 +23,7 @@ const MockInterviewSession = () => {
   const [showResults, setShowResults] = useState(false);
   const [skills, setSkills] = useState<string[]>([]);
   const [isLoadingSkills, setIsLoadingSkills] = useState(false);
+  const [videoMode, setVideoMode] = useState(false);
   
   useEffect(() => {
     if (!isAuthenticated) {
@@ -108,6 +110,11 @@ const MockInterviewSession = () => {
               <p className="text-muted-foreground">
                 Well done! Here's your feedback and skill recommendations.
               </p>
+              <div className="mt-4">
+                <Button onClick={() => navigate("/technical-challenge")} className="mx-auto mt-2">
+                  Proceed to Technical Challenge
+                </Button>
+              </div>
             </div>
             
             <Card>
@@ -207,6 +214,25 @@ const MockInterviewSession = () => {
                 Answer the following questions as you would in a real interview.
                 You'll receive AI feedback on each response.
               </p>
+              
+              <div className="flex items-center justify-between mb-4">
+                <div className="flex items-center space-x-2">
+                  <Switch
+                    checked={videoMode}
+                    onCheckedChange={setVideoMode}
+                    disabled={true}
+                    id="video-mode"
+                  />
+                  <label
+                    htmlFor="video-mode"
+                    className="flex items-center text-sm cursor-not-allowed opacity-70"
+                  >
+                    <Video className="mr-2 h-4 w-4" />
+                    Enable Video Interview
+                    <span className="ml-2 text-xs bg-yellow-100 text-yellow-800 px-1.5 py-0.5 rounded-full">Coming Soon</span>
+                  </label>
+                </div>
+              </div>
               
               <div className="bg-muted p-4 rounded-md flex items-center justify-between">
                 <div>

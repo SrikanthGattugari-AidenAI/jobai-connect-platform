@@ -1,3 +1,4 @@
+
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
@@ -16,7 +17,11 @@ import {
   Briefcase, 
   CheckCircle,
   XCircle,
-  Sparkles
+  Sparkles,
+  Trophy,
+  BarChart,
+  UserCheck,
+  Search
 } from "lucide-react";
 import { formatDistanceToNow } from "date-fns";
 import {
@@ -43,6 +48,37 @@ const EmployerDashboard = () => {
   const [applications, setApplications] = useState<Record<string, Application[]>>({});
   const [totalApplications, setTotalApplications] = useState(0);
   const [isLoading, setIsLoading] = useState(true);
+  const [matchedCandidates, setMatchedCandidates] = useState([
+    {
+      id: "cand-1",
+      name: "Alex Johnson",
+      matchScore: 95,
+      role: "Frontend Developer",
+      topSkills: ["React", "TypeScript", "UI Design"],
+      interviewScore: 88,
+      challengeScore: 92
+    },
+    {
+      id: "cand-2",
+      name: "Samantha Williams",
+      matchScore: 91,
+      role: "Data Scientist",
+      topSkills: ["Python", "Machine Learning", "SQL"],
+      interviewScore: 94,
+      challengeScore: 86
+    },
+    {
+      id: "cand-3",
+      name: "Michael Chen",
+      matchScore: 87,
+      role: "Backend Developer",
+      topSkills: ["Node.js", "Express", "MongoDB"],
+      interviewScore: 82,
+      challengeScore: 90
+    }
+  ]);
+  
+  const [totalJobs, setTotalJobs] = useState(0);
   
   useEffect(() => {
     const loadDashboardData = async () => {
@@ -51,6 +87,7 @@ const EmployerDashboard = () => {
       // Get posted internships
       const internships = getEmployerInternships(user.id);
       setPostedInternships(internships);
+      setTotalJobs(internships.length);
       
       // Get applications for each internship
       const allApplications: Record<string, Application[]> = {};
@@ -114,7 +151,11 @@ const EmployerDashboard = () => {
               Welcome back, {user.name}! Manage your internship listings and applications.
             </p>
           </div>
-          <div>
+          <div className="flex space-x-3">
+            <Button variant="outline" onClick={() => navigate("/hackathons/create")}>
+              <Trophy className="mr-2 h-4 w-4" />
+              Host Hackathon
+            </Button>
             <Button onClick={() => navigate("/post-internship")}>
               <Plus className="mr-2 h-4 w-4" />
               Post New Internship
@@ -125,10 +166,10 @@ const EmployerDashboard = () => {
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
           <Card>
             <CardHeader className="pb-2">
-              <CardTitle className="text-sm font-medium text-muted-foreground">Active Internships</CardTitle>
+              <CardTitle className="text-sm font-medium text-muted-foreground">Total Jobs Posted</CardTitle>
             </CardHeader>
             <CardContent>
-              <div className="text-3xl font-bold">{postedInternships.length}</div>
+              <div className="text-3xl font-bold">{totalJobs}</div>
             </CardContent>
           </Card>
           
@@ -155,6 +196,89 @@ const EmployerDashboard = () => {
         
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
           <div className="lg:col-span-2 space-y-8">
+            {/* Candidate Matching Section */}
+            <Card>
+              <CardHeader>
+                <div className="flex items-center justify-between">
+                  <CardTitle>AI Candidate Matching</CardTitle>
+                  <Button variant="ghost" size="sm">
+                    View All Matches
+                  </Button>
+                </div>
+                <CardDescription>
+                  Best-fit candidates based on role, skills, and performance
+                </CardDescription>
+              </CardHeader>
+              <CardContent>
+                <div className="space-y-6">
+                  {matchedCandidates.map(candidate => (
+                    <div key={candidate.id} className="border rounded-lg p-4 hover:shadow-md transition-shadow">
+                      <div className="flex flex-col md:flex-row justify-between gap-4">
+                        <div>
+                          <div className="flex items-center">
+                            <h3 className="font-medium">{candidate.name}</h3>
+                            <span className="ml-3 px-2 py-1 bg-green-100 text-green-800 text-xs font-medium rounded-full flex items-center">
+                              <CheckCircle className="mr-1 h-3 w-3" />
+                              {candidate.matchScore}% Match
+                            </span>
+                          </div>
+                          <p className="text-sm text-muted-foreground mt-1">Best match for: {candidate.role}</p>
+                          
+                          <div className="mt-3 flex flex-wrap gap-2">
+                            {candidate.topSkills.map((skill, idx) => (
+                              <span key={idx} className="px-2 py-1 bg-primary/10 text-primary text-xs rounded-full">
+                                {skill}
+                              </span>
+                            ))}
+                          </div>
+                          
+                          <div className="mt-3 grid grid-cols-2 gap-4">
+                            <div>
+                              <span className="text-xs text-muted-foreground">Interview Score</span>
+                              <div className="flex items-center">
+                                <span className="text-sm font-medium">{candidate.interviewScore}%</span>
+                                <div className="ml-2 flex-1 h-1.5 bg-gray-100 rounded-full overflow-hidden">
+                                  <div 
+                                    className="h-full bg-blue-500" 
+                                    style={{ width: `${candidate.interviewScore}%` }}
+                                  ></div>
+                                </div>
+                              </div>
+                            </div>
+                            <div>
+                              <span className="text-xs text-muted-foreground">Challenge Score</span>
+                              <div className="flex items-center">
+                                <span className="text-sm font-medium">{candidate.challengeScore}%</span>
+                                <div className="ml-2 flex-1 h-1.5 bg-gray-100 rounded-full overflow-hidden">
+                                  <div 
+                                    className="h-full bg-purple-500" 
+                                    style={{ width: `${candidate.challengeScore}%` }}
+                                  ></div>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                        <div className="flex flex-col md:items-end justify-between gap-3">
+                          <div className="flex space-x-2">
+                            <Button size="sm">View Profile</Button>
+                            <Button size="sm" variant="outline">Contact</Button>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+                
+                <div className="mt-4 pt-4 border-t">
+                  <Button variant="outline" className="w-full">
+                    <Search className="mr-2 h-4 w-4" />
+                    Find More Matching Candidates
+                  </Button>
+                </div>
+              </CardContent>
+            </Card>
+          
             <Card>
               <CardHeader>
                 <CardTitle>Your Internship Listings</CardTitle>
@@ -295,6 +419,58 @@ const EmployerDashboard = () => {
                 )}
               </CardContent>
             </Card>
+            
+            {/* Hackathon Hosting Section */}
+            <Card>
+              <CardHeader>
+                <div className="flex items-center justify-between">
+                  <CardTitle>Your Hackathons</CardTitle>
+                  <Button variant="ghost" size="sm" onClick={() => navigate("/hackathons/create")}>
+                    View All
+                  </Button>
+                </div>
+                <CardDescription>
+                  Manage your job-specific hackathons
+                </CardDescription>
+              </CardHeader>
+              <CardContent>
+                <div className="space-y-4">
+                  <div className="border rounded-lg p-4 hover:border-primary transition-colors cursor-pointer">
+                    <div className="flex flex-col md:flex-row justify-between gap-4">
+                      <div>
+                        <div className="flex items-center">
+                          <h3 className="font-medium">Backend Challenge Hackathon</h3>
+                          <span className="ml-3 px-2 py-1 bg-green-100 text-green-800 text-xs font-medium rounded-full">
+                            Active
+                          </span>
+                        </div>
+                        <p className="text-sm text-muted-foreground mt-1">Linked to: Senior Backend Developer</p>
+                        <div className="flex items-center gap-4 mt-2">
+                          <div className="flex items-center text-sm">
+                            <Clock className="mr-1 h-4 w-4 text-muted-foreground" />
+                            <span>Ends in 5 days</span>
+                          </div>
+                          <div className="flex items-center text-sm">
+                            <Users className="mr-1 h-4 w-4 text-muted-foreground" />
+                            <span>23 participants</span>
+                          </div>
+                        </div>
+                      </div>
+                      <div className="flex flex-col md:items-end justify-between">
+                        <Button size="sm">View Details</Button>
+                      </div>
+                    </div>
+                  </div>
+                  
+                  <div className="mt-4 pt-2">
+                    <Button onClick={() => navigate("/hackathons/create")} className="w-full">
+                      <Trophy className="mr-2 h-4 w-4" />
+                      Create & Host New Hackathon
+                    </Button>
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
           </div>
           
           <div className="space-y-8">
@@ -307,17 +483,29 @@ const EmployerDashboard = () => {
                   <Plus className="mr-2 h-4 w-4" />
                   Post New Internship
                 </Button>
-                <Button variant="outline" className="w-full justify-start" disabled>
+                <Button variant="outline" className="w-full justify-start" onClick={() => navigate("/hackathons/create")}>
+                  <Trophy className="mr-2 h-4 w-4" />
+                  Host Hackathon
+                </Button>
+                <Button variant="outline" className="w-full justify-start">
+                  <UserCheck className="mr-2 h-4 w-4" />
+                  View AI Matched Candidates
+                </Button>
+                <Button variant="outline" className="w-full justify-start" onClick={() => navigate("/internships")}>
                   <Briefcase className="mr-2 h-4 w-4" />
                   Manage Internships
                 </Button>
-                <Button variant="outline" className="w-full justify-start" disabled>
+                <Button variant="outline" className="w-full justify-start">
                   <Users className="mr-2 h-4 w-4" />
                   View All Applicants
                 </Button>
-                <Button variant="outline" className="w-full justify-start" disabled>
+                <Button variant="outline" className="w-full justify-start">
                   <FileText className="mr-2 h-4 w-4" />
                   Update Company Profile
+                </Button>
+                <Button variant="outline" className="w-full justify-start" onClick={() => navigate("/market-trends")}>
+                  <BarChart className="mr-2 h-4 w-4" />
+                  View Market Trends
                 </Button>
               </CardContent>
             </Card>
@@ -349,23 +537,25 @@ const EmployerDashboard = () => {
                   </Button>
                 </div>
                 
-                <div className="p-4 bg-muted rounded-lg opacity-75">
+                <div className="p-4 bg-primary/10 rounded-lg">
                   <h3 className="font-medium mb-2">Candidate Matching</h3>
                   <p className="text-sm text-muted-foreground mb-3">
                     AI-powered matching to find the best candidates for your internships.
                   </p>
-                  <Button variant="outline" size="sm" className="w-full" disabled>
-                    Coming Soon
+                  <Button variant="default" size="sm" className="w-full">
+                    <UserCheck className="mr-2 h-4 w-4" />
+                    Find Matches
                   </Button>
                 </div>
                 
-                <div className="p-4 bg-muted rounded-lg opacity-75">
+                <div className="p-4 bg-primary/10 rounded-lg">
                   <h3 className="font-medium mb-2">Interview Question Generator</h3>
                   <p className="text-sm text-muted-foreground mb-3">
                     Generate custom interview questions based on the internship requirements.
                   </p>
-                  <Button variant="outline" size="sm" className="w-full" disabled>
-                    Coming Soon
+                  <Button variant="default" size="sm" className="w-full">
+                    <Sparkles className="mr-2 h-4 w-4" />
+                    Generate Questions
                   </Button>
                 </div>
               </CardContent>
