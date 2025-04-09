@@ -7,7 +7,10 @@ import {
   FeaturedInternships,
   MockInterviewSection,
   SuccessStories,
-  CallToAction
+  CallToAction,
+  MarketInsightsSection,
+  CareerPathwaySection,
+  HackathonSection
 } from "@/components/home";
 
 const Index = () => {
@@ -18,8 +21,11 @@ const Index = () => {
     <MainLayout>
       <HeroSection />
       <FeaturesSection />
+      <MarketInsightsSection />
       <FeaturedInternships internships={featuredInternships} />
       <MockInterviewSection />
+      <CareerPathwaySection />
+      <HackathonSection />
       <SuccessStories />
       <CallToAction />
     </MainLayout>

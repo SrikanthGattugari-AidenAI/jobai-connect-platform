@@ -5,3 +5,6 @@ export * from "./FeaturedInternships";
 export * from "./MockInterviewSection";
 export * from "./SuccessStories";
 export * from "./CallToAction";
+export * from "./MarketInsightsSection";
+export * from "./CareerPathwaySection";
+export * from "./HackathonSection";
