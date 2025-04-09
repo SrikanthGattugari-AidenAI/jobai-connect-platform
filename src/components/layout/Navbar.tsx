@@ -18,7 +18,9 @@ import {
   Briefcase, 
   GraduationCap, 
   BarChart,
-  BookOpen
+  BookOpen,
+  TrendingUp,
+  Globe
 } from "lucide-react";
 import { useAuth } from "@/context/AuthContext";
 import { cn } from "@/lib/utils";
@@ -55,6 +57,13 @@ export function Navbar() {
           </Link>
           <Link to="/mock-interview" className="text-sm font-medium hover:text-primary transition-colors">
             Mock Interviews
+          </Link>
+          <Link to="/market-trends" className="text-sm font-medium hover:text-primary transition-colors flex items-center space-x-1 group">
+            <span>Live Market Trends</span>
+            <span className="relative flex h-2 w-2">
+              <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-red-400 opacity-75"></span>
+              <span className="relative inline-flex rounded-full h-2 w-2 bg-red-500"></span>
+            </span>
           </Link>
         </nav>
 
@@ -179,6 +188,20 @@ export function Navbar() {
             >
               <User className="mr-2 h-5 w-5" />
               Mock Interviews
+            </Link>
+            <Link
+              to="/market-trends"
+              className="flex w-full items-center rounded-md p-2 hover:bg-accent"
+              onClick={toggleMenu}
+            >
+              <TrendingUp className="mr-2 h-5 w-5" />
+              <span className="flex items-center">
+                Live Market Trends
+                <span className="ml-2 relative flex h-2 w-2">
+                  <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-red-400 opacity-75"></span>
+                  <span className="relative inline-flex rounded-full h-2 w-2 bg-red-500"></span>
+                </span>
+              </span>
             </Link>
             
             {isAuthenticated ? (
