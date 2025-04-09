@@ -36,7 +36,7 @@ const companies = [
     type: "startup",
     locations: ["San Francisco, CA", "New York, NY", "Remote"],
     industries: ["Artificial Intelligence", "Software", "Enterprise"],
-    employees: "50-200",
+    employeeCount: "50-200",
     founded: 2018,
     website: "https://technova.example.com",
     openPositions: 12,
@@ -81,7 +81,7 @@ const companies = [
       "Parental leave program",
       "401(k) matching"
     ],
-    employees: [
+    employeeData: [
       {
         name: "Alex Chen",
         title: "Co-Founder & CEO",
@@ -202,7 +202,7 @@ const companies = [
     type: "midsize",
     locations: ["Chicago, IL", "Austin, TX", "Boston, MA", "Remote"],
     industries: ["Consulting", "IT Services", "Digital Transformation"],
-    employees: "500-1000",
+    employeeCount: "500-1000",
     founded: 2010,
     website: "https://globaltech.example.com",
     openPositions: 28,
@@ -211,7 +211,7 @@ const companies = [
     about: `Sample about content`,
     culture: `Sample culture content`,
     benefits: [],
-    employees: [],
+    employeeData: [],
     internships: [],
     reviews: [],
     faq: []
@@ -224,7 +224,7 @@ const companies = [
     type: "startup",
     locations: ["Miami, FL", "Remote"],
     industries: ["Fintech", "Blockchain", "Cryptocurrency"],
-    employees: "10-50",
+    employeeCount: "10-50",
     founded: 2020,
     website: "https://innovex.example.com",
     openPositions: 8,
@@ -233,7 +233,7 @@ const companies = [
     about: `Sample about content`,
     culture: `Sample culture content`,
     benefits: [],
-    employees: [],
+    employeeData: [],
     internships: [],
     reviews: [],
     faq: []
@@ -298,6 +298,38 @@ const CompanyDetail = () => {
     navigate("/internships");
   };
   
+  // Render employee data properly to fix TypeScript errors
+  const renderEmployees = () => {
+    return company.employeeData.map((employee) => (
+      <Card key={employee.name}>
+        <CardContent className="pt-6">
+          <div className="flex items-center gap-4">
+            <div className="w-16 h-16 rounded-full overflow-hidden">
+              <img 
+                src={employee.image} 
+                alt={employee.name} 
+                className="w-full h-full object-cover"
+              />
+            </div>
+            <div>
+              <h3 className="font-bold">{employee.name}</h3>
+              <p className="text-muted-foreground">{employee.title}</p>
+              <Button 
+                variant="ghost" 
+                size="sm" 
+                className="p-0 h-auto mt-1"
+                onClick={() => window.open(employee.linkedin, "_blank")}
+              >
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="#0A66C2" stroke="#0A66C2" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="lucide lucide-linkedin mr-1"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"/><rect width="4" height="12" x="2" y="9"/><circle cx="4" cy="4" r="2"/></svg>
+                <span className="text-blue-600 font-medium">LinkedIn</span>
+              </Button>
+            </div>
+          </div>
+        </CardContent>
+      </Card>
+    ));
+  };
+  
   return (
     <MainLayout>
       <div className="container-custom py-12">
@@ -336,7 +368,7 @@ const CompanyDetail = () => {
               </div>
               <div className="flex items-center">
                 <Users className="mr-1 h-4 w-4" />
-                <span>{company.employees} employees</span>
+                <span>{company.employeeCount} employees</span>
               </div>
               <div className="flex items-center">
                 <Calendar className="mr-1 h-4 w-4" />
@@ -575,34 +607,7 @@ const CompanyDetail = () => {
                 <h2 className="text-2xl font-bold mb-4">Leadership Team</h2>
                 
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                  {company.employees.map((employee: any) => (
-                    <Card key={employee.name}>
-                      <CardContent className="pt-6">
-                        <div className="flex items-center gap-4">
-                          <div className="w-16 h-16 rounded-full overflow-hidden">
-                            <img 
-                              src={employee.image} 
-                              alt={employee.name} 
-                              className="w-full h-full object-cover"
-                            />
-                          </div>
-                          <div>
-                            <h3 className="font-bold">{employee.name}</h3>
-                            <p className="text-muted-foreground">{employee.title}</p>
-                            <Button 
-                              variant="ghost" 
-                              size="sm" 
-                              className="p-0 h-auto mt-1"
-                              onClick={() => window.open(employee.linkedin, "_blank")}
-                            >
-                              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="#0A66C2" stroke="#0A66C2" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="lucide lucide-linkedin mr-1"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"/><rect width="4" height="12" x="2" y="9"/><circle cx="4" cy="4" r="2"/></svg>
-                              <span className="text-blue-600 font-medium">LinkedIn</span>
-                            </Button>
-                          </div>
-                        </div>
-                      </CardContent>
-                    </Card>
-                  ))}
+                  {renderEmployees()}
                 </div>
                 
                 <Card className="mt-8">
@@ -612,7 +617,7 @@ const CompanyDetail = () => {
                   <CardContent>
                     <div className="grid grid-cols-1 md:grid-cols-3 gap-6 text-center">
                       <div>
-                        <div className="text-3xl font-bold text-primary mb-2">{company.employees}</div>
+                        <div className="text-3xl font-bold text-primary mb-2">{company.employeeCount}</div>
                         <p className="text-muted-foreground">Total Employees</p>
                       </div>
                       <div>
@@ -680,7 +685,7 @@ const CompanyDetail = () => {
                 </div>
                 <div className="flex justify-between items-center pb-2 border-b">
                   <span className="text-muted-foreground">Company Size</span>
-                  <span className="font-medium">{company.employees}</span>
+                  <span className="font-medium">{company.employeeCount}</span>
                 </div>
                 <div className="flex justify-between items-center pb-2 border-b">
                   <span className="text-muted-foreground">Industry</span>
