@@ -1,6 +1,6 @@
 
 import { useNavigate } from "react-router-dom";
-import { User, LogOut, Briefcase, BarChart } from "lucide-react";
+import { User, LogOut, Briefcase, BarChart, Settings, Heart, FileText } from "lucide-react";
 import { 
   DropdownMenu,
   DropdownMenuContent,
@@ -46,16 +46,33 @@ export const UserMenu = () => {
           </div>
         </DropdownMenuLabel>
         <DropdownMenuSeparator />
+        <DropdownMenuItem onClick={() => navigate("/profile")}>
+          <User className="mr-2 h-4 w-4" />
+          <span>My Profile</span>
+        </DropdownMenuItem>
         <DropdownMenuItem onClick={() => navigate("/dashboard")}>
           <BarChart className="mr-2 h-4 w-4" />
           <span>Dashboard</span>
         </DropdownMenuItem>
-        {user?.role === "employer" && (
+        {user?.role === "student" ? (
+          <DropdownMenuItem onClick={() => navigate("/dashboard")}>
+            <FileText className="mr-2 h-4 w-4" />
+            <span>My Applications</span>
+          </DropdownMenuItem>
+        ) : (
           <DropdownMenuItem onClick={() => navigate("/post-internship")}>
             <Briefcase className="mr-2 h-4 w-4" />
             <span>Post Internship</span>
           </DropdownMenuItem>
         )}
+        <DropdownMenuItem onClick={() => navigate("/dashboard")}>
+          <Heart className="mr-2 h-4 w-4" />
+          <span>Saved Items</span>
+        </DropdownMenuItem>
+        <DropdownMenuItem onClick={() => navigate("/settings")}>
+          <Settings className="mr-2 h-4 w-4" />
+          <span>Settings</span>
+        </DropdownMenuItem>
         <DropdownMenuSeparator />
         <DropdownMenuItem onClick={handleLogout}>
           <LogOut className="mr-2 h-4 w-4" />

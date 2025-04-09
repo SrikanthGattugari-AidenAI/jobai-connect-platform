@@ -27,6 +27,16 @@ import MockInterviewSession from "./pages/mock-interview/MockInterviewSession";
 import Dashboard from "./pages/dashboard/Dashboard";
 import MarketTrends from "./pages/market-trends/MarketTrends";
 import CareerPath from "./pages/career-path/CareerPath";
+import TechnicalChallenge from "./pages/technical-challenge/TechnicalChallenge";
+import Hackathons from "./pages/hackathons/Hackathons";
+import HackathonDetail from "./pages/hackathons/HackathonDetail";
+import ResumeBuilder from "./pages/resume-builder/ResumeBuilder";
+import Blog from "./pages/blog/Blog";
+import BlogPost from "./pages/blog/BlogPost";
+import CompanyProfiles from "./pages/companies/CompanyProfiles";
+import CompanyDetail from "./pages/companies/CompanyDetail";
+import Profile from "./pages/profile/Profile";
+import Settings from "./pages/settings/Settings";
 
 const queryClient = new QueryClient();
 
@@ -53,11 +63,22 @@ const App = () => (
                       <Route path="/courses/:id" element={<CourseDetail />} />
                       <Route path="/mock-interview" element={<MockInterview />} />
                       <Route path="/mock-interview/:id" element={<MockInterviewSession />} />
+                      <Route path="/technical-challenge" element={<TechnicalChallenge />} />
+                      <Route path="/technical-challenge/:id" element={<TechnicalChallenge />} />
                       <Route path="/dashboard" element={<Dashboard />} />
                       <Route path="/market-trends" element={<MarketTrends />} />
                       <Route path="/career-path" element={<CareerPath />} />
                       <Route path="/career-roadmaps/:id" element={<CareerPath />} />
                       <Route path="/career-roadmaps" element={<CareerPath />} />
+                      <Route path="/hackathons" element={<Hackathons />} />
+                      <Route path="/hackathons/:id" element={<HackathonDetail />} />
+                      <Route path="/resume-builder" element={<ResumeBuilder />} />
+                      <Route path="/blog" element={<Blog />} />
+                      <Route path="/blog/:id" element={<BlogPost />} />
+                      <Route path="/companies" element={<CompanyProfiles />} />
+                      <Route path="/companies/:id" element={<CompanyDetail />} />
+                      <Route path="/profile" element={<Profile />} />
+                      <Route path="/settings" element={<Settings />} />
                       <Route path="*" element={<NotFound />} />
                     </Routes>
                     <Chatbot />
