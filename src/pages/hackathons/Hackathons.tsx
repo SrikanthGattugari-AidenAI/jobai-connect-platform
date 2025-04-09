@@ -20,6 +20,7 @@ import {
   Trophy,
   Sparkles
 } from "lucide-react";
+import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 
 const hackathons = [
   {
@@ -117,6 +118,7 @@ const hackathons = [
 const Hackathons = () => {
   const navigate = useNavigate();
   const [searchTerm, setSearchTerm] = useState("");
+  const [showHowItWorks, setShowHowItWorks] = useState(false);
   
   const filteredHackathons = hackathons.filter(hackathon => 
     hackathon.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
@@ -152,12 +154,75 @@ const Hackathons = () => {
               <Button 
                 variant="outline" 
                 size="lg"
+                onClick={() => setShowHowItWorks(true)}
               >
                 How It Works
               </Button>
             </div>
           </div>
         </div>
+        
+        {/* How It Works Dialog */}
+        <Dialog open={showHowItWorks} onOpenChange={setShowHowItWorks}>
+          <DialogContent className="max-w-3xl">
+            <DialogHeader>
+              <DialogTitle className="text-2xl font-bold mb-2">How Hackathons Work</DialogTitle>
+              <DialogDescription className="text-base text-muted-foreground">
+                Participate in hackathons to showcase your skills, build your portfolio, and get noticed by employers.
+              </DialogDescription>
+            </DialogHeader>
+            <div className="space-y-6 py-4">
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                <div className="flex flex-col items-center text-center p-4 rounded-lg bg-muted/50">
+                  <div className="bg-primary/10 p-3 rounded-full mb-4">
+                    <Users className="h-6 w-6 text-primary" />
+                  </div>
+                  <h3 className="text-lg font-medium mb-2">1. Register & Form Teams</h3>
+                  <p className="text-sm text-muted-foreground">
+                    Sign up for a hackathon and either join with friends or meet new teammates during the event.
+                  </p>
+                </div>
+                
+                <div className="flex flex-col items-center text-center p-4 rounded-lg bg-muted/50">
+                  <div className="bg-primary/10 p-3 rounded-full mb-4">
+                    <Code className="h-6 w-6 text-primary" />
+                  </div>
+                  <h3 className="text-lg font-medium mb-2">2. Build Your Solution</h3>
+                  <p className="text-sm text-muted-foreground">
+                    Work intensively over 24-72 hours to design and build an innovative solution to the challenge.
+                  </p>
+                </div>
+                
+                <div className="flex flex-col items-center text-center p-4 rounded-lg bg-muted/50">
+                  <div className="bg-primary/10 p-3 rounded-full mb-4">
+                    <Trophy className="h-6 w-6 text-primary" />
+                  </div>
+                  <h3 className="text-lg font-medium mb-2">3. Present & Win</h3>
+                  <p className="text-sm text-muted-foreground">
+                    Present your project to judges, get feedback, and potentially win prizes and recognition.
+                  </p>
+                </div>
+              </div>
+              
+              <div className="bg-primary/5 p-6 rounded-lg">
+                <h3 className="text-lg font-medium mb-3">Benefits for Students</h3>
+                <ul className="list-disc pl-5 space-y-2">
+                  <li>Build your portfolio with real projects</li>
+                  <li>Network with industry professionals and peers</li>
+                  <li>Learn new technologies and skills in a practical setting</li>
+                  <li>Get noticed by potential employers</li>
+                  <li>Win prizes and recognition for your work</li>
+                </ul>
+              </div>
+              
+              <div className="text-center">
+                <Button size="lg" onClick={() => setShowHowItWorks(false)}>
+                  Got It
+                </Button>
+              </div>
+            </div>
+          </DialogContent>
+        </Dialog>
         
         {/* Search and Filter */}
         <div className="flex flex-col md:flex-row gap-4 mb-8">
