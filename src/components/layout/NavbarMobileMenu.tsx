@@ -33,6 +33,12 @@ export const NavbarMobileMenu = ({ isMenuOpen, toggleMenu, handleLogout }: Navba
     setOpenSection(openSection === section ? null : section);
   };
 
+  // Add a handler for when a link is clicked that closes the menu
+  const handleLinkClick = () => {
+    toggleMenu();  // Close the mobile menu
+    setOpenSection(null);  // Close any open section
+  };
+
   return (
     <div
       className={cn(
@@ -65,7 +71,7 @@ export const NavbarMobileMenu = ({ isMenuOpen, toggleMenu, handleLogout }: Navba
               <Link
                 to="/internships"
                 className="flex w-full items-center rounded-md p-2 hover:bg-accent"
-                onClick={toggleMenu}
+                onClick={handleLinkClick}
               >
                 <Briefcase className="mr-2 h-5 w-5" />
                 Internships
@@ -73,7 +79,7 @@ export const NavbarMobileMenu = ({ isMenuOpen, toggleMenu, handleLogout }: Navba
               <Link
                 to="/hackathons"
                 className="flex w-full items-center rounded-md p-2 hover:bg-accent"
-                onClick={toggleMenu}
+                onClick={handleLinkClick}
               >
                 <Award className="mr-2 h-5 w-5" />
                 Hackathons
@@ -81,7 +87,7 @@ export const NavbarMobileMenu = ({ isMenuOpen, toggleMenu, handleLogout }: Navba
               <Link
                 to="/companies"
                 className="flex w-full items-center rounded-md p-2 hover:bg-accent"
-                onClick={toggleMenu}
+                onClick={handleLinkClick}
               >
                 <Building className="mr-2 h-5 w-5" />
                 Companies
@@ -112,7 +118,7 @@ export const NavbarMobileMenu = ({ isMenuOpen, toggleMenu, handleLogout }: Navba
               <Link
                 to="/courses"
                 className="flex w-full items-center rounded-md p-2 hover:bg-accent"
-                onClick={toggleMenu}
+                onClick={handleLinkClick}
               >
                 <BookOpen className="mr-2 h-5 w-5" />
                 Courses
@@ -120,7 +126,7 @@ export const NavbarMobileMenu = ({ isMenuOpen, toggleMenu, handleLogout }: Navba
               <Link
                 to="/mock-interview"
                 className="flex w-full items-center rounded-md p-2 hover:bg-accent"
-                onClick={toggleMenu}
+                onClick={handleLinkClick}
               >
                 <Code className="mr-2 h-5 w-5" />
                 Mock Interviews
@@ -128,7 +134,7 @@ export const NavbarMobileMenu = ({ isMenuOpen, toggleMenu, handleLogout }: Navba
               <Link
                 to="/career-path"
                 className="flex w-full items-center rounded-md p-2 hover:bg-accent"
-                onClick={toggleMenu}
+                onClick={handleLinkClick}
               >
                 <Map className="mr-2 h-5 w-5" />
                 Career Roadmaps
@@ -136,7 +142,7 @@ export const NavbarMobileMenu = ({ isMenuOpen, toggleMenu, handleLogout }: Navba
               <Link
                 to="/resume-builder"
                 className="flex w-full items-center rounded-md p-2 hover:bg-accent"
-                onClick={toggleMenu}
+                onClick={handleLinkClick}
               >
                 <FileText className="mr-2 h-5 w-5" />
                 Resume Builder
@@ -167,7 +173,7 @@ export const NavbarMobileMenu = ({ isMenuOpen, toggleMenu, handleLogout }: Navba
               <Link
                 to="/market-trends"
                 className="flex w-full items-center rounded-md p-2 hover:bg-accent"
-                onClick={toggleMenu}
+                onClick={handleLinkClick}
               >
                 <TrendingUp className="mr-2 h-5 w-5" />
                 <span className="flex items-center">
@@ -181,7 +187,7 @@ export const NavbarMobileMenu = ({ isMenuOpen, toggleMenu, handleLogout }: Navba
               <Link
                 to="/blog"
                 className="flex w-full items-center rounded-md p-2 hover:bg-accent"
-                onClick={toggleMenu}
+                onClick={handleLinkClick}
               >
                 <BookOpen className="mr-2 h-5 w-5" />
                 Blog
@@ -194,7 +200,7 @@ export const NavbarMobileMenu = ({ isMenuOpen, toggleMenu, handleLogout }: Navba
               <Link
                 to="/dashboard"
                 className="flex w-full items-center rounded-md p-2 hover:bg-accent"
-                onClick={toggleMenu}
+                onClick={handleLinkClick}
               >
                 <BarChart className="mr-2 h-5 w-5" />
                 Dashboard
@@ -203,7 +209,7 @@ export const NavbarMobileMenu = ({ isMenuOpen, toggleMenu, handleLogout }: Navba
                 <Link
                   to="/post-internship"
                   className="flex w-full items-center rounded-md p-2 hover:bg-accent"
-                  onClick={toggleMenu}
+                  onClick={handleLinkClick}
                 >
                   <Briefcase className="mr-2 h-5 w-5" />
                   Post Internship
@@ -213,7 +219,7 @@ export const NavbarMobileMenu = ({ isMenuOpen, toggleMenu, handleLogout }: Navba
                 className="flex w-full items-center rounded-md p-2 hover:bg-accent"
                 onClick={() => {
                   handleLogout();
-                  toggleMenu();
+                  handleLinkClick();
                 }}
               >
                 <LogOut className="mr-2 h-5 w-5" />
@@ -225,7 +231,7 @@ export const NavbarMobileMenu = ({ isMenuOpen, toggleMenu, handleLogout }: Navba
               <Link
                 to="/login/student"
                 className="flex w-full items-center rounded-md p-2 hover:bg-accent"
-                onClick={toggleMenu}
+                onClick={handleLinkClick}
               >
                 <GraduationCap className="mr-2 h-5 w-5" />
                 Student Login
@@ -233,7 +239,7 @@ export const NavbarMobileMenu = ({ isMenuOpen, toggleMenu, handleLogout }: Navba
               <Link
                 to="/login/employer"
                 className="flex w-full items-center rounded-md p-2 hover:bg-accent"
-                onClick={toggleMenu}
+                onClick={handleLinkClick}
               >
                 <Briefcase className="mr-2 h-5 w-5" />
                 Employer Login
@@ -241,7 +247,7 @@ export const NavbarMobileMenu = ({ isMenuOpen, toggleMenu, handleLogout }: Navba
               <Link
                 to="/register/student"
                 className="flex w-full items-center rounded-md p-2 hover:bg-accent"
-                onClick={toggleMenu}
+                onClick={handleLinkClick}
               >
                 <GraduationCap className="mr-2 h-5 w-5" />
                 Student Register
@@ -249,7 +255,7 @@ export const NavbarMobileMenu = ({ isMenuOpen, toggleMenu, handleLogout }: Navba
               <Link
                 to="/register/employer"
                 className="flex w-full items-center rounded-md p-2 hover:bg-accent"
-                onClick={toggleMenu}
+                onClick={handleLinkClick}
               >
                 <Briefcase className="mr-2 h-5 w-5" />
                 Employer Register

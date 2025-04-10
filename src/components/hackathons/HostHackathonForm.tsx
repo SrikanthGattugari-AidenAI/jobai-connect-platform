@@ -24,9 +24,14 @@ import { cn } from "@/lib/utils";
 import { format } from "date-fns";
 import { useToast } from "@/hooks/use-toast";
 import { Badge } from "@/components/ui/badge";
+import { useAuth } from "@/context/AuthContext";
+import { useNavigate } from "react-router-dom";
 
 export const HostHackathonForm = () => {
   const { toast } = useToast();
+  const { user, isAuthenticated } = useAuth();
+  const navigate = useNavigate();
+  
   const [title, setTitle] = React.useState("");
   const [description, setDescription] = React.useState("");
   const [startDate, setStartDate] = React.useState<Date | undefined>(undefined);
@@ -35,6 +40,30 @@ export const HostHackathonForm = () => {
   const [tags, setTags] = React.useState<string[]>([]);
   const [currentTag, setCurrentTag] = React.useState("");
   const [open, setOpen] = React.useState(false);
+
+  // Handle button click - open dialog or redirect to login
+  const handleButtonClick = () => {
+    if (!isAuthenticated) {
+      toast({
+        title: "Login Required",
+        description: "Please login as an employer to host a hackathon.",
+        variant: "destructive",
+      });
+      navigate("/login/employer");
+      return;
+    }
+    
+    if (user?.role !== "employer") {
+      toast({
+        title: "Employer Account Required",
+        description: "Only employers can host hackathons.",
+        variant: "destructive",
+      });
+      return;
+    }
+    
+    setOpen(true);
+  };
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -83,6 +112,7 @@ export const HostHackathonForm = () => {
         <Button 
           variant="default" 
           className="w-full md:w-auto flex items-center gap-2"
+          onClick={handleButtonClick}
         >
           Host a Hackathon
         </Button>

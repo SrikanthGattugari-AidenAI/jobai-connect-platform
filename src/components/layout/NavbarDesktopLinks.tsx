@@ -17,12 +17,20 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover";
+import { useState } from "react";
 
 export const NavbarDesktopLinks = () => {
+  const [openPopover, setOpenPopover] = useState<string | null>(null);
+
+  const handleLinkClick = () => {
+    // Close any open popover when a link is clicked
+    setOpenPopover(null);
+  };
+
   return (
     <nav className="hidden md:flex items-center space-x-6">
       {/* Explore Dropdown */}
-      <Popover>
+      <Popover open={openPopover === "explore"} onOpenChange={(open) => setOpenPopover(open ? "explore" : null)}>
         <PopoverTrigger asChild>
           <button className="flex items-center space-x-1 text-sm font-medium hover:text-primary transition-colors">
             <span>Explore</span>
@@ -35,6 +43,7 @@ export const NavbarDesktopLinks = () => {
               <Link 
                 to="/internships" 
                 className="flex items-center space-x-2 px-4 py-2 text-sm hover:bg-accent hover:text-accent-foreground"
+                onClick={handleLinkClick}
               >
                 <Briefcase className="h-4 w-4" />
                 <span>Internships</span>
@@ -42,6 +51,7 @@ export const NavbarDesktopLinks = () => {
               <Link 
                 to="/hackathons" 
                 className="flex items-center space-x-2 px-4 py-2 text-sm hover:bg-accent hover:text-accent-foreground"
+                onClick={handleLinkClick}
               >
                 <Award className="h-4 w-4" />
                 <span>Hackathons</span>
@@ -49,6 +59,7 @@ export const NavbarDesktopLinks = () => {
               <Link 
                 to="/companies" 
                 className="flex items-center space-x-2 px-4 py-2 text-sm hover:bg-accent hover:text-accent-foreground"
+                onClick={handleLinkClick}
               >
                 <Building className="h-4 w-4" />
                 <span>Companies</span>
@@ -59,7 +70,7 @@ export const NavbarDesktopLinks = () => {
       </Popover>
 
       {/* Upskill Dropdown */}
-      <Popover>
+      <Popover open={openPopover === "upskill"} onOpenChange={(open) => setOpenPopover(open ? "upskill" : null)}>
         <PopoverTrigger asChild>
           <button className="flex items-center space-x-1 text-sm font-medium hover:text-primary transition-colors">
             <span>Upskill</span>
@@ -72,6 +83,7 @@ export const NavbarDesktopLinks = () => {
               <Link 
                 to="/courses" 
                 className="flex items-center space-x-2 px-4 py-2 text-sm hover:bg-accent hover:text-accent-foreground"
+                onClick={handleLinkClick}
               >
                 <BookOpen className="h-4 w-4" />
                 <span>Courses</span>
@@ -79,6 +91,7 @@ export const NavbarDesktopLinks = () => {
               <Link 
                 to="/mock-interview" 
                 className="flex items-center space-x-2 px-4 py-2 text-sm hover:bg-accent hover:text-accent-foreground"
+                onClick={handleLinkClick}
               >
                 <Code className="h-4 w-4" />
                 <span>Mock Interviews</span>
@@ -86,6 +99,7 @@ export const NavbarDesktopLinks = () => {
               <Link 
                 to="/career-path" 
                 className="flex items-center space-x-2 px-4 py-2 text-sm hover:bg-accent hover:text-accent-foreground"
+                onClick={handleLinkClick}
               >
                 <Map className="h-4 w-4" />
                 <span>Career Roadmaps</span>
@@ -93,6 +107,7 @@ export const NavbarDesktopLinks = () => {
               <Link 
                 to="/resume-builder" 
                 className="flex items-center space-x-2 px-4 py-2 text-sm hover:bg-accent hover:text-accent-foreground"
+                onClick={handleLinkClick}
               >
                 <FileText className="h-4 w-4" />
                 <span>Resume Builder</span>
@@ -103,7 +118,7 @@ export const NavbarDesktopLinks = () => {
       </Popover>
 
       {/* Insights Dropdown */}
-      <Popover>
+      <Popover open={openPopover === "insights"} onOpenChange={(open) => setOpenPopover(open ? "insights" : null)}>
         <PopoverTrigger asChild>
           <button className="flex items-center space-x-1 text-sm font-medium hover:text-primary transition-colors">
             <span>Insights</span>
@@ -116,6 +131,7 @@ export const NavbarDesktopLinks = () => {
               <Link 
                 to="/market-trends" 
                 className="flex items-center space-x-2 px-4 py-2 text-sm hover:bg-accent hover:text-accent-foreground"
+                onClick={handleLinkClick}
               >
                 <div className="flex items-center">
                   <TrendingUp className="h-4 w-4 mr-2" />
@@ -129,6 +145,7 @@ export const NavbarDesktopLinks = () => {
               <Link 
                 to="/blog" 
                 className="flex items-center space-x-2 px-4 py-2 text-sm hover:bg-accent hover:text-accent-foreground"
+                onClick={handleLinkClick}
               >
                 <BookOpen className="h-4 w-4" />
                 <span>Blog</span>
