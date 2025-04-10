@@ -1,4 +1,3 @@
-
 import React, { useState } from "react";
 import { MainLayout } from "@/components/layout/MainLayout";
 import { Button } from "@/components/ui/button";
@@ -21,6 +20,7 @@ import {
   Sparkles
 } from "lucide-react";
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from "@/components/ui/dialog";
+import { HackathonLeaderboard } from "@/components/hackathons/HackathonLeaderboard";
 
 const hackathons = [
   {
@@ -158,6 +158,7 @@ const Hackathons = () => {
               >
                 How It Works
               </Button>
+              <HackathonLeaderboard />
             </div>
           </div>
         </div>
