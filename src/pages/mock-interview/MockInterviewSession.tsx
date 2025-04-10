@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { MainLayout } from "@/components/layout/MainLayout";
@@ -8,7 +7,7 @@ import { useAI } from "@/context/AIContext";
 import { useAuth } from "@/context/AuthContext";
 import { useToast } from "@/hooks/use-toast";
 import { InterviewQuestion } from "@/components/mock-interview/InterviewQuestion";
-import { ChevronLeft, CheckCircle, Loader2, Video } from "lucide-react";
+import { ChevronLeft, CheckCircle, Loader2, Video, Code } from "lucide-react";
 import { Switch } from "@/components/ui/switch";
 
 const MockInterviewSession = () => {
@@ -110,11 +109,24 @@ const MockInterviewSession = () => {
               <p className="text-muted-foreground">
                 Well done! Here's your feedback and skill recommendations.
               </p>
-              <div className="mt-4">
-                <Button onClick={() => navigate("/technical-challenge")} className="mx-auto mt-2">
-                  Proceed to Technical Challenge
-                </Button>
-              </div>
+              
+              {interview.feedback && interview.feedback.rating >= 3.5 && (
+                <div className="mt-6 flex flex-col items-center">
+                  <div className="p-4 bg-green-50 border border-green-200 rounded-md max-w-md mb-4">
+                    <p className="text-green-800 flex items-center gap-2">
+                      <CheckCircle className="h-5 w-5 text-green-600" />
+                      You've unlocked the Technical Challenge!
+                    </p>
+                  </div>
+                  <Button 
+                    onClick={() => navigate("/technical-challenge")} 
+                    className="flex items-center gap-2"
+                  >
+                    <Code className="h-4 w-4" />
+                    Take Technical Challenge
+                  </Button>
+                </div>
+              )}
             </div>
             
             <Card>
@@ -200,10 +212,15 @@ const MockInterviewSession = () => {
               </CardFooter>
             </Card>
             
-            <div className="flex justify-center">
+            <div className="flex justify-center space-x-4">
               <Button variant="outline" onClick={() => navigate("/mock-interview")}>
                 Start Another Interview
               </Button>
+              {interview.feedback && interview.feedback.rating >= 3.5 && (
+                <Button onClick={() => navigate("/technical-challenge")}>
+                  Take Technical Challenge
+                </Button>
+              )}
             </div>
           </div>
         ) : (

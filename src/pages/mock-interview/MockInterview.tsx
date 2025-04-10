@@ -9,7 +9,7 @@ import { useAI } from "@/context/AIContext";
 import { categories } from "@/lib/data";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Sparkles, UserCheck, Brain, BrainCircuit, Zap, Loader2 } from "lucide-react";
+import { Sparkles, UserCheck, Brain, BrainCircuit, Zap, Loader2, Code } from "lucide-react";
 
 const MockInterview = () => {
   const navigate = useNavigate();
@@ -81,14 +81,14 @@ const MockInterview = () => {
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
               {isAuthenticated ? (
                 <>
-                  <Card className="border-2 border-primary">
+                  <Card className="border-2 border-primary col-span-2">
                     <CardHeader>
                       <div className="w-12 h-12 bg-primary/10 rounded-full flex items-center justify-center mb-2">
                         <UserCheck className="h-6 w-6 text-primary" />
                       </div>
-                      <CardTitle>Role-Specific Interview</CardTitle>
+                      <CardTitle>Comprehensive Interview</CardTitle>
                       <CardDescription>
-                        Practice with questions tailored to your target role
+                        Practice with both technical and behavioral questions customized for your target role
                       </CardDescription>
                     </CardHeader>
                     <CardContent className="space-y-4">
@@ -130,6 +130,47 @@ const MockInterview = () => {
                           ))}
                         </select>
                       </div>
+                      
+                      <div className="p-4 bg-muted/50 rounded-md">
+                        <h4 className="font-medium mb-2 flex items-center gap-2">
+                          <BrainCircuit className="h-5 w-5 text-primary" />
+                          What's included:
+                        </h4>
+                        <ul className="grid grid-cols-1 md:grid-cols-2 gap-x-4 gap-y-2 text-sm">
+                          <li className="flex items-start">
+                            <span className="bg-primary/10 text-primary rounded-full p-1 mr-2 mt-0.5">
+                              <svg className="h-3 w-3" fill="currentColor" viewBox="0 0 20 20">
+                                <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
+                              </svg>
+                            </span>
+                            <span>Role-specific technical questions</span>
+                          </li>
+                          <li className="flex items-start">
+                            <span className="bg-primary/10 text-primary rounded-full p-1 mr-2 mt-0.5">
+                              <svg className="h-3 w-3" fill="currentColor" viewBox="0 0 20 20">
+                                <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
+                              </svg>
+                            </span>
+                            <span>Behavioral interview questions</span>
+                          </li>
+                          <li className="flex items-start">
+                            <span className="bg-primary/10 text-primary rounded-full p-1 mr-2 mt-0.5">
+                              <svg className="h-3 w-3" fill="currentColor" viewBox="0 0 20 20">
+                                <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
+                              </svg>
+                            </span>
+                            <span>AI-powered feedback</span>
+                          </li>
+                          <li className="flex items-start">
+                            <span className="bg-primary/10 text-primary rounded-full p-1 mr-2 mt-0.5">
+                              <svg className="h-3 w-3" fill="currentColor" viewBox="0 0 20 20">
+                                <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
+                              </svg>
+                            </span>
+                            <span>Unlock technical challenges</span>
+                          </li>
+                        </ul>
+                      </div>
                     </CardContent>
                     <CardFooter>
                       <Button
@@ -142,46 +183,32 @@ const MockInterview = () => {
                     </CardFooter>
                   </Card>
                   
-                  <Card className="opacity-70">
+                  <Card className="lg:col-span-1">
                     <CardHeader>
-                      <div className="w-12 h-12 bg-muted rounded-full flex items-center justify-center mb-2">
-                        <Brain className="h-6 w-6" />
-                      </div>
-                      <CardTitle>Behavioral Interview</CardTitle>
-                      <CardDescription>
-                        Practice answering common behavioral questions
-                      </CardDescription>
-                    </CardHeader>
-                    <CardContent>
-                      <p className="text-sm text-muted-foreground">
-                        Focus on your soft skills and past experiences with questions like "Tell me about a time when..." and "How do you handle..."
-                      </p>
-                    </CardContent>
-                    <CardFooter>
-                      <Button className="w-full" disabled>
-                        Coming Soon
-                      </Button>
-                    </CardFooter>
-                  </Card>
-                  
-                  <Card className="opacity-70">
-                    <CardHeader>
-                      <div className="w-12 h-12 bg-muted rounded-full flex items-center justify-center mb-2">
-                        <BrainCircuit className="h-6 w-6" />
+                      <div className="w-12 h-12 bg-primary/10 rounded-full flex items-center justify-center mb-2">
+                        <Code className="h-6 w-6 text-primary" />
                       </div>
                       <CardTitle>Technical Challenge</CardTitle>
                       <CardDescription>
-                        Test your technical knowledge with coding and problem-solving questions
+                        Test your coding skills with hands-on problems
                       </CardDescription>
                     </CardHeader>
                     <CardContent>
-                      <p className="text-sm text-muted-foreground">
-                        Perfect for technical roles, with coding challenges, algorithm questions, and technical concept explanations
+                      <p className="text-sm text-muted-foreground mb-4">
+                        Solve coding problems and algorithm challenges tailored to your role. Unlock after completing a mock interview.
                       </p>
+                      <div className="p-4 bg-yellow-50 border border-yellow-200 rounded-md text-sm text-yellow-800">
+                        <p className="flex items-center gap-2">
+                          <svg className="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                          </svg>
+                          Complete a mock interview first to unlock technical challenges
+                        </p>
+                      </div>
                     </CardContent>
                     <CardFooter>
-                      <Button className="w-full" disabled>
-                        Coming Soon
+                      <Button className="w-full" variant="outline" disabled>
+                        Complete Interview First
                       </Button>
                     </CardFooter>
                   </Card>
