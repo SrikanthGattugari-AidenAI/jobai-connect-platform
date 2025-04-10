@@ -47,6 +47,7 @@ export function Navbar() {
         <button
           className="inline-flex md:hidden items-center justify-center rounded-md text-sm font-medium p-2"
           onClick={toggleMenu}
+          aria-label="Toggle menu"
         >
           {isMenuOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
         </button>

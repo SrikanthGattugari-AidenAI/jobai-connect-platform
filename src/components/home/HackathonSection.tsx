@@ -4,6 +4,10 @@ import { Badge } from "@/components/ui/badge";
 import { CalendarClock, Trophy, Users, Clock, Laptop, ChevronRight } from "lucide-react";
 import { Card, CardContent, CardFooter } from "@/components/ui/card";
 import { useNavigate } from "react-router-dom";
+import { HowItWorksDialog } from "@/components/hackathons/HowItWorksDialog";
+import { HackathonLeaderboard } from "@/components/hackathons/HackathonLeaderboard";
+import { HostHackathonForm } from "@/components/hackathons/HostHackathonForm";
+import { useAuth } from "@/context/AuthContext";
 
 // Sample hackathon data
 const hackathons = [
@@ -44,6 +48,7 @@ const hackathons = [
 
 export const HackathonSection = () => {
   const navigate = useNavigate();
+  const { user, isAuthenticated } = useAuth();
   
   const formatDate = (dateStr: string) => {
     const date = new Date(dateStr);
@@ -64,13 +69,16 @@ export const HackathonSection = () => {
               Participate in industry-sponsored hackathons to test your skills, build your portfolio, and get noticed by top employers.
             </p>
           </div>
-          <Button 
-            variant="outline" 
-            className="mt-4 md:mt-0"
-            onClick={() => navigate("/hackathons")}
-          >
-            View All Hackathons
-          </Button>
+          <div className="flex flex-wrap gap-3 mt-4 md:mt-0">
+            <HowItWorksDialog />
+            <HackathonLeaderboard />
+            <Button 
+              variant="outline" 
+              onClick={() => navigate("/hackathons")}
+            >
+              View All Hackathons
+            </Button>
+          </div>
         </div>
         
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
@@ -147,13 +155,7 @@ export const HackathonSection = () => {
                 <p className="text-gray-600">Find talented developers and designers for your organization</p>
               </div>
             </div>
-            <Button 
-              variant="default" 
-              className="w-full md:w-auto flex items-center gap-2"
-              onClick={() => navigate("/post-hackathon")}
-            >
-              Get Started <ChevronRight className="h-4 w-4" />
-            </Button>
+            <HostHackathonForm />
           </div>
         </div>
       </div>
