@@ -2,12 +2,12 @@ import { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { MainLayout } from "@/components/layout/MainLayout";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
+import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { useAI } from "@/context/AIContext";
 import { useAuth } from "@/context/AuthContext";
 import { useToast } from "@/hooks/use-toast";
 import { InterviewQuestion } from "@/components/mock-interview/InterviewQuestion";
-import { ChevronLeft, CheckCircle, Loader2, Video, Code } from "lucide-react";
+import { ChevronLeft, CheckCircle, Loader2, Code, Video } from "lucide-react";
 import { Switch } from "@/components/ui/switch";
 
 const MockInterviewSession = () => {
@@ -41,7 +41,7 @@ const MockInterviewSession = () => {
     }
     
     setInterview(mockInterviews[id || ""]);
-  }, [id, isAuthenticated, interview, mockInterviews]);
+  }, [id, isAuthenticated, interview, mockInterviews, navigate, toast]);
   
   const handleQuestionComplete = () => {
     // Update to latest interview data
@@ -225,63 +225,53 @@ const MockInterviewSession = () => {
           </div>
         ) : (
           <div className="space-y-6">
-            <div>
-              <h1 className="heading-3 mb-2">Mock Interview: {interview.role}</h1>
-              <p className="text-muted-foreground mb-4">
-                Answer the following questions as you would in a real interview.
-                You'll receive AI feedback on each response.
-              </p>
-              
-              <div className="flex items-center justify-between mb-4">
-                <div className="flex items-center space-x-2">
-                  <Switch
-                    checked={videoMode}
-                    onCheckedChange={setVideoMode}
-                    disabled={true}
-                    id="video-mode"
-                  />
-                  <label
-                    htmlFor="video-mode"
-                    className="flex items-center text-sm cursor-not-allowed opacity-70"
-                  >
-                    <Video className="mr-2 h-4 w-4" />
-                    Enable Video Interview
-                    <span className="ml-2 text-xs bg-yellow-100 text-yellow-800 px-1.5 py-0.5 rounded-full">Coming Soon</span>
-                  </label>
-                </div>
-              </div>
-              
-              <div className="bg-muted p-4 rounded-md flex items-center justify-between">
-                <div>
-                  <span className="text-sm font-medium">Progress:</span>
-                  <span className="ml-2">
-                    Question {currentQuestionIndex + 1} of {interview.questions.length}
-                  </span>
-                </div>
-                {interview.questions.every(q => q.feedback) && (
-                  <Button onClick={handleCompleteInterview} disabled={isLoading}>
-                    {isLoading ? (
-                      <>
-                        <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                        Processing...
-                      </>
-                    ) : (
-                      "Complete Interview"
-                    )}
-                  </Button>
-                )}
-              </div>
-            </div>
-            
             <Card>
               <CardHeader>
-                <CardTitle>{currentQuestionIndex + 1}. {interview.questions[currentQuestionIndex].question}</CardTitle>
+                <CardTitle>Mock Interview: {interview.role}</CardTitle>
+                <p className="text-muted-foreground">
+                  Answer the following technical and behavioral questions as you would in a real interview.
+                </p>
               </CardHeader>
               <CardContent>
-                <p className="text-muted-foreground mb-4">
-                  Provide your answer below. The AI will analyze your response and provide feedback.
-                </p>
-                
+                <div className="flex items-center justify-between mb-4">
+                  <div className="flex items-center space-x-2">
+                    <Switch
+                      checked={videoMode}
+                      onCheckedChange={setVideoMode}
+                      disabled={true}
+                      id="video-mode"
+                    />
+                    <label
+                      htmlFor="video-mode"
+                      className="flex items-center text-sm cursor-not-allowed opacity-70"
+                    >
+                      <Video className="mr-2 h-4 w-4" />
+                      Enable Video Interview
+                      <span className="ml-2 text-xs bg-yellow-100 text-yellow-800 px-1.5 py-0.5 rounded-full">Coming Soon</span>
+                    </label>
+                  </div>
+                  <div className="bg-muted p-4 rounded-md flex items-center justify-between mb-4">
+                    <div>
+                      <span className="text-sm font-medium">Progress:</span>
+                      <span className="ml-2">
+                        Question {currentQuestionIndex + 1} of {interview.questions.length}
+                      </span>
+                    </div>
+                    {interview.questions.every(q => q.feedback) && (
+                      <Button onClick={handleCompleteInterview} disabled={isLoading}>
+                        {isLoading ? (
+                          <>
+                            <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                            Processing...
+                          </>
+                        ) : (
+                          "Complete Interview"
+                        )}
+                      </Button>
+                    )}
+                  </div>
+                </div>
+
                 <InterviewQuestion
                   interviewId={interview.id}
                   question={interview.questions[currentQuestionIndex]}
@@ -290,7 +280,7 @@ const MockInterviewSession = () => {
               </CardContent>
             </Card>
             
-            {/* Previous Questions */}
+            {/* Previous Questions Section */}
             {currentQuestionIndex > 0 && (
               <div className="space-y-4 mt-8">
                 <h3 className="text-lg font-medium">Previous Questions</h3>
