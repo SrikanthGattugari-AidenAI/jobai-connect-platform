@@ -30,6 +30,9 @@ import CareerPath from "./pages/career-path/CareerPath";
 import TechnicalChallenge from "./pages/technical-challenge/TechnicalChallenge";
 import Hackathons from "./pages/hackathons/Hackathons";
 import HackathonDetail from "./pages/hackathons/HackathonDetail";
+import CreateHackathon from "./pages/hackathons/CreateHackathon";
+import EmployerHackathons from "./pages/hackathons/EmployerHackathons";
+import HackathonDetailPage from "./pages/hackathons/HackathonDetailPage";
 import ResumeBuilder from "./pages/resume-builder/ResumeBuilder";
 import Blog from "./pages/blog/Blog";
 import BlogPost from "./pages/blog/BlogPost";
@@ -72,6 +75,9 @@ const App = () => (
                       <Route path="/career-roadmaps" element={<CareerPath />} />
                       <Route path="/hackathons" element={<Hackathons />} />
                       <Route path="/hackathons/:id" element={<HackathonDetail />} />
+                      <Route path="/hackathons/create" element={<CreateHackathon />} />
+                      <Route path="/hackathons/employer" element={<EmployerHackathons />} />
+                      <Route path="/hackathons/view/:id" element={<HackathonDetailPage />} />
                       <Route path="/resume-builder" element={<ResumeBuilder />} />
                       <Route path="/blog" element={<Blog />} />
                       <Route path="/blog/:id" element={<BlogPost />} />

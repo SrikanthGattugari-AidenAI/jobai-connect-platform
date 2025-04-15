@@ -1,4 +1,3 @@
-
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
@@ -425,7 +424,7 @@ const EmployerDashboard = () => {
               <CardHeader>
                 <div className="flex items-center justify-between">
                   <CardTitle>Your Hackathons</CardTitle>
-                  <Button variant="ghost" size="sm" onClick={() => navigate("/hackathons/create")}>
+                  <Button variant="ghost" size="sm" onClick={() => navigate("/hackathons/employer")}>
                     View All
                   </Button>
                 </div>
