@@ -3,7 +3,7 @@ import { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { MainLayout } from "@/components/layout/MainLayout";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Separator } from "@/components/ui/separator";
 import { Calendar, Trophy, Users, MapPin, ExternalLink, ArrowLeft, Edit } from "lucide-react";
@@ -251,11 +251,19 @@ const HackathonDetailPage = () => {
                     <Button className="w-full">
                       Register for Hackathon
                     </Button>
-                    <HowItWorksDialog>
-                      <Button variant="outline" className="w-full">
-                        How It Works
-                      </Button>
-                    </HowItWorksDialog>
+                    <Button variant="outline" className="w-full" onClick={() => {
+                      // Open the how it works dialog using its trigger function instead of using it as a wrapper
+                      const dialog = document.getElementById('how-it-works-dialog-trigger');
+                      if (dialog) {
+                        (dialog as HTMLButtonElement).click();
+                      }
+                    }}>
+                      How It Works
+                    </Button>
+                    {/* Add a hidden trigger for the dialog */}
+                    <div className="hidden">
+                      <HowItWorksDialog />
+                    </div>
                   </>
                 )}
               </CardContent>
