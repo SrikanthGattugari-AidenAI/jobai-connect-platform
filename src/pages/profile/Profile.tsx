@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from "react";
 import { MainLayout } from "@/components/layout/MainLayout";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
@@ -727,3 +728,175 @@ const Profile = () => {
                     
                     <div className="space-y-2">
                       <Label htmlFor="github">GitHub</Label>
+                      <div className="flex">
+                        <div className="flex items-center justify-center w-10 rounded-l-md border border-r-0 border-input bg-muted px-3">
+                          <Github className="h-4 w-4 text-muted-foreground" />
+                        </div>
+                        <Input
+                          id="github"
+                          name="github"
+                          placeholder="https://github.com/yourusername"
+                          value={formData.github}
+                          onChange={handleChange}
+                          className="rounded-l-none"
+                        />
+                      </div>
+                    </div>
+                    
+                    <div className="space-y-2">
+                      <Label htmlFor="twitter">Twitter</Label>
+                      <div className="flex">
+                        <div className="flex items-center justify-center w-10 rounded-l-md border border-r-0 border-input bg-muted px-3">
+                          <Twitter className="h-4 w-4 text-muted-foreground" />
+                        </div>
+                        <Input
+                          id="twitter"
+                          name="twitter"
+                          placeholder="https://twitter.com/yourusername"
+                          value={formData.twitter}
+                          onChange={handleChange}
+                          className="rounded-l-none"
+                        />
+                      </div>
+                    </div>
+                  </CardContent>
+                  <CardFooter className="flex justify-end">
+                    <Button onClick={handleSaveProfile}>
+                      <Save className="mr-2 h-4 w-4" />
+                      Save Changes
+                    </Button>
+                  </CardFooter>
+                </Card>
+              </TabsContent>
+              
+              {user.role === "student" && (
+                <TabsContent value="resume">
+                  <Card>
+                    <CardHeader>
+                      <CardTitle>Resume Management</CardTitle>
+                      <CardDescription>
+                        Upload and manage your resume
+                      </CardDescription>
+                    </CardHeader>
+                    <CardContent className="space-y-6">
+                      <div className="bg-muted/30 rounded-lg p-4 mb-4">
+                        <div className="flex items-start space-x-4">
+                          <div className="p-2 bg-primary/10 rounded-md">
+                            <FileText className="h-5 w-5 text-primary" />
+                          </div>
+                          <div className="flex-1">
+                            <h3 className="font-medium mb-1">Current Resume</h3>
+                            {uploadedResume ? (
+                              <div>
+                                <p className="text-sm text-muted-foreground mb-2">
+                                  Your resume is ready to be shared with employers
+                                </p>
+                                <div className="flex items-center p-3 border rounded-md mb-3 bg-card">
+                                  <FileText className="h-4 w-4 mr-2 text-primary" />
+                                  <span className="text-sm font-medium mr-auto">{uploadedResume}</span>
+                                  <div className="flex gap-2">
+                                    <Button size="sm" variant="outline">
+                                      <Download className="h-3.5 w-3.5 mr-1" />
+                                      Download
+                                    </Button>
+                                    <Button size="sm" variant="outline">
+                                      <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="lucide lucide-eye mr-1"><path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7Z"/><circle cx="12" cy="12" r="3"/></svg>
+                                      View
+                                    </Button>
+                                  </div>
+                                </div>
+                              </div>
+                            ) : (
+                              <p className="text-sm text-muted-foreground">
+                                You haven't uploaded a resume yet. Upload one below to share with employers.
+                              </p>
+                            )}
+                          </div>
+                        </div>
+                      </div>
+                      
+                      <div className="border-2 border-dashed border-input rounded-lg p-6">
+                        <input
+                          type="file"
+                          id="resume-upload"
+                          className="hidden"
+                          accept=".pdf,.doc,.docx"
+                          onChange={handleResumeChange}
+                        />
+                        <label
+                          htmlFor="resume-upload"
+                          className="cursor-pointer flex flex-col items-center justify-center"
+                        >
+                          <div className="w-16 h-16 bg-primary/10 rounded-full flex items-center justify-center mb-4">
+                            <Upload className="h-8 w-8 text-primary" />
+                          </div>
+                          <h4 className="text-lg font-medium mb-1">
+                            {uploadedResume ? "Replace current resume" : "Upload your resume"}
+                          </h4>
+                          <p className="text-sm text-muted-foreground mb-4 text-center max-w-md">
+                            Upload a PDF, DOC, or DOCX file (max. 5MB). Your resume will be shared with employers when you apply for positions.
+                          </p>
+                        </label>
+                        {resumeFile && (
+                          <div className="mt-4">
+                            <div className="flex items-center justify-between px-3 py-2 bg-muted rounded">
+                              <div className="flex items-center">
+                                <FileText className="h-4 w-4 mr-2 text-primary" />
+                                <span className="text-sm font-medium">{resumeFile.name}</span>
+                              </div>
+                              <Button
+                                size="sm"
+                                onClick={() => setResumeFile(null)}
+                                variant="ghost"
+                                className="h-8 w-8 p-0"
+                              >
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="lucide lucide-x"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg>
+                              </Button>
+                            </div>
+                            <Button 
+                              onClick={handleResumeUpload} 
+                              className="w-full mt-4"
+                            >
+                              <Upload className="mr-2 h-4 w-4" />
+                              {uploadedResume ? "Replace Resume" : "Upload Resume"}
+                            </Button>
+                          </div>
+                        )}
+                      </div>
+                      
+                      <div className="pt-6">
+                        <div className="flex items-center mb-4">
+                          <AlertTriangle className="h-5 w-5 text-muted-foreground mr-2" />
+                          <h3 className="font-medium">Resume Tips</h3>
+                        </div>
+                        <ul className="space-y-2 text-sm text-muted-foreground pl-7 list-disc">
+                          <li>Keep your resume to 1-2 pages for better readability</li>
+                          <li>Highlight your most relevant skills and achievements for tech roles</li>
+                          <li>Include links to your GitHub, portfolio, or relevant projects</li>
+                          <li>Use the Resume Builder tool to create a professional resume</li>
+                        </ul>
+                        <div className="mt-4">
+                          <Button 
+                            variant="outline" 
+                            className="w-full"
+                            onClick={() => navigate("/resume-builder")}
+                          >
+                            <FileText className="mr-2 h-4 w-4" />
+                            Go to Resume Builder
+                          </Button>
+                        </div>
+                      </div>
+                    </CardContent>
+                  </Card>
+                </TabsContent>
+              )}
+            </Tabs>
+          </div>
+        </div>
+      </div>
+    </MainLayout>
+  );
+};
+
+export default Profile;
+
