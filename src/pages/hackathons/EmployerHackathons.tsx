@@ -6,8 +6,9 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { useAuth } from "@/context/AuthContext";
-import { Calendar, Trophy, Users, ExternalLink, Plus } from "lucide-react";
+import { Calendar, Trophy, Users, ExternalLink, Plus, Edit } from "lucide-react";
 import { format, parseISO } from "date-fns";
+import { useToast } from "@/hooks/use-toast";
 
 interface Hackathon {
   id: string;
@@ -16,6 +17,7 @@ interface Hackathon {
   description: string;
   startDate: string;
   endDate: string;
+  registrationEndDate?: string | null;
   location: string;
   image: string;
   participants: number;
@@ -23,11 +25,13 @@ interface Hackathon {
   categories: string[];
   prizes: string[];
   sponsoredBy: string[];
+  registrationFee?: string;
   employerId?: string;
 }
 
 const EmployerHackathons = () => {
   const navigate = useNavigate();
+  const { toast } = useToast();
   const { user } = useAuth();
   const [hackathons, setHackathons] = useState<Hackathon[]>([]);
   const [isLoading, setIsLoading] = useState(true);
@@ -53,6 +57,13 @@ const EmployerHackathons = () => {
 
     fetchHackathons();
   }, [user]);
+
+  const handleManageHackathon = (id: string) => {
+    toast({
+      title: "Edit feature coming soon",
+      description: "The ability to edit hackathons will be available soon.",
+    });
+  };
 
   // If not an employer, redirect to dashboard
   if (user?.role !== "employer") {
@@ -137,18 +148,16 @@ const EmployerHackathons = () => {
                   <Button 
                     variant="outline"
                     size="sm"
-                    onClick={() => navigate(`/hackathons/${hackathon.id}`)}
+                    onClick={() => navigate(`/hackathons/view/${hackathon.id}`)}
                   >
                     View Details
                   </Button>
                   <Button 
                     variant="default"
                     size="sm"
-                    onClick={() => {
-                      // In a real app, this would navigate to a dashboard for this specific hackathon
-                      navigate(`/hackathons/${hackathon.id}/manage`);
-                    }}
+                    onClick={() => handleManageHackathon(hackathon.id)}
                   >
+                    <Edit className="mr-2 h-3 w-3" />
                     Manage
                   </Button>
                 </CardFooter>

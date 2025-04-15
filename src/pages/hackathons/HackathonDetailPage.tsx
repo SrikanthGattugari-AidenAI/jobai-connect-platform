@@ -6,11 +6,12 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Separator } from "@/components/ui/separator";
-import { Calendar, Trophy, Users, MapPin, ExternalLink, ArrowLeft, Edit } from "lucide-react";
+import { Calendar, Trophy, Users, MapPin, ExternalLink, ArrowLeft, Edit, Clock, DollarSign } from "lucide-react";
 import { format, parseISO } from "date-fns";
 import { useAuth } from "@/context/AuthContext";
 import { HackathonLeaderboard } from "@/components/hackathons/HackathonLeaderboard";
 import { HowItWorksDialog } from "@/components/hackathons/HowItWorksDialog";
+import { useToast } from "@/hooks/use-toast";
 
 interface Hackathon {
   id: string;
@@ -19,6 +20,7 @@ interface Hackathon {
   description: string;
   startDate: string;
   endDate: string;
+  registrationEndDate?: string | null;
   location: string;
   image: string;
   participants: number;
@@ -26,12 +28,14 @@ interface Hackathon {
   categories: string[];
   prizes: string[];
   sponsoredBy: string[];
+  registrationFee?: string;
   employerId?: string;
 }
 
 const HackathonDetailPage = () => {
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
+  const { toast } = useToast();
   const { user } = useAuth();
   const [hackathon, setHackathon] = useState<Hackathon | null>(null);
   const [isLoading, setIsLoading] = useState(true);
@@ -59,6 +63,20 @@ const HackathonDetailPage = () => {
       fetchHackathon();
     }
   }, [id, user]);
+
+  const handleEditHackathon = () => {
+    toast({
+      title: "Edit feature coming soon",
+      description: "The ability to edit hackathons will be available soon.",
+    });
+  };
+
+  const handleManageParticipants = () => {
+    toast({
+      title: "Manage participants feature coming soon",
+      description: "The ability to manage hackathon participants will be available soon.",
+    });
+  };
 
   if (isLoading) {
     return (
@@ -121,11 +139,11 @@ const HackathonDetailPage = () => {
           
           {isOwner && (
             <div className="flex space-x-3">
-              <Button variant="outline">
+              <Button variant="outline" onClick={handleEditHackathon}>
                 <Edit className="mr-2 h-4 w-4" />
                 Edit Hackathon
               </Button>
-              <Button>Manage Participants</Button>
+              <Button onClick={handleManageParticipants}>Manage Participants</Button>
             </div>
           )}
         </div>
@@ -187,6 +205,30 @@ const HackathonDetailPage = () => {
                   </div>
                 </div>
                 
+                {hackathon.registrationEndDate && (
+                  <div className="flex items-center">
+                    <Clock className="mr-3 h-5 w-5 text-muted-foreground" />
+                    <div>
+                      <p className="font-medium">Registration Deadline</p>
+                      <p className="text-sm text-muted-foreground">
+                        {format(parseISO(hackathon.registrationEndDate), "MMMM d, yyyy")}
+                      </p>
+                    </div>
+                  </div>
+                )}
+
+                {hackathon.registrationFee && (
+                  <div className="flex items-center">
+                    <DollarSign className="mr-3 h-5 w-5 text-muted-foreground" />
+                    <div>
+                      <p className="font-medium">Registration Fee</p>
+                      <p className="text-sm text-muted-foreground">
+                        ${hackathon.registrationFee}
+                      </p>
+                    </div>
+                  </div>
+                )}
+                
                 <div className="flex items-center">
                   <MapPin className="mr-3 h-5 w-5 text-muted-foreground" />
                   <div>
@@ -239,7 +281,7 @@ const HackathonDetailPage = () => {
                     <Button className="w-full">
                       View Submissions
                     </Button>
-                    <Button variant="outline" className="w-full">
+                    <Button variant="outline" className="w-full" onClick={handleEditHackathon}>
                       Edit Hackathon
                     </Button>
                     <Button variant="outline" className="w-full">

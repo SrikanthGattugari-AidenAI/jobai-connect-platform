@@ -1,5 +1,5 @@
 
-import { useState } from "react";
+import { useState, useRef, ChangeEvent } from "react";
 import { useNavigate } from "react-router-dom";
 import { MainLayout } from "@/components/layout/MainLayout";
 import { Button } from "@/components/ui/button";
@@ -8,7 +8,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
 import { Calendar } from "@/components/ui/calendar";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
-import { Calendar as CalendarIcon, Plus, Upload, X } from "lucide-react";
+import { Calendar as CalendarIcon, Plus, Upload, X, DollarSign } from "lucide-react";
 import { format } from "date-fns";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import { cn } from "@/lib/utils";
@@ -20,6 +20,7 @@ const CreateHackathon = () => {
   const { toast } = useToast();
   const { user } = useAuth();
   const navigate = useNavigate();
+  const fileInputRef = useRef<HTMLInputElement>(null);
   
   const [formData, setFormData] = useState({
     title: "",
@@ -30,17 +31,37 @@ const CreateHackathon = () => {
     categories: [] as string[],
     prizes: [] as string[],
     sponsoredBy: [] as string[],
+    registrationFee: "",
   });
   
   const [startDate, setStartDate] = useState<Date | undefined>(undefined);
   const [endDate, setEndDate] = useState<Date | undefined>(undefined);
+  const [registrationEndDate, setRegistrationEndDate] = useState<Date | undefined>(undefined);
   const [currentCategory, setCurrentCategory] = useState("");
   const [currentPrize, setCurrentPrize] = useState("");
   const [currentSponsor, setCurrentSponsor] = useState("");
+  const [previewImage, setPreviewImage] = useState<string | null>(null);
   
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const { name, value } = e.target;
     setFormData(prev => ({ ...prev, [name]: value }));
+  };
+
+  const handleImageUpload = (e: ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        const result = reader.result as string;
+        setPreviewImage(result);
+        setFormData(prev => ({ ...prev, image: result }));
+      };
+      reader.readAsDataURL(file);
+    }
+  };
+
+  const triggerFileInput = () => {
+    fileInputRef.current?.click();
   };
 
   const addCategory = () => {
@@ -115,6 +136,7 @@ const CreateHackathon = () => {
       description: formData.description,
       startDate: startDate.toISOString().split('T')[0],
       endDate: endDate.toISOString().split('T')[0],
+      registrationEndDate: registrationEndDate ? registrationEndDate.toISOString().split('T')[0] : null,
       location: formData.location,
       image: formData.image,
       participants: 0,
@@ -122,6 +144,7 @@ const CreateHackathon = () => {
       categories: formData.categories,
       prizes: formData.prizes,
       sponsoredBy: formData.sponsoredBy,
+      registrationFee: formData.registrationFee,
       employerId: user?.id
     };
     
@@ -249,6 +272,47 @@ const CreateHackathon = () => {
                         />
                       </PopoverContent>
                     </Popover>
+                  </div>
+                </div>
+
+                <div className="space-y-2">
+                  <Label>Registration End Date</Label>
+                  <Popover>
+                    <PopoverTrigger asChild>
+                      <Button
+                        variant="outline"
+                        className={cn(
+                          "w-full justify-start text-left font-normal",
+                          !registrationEndDate && "text-muted-foreground"
+                        )}
+                      >
+                        <CalendarIcon className="mr-2 h-4 w-4" />
+                        {registrationEndDate ? format(registrationEndDate, "PPP") : "Select registration end date"}
+                      </Button>
+                    </PopoverTrigger>
+                    <PopoverContent className="w-auto p-0">
+                      <Calendar
+                        mode="single"
+                        selected={registrationEndDate}
+                        onSelect={setRegistrationEndDate}
+                        initialFocus
+                      />
+                    </PopoverContent>
+                  </Popover>
+                </div>
+
+                <div className="space-y-2">
+                  <Label htmlFor="registrationFee">Registration Fee</Label>
+                  <div className="relative">
+                    <DollarSign className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+                    <Input 
+                      id="registrationFee" 
+                      name="registrationFee"
+                      value={formData.registrationFee}
+                      onChange={handleInputChange}
+                      placeholder="e.g., 10.00 (leave empty if free)"
+                      className="pl-10"
+                    />
                   </div>
                 </div>
                 
@@ -406,14 +470,44 @@ const CreateHackathon = () => {
                 <CardDescription>Upload a banner image for your hackathon</CardDescription>
               </CardHeader>
               <CardContent>
-                <div className="border-2 border-dashed rounded-lg p-6 flex flex-col items-center justify-center text-center">
-                  <Upload className="h-8 w-8 text-muted-foreground mb-2" />
-                  <p className="text-sm font-medium">Drag & drop an image here, or click to browse</p>
-                  <p className="text-xs text-muted-foreground mt-1">Recommended size: 1200 x 400px (PNG, JPG)</p>
-                  <Button type="button" variant="outline" size="sm" className="mt-4">
-                    Browse Files
-                  </Button>
-                </div>
+                {previewImage ? (
+                  <div className="space-y-4">
+                    <div className="relative aspect-[3/1] w-full overflow-hidden rounded-lg border border-border">
+                      <img 
+                        src={previewImage} 
+                        alt="Hackathon banner preview" 
+                        className="h-full w-full object-cover"
+                      />
+                    </div>
+                    <Button 
+                      type="button" 
+                      variant="outline" 
+                      onClick={triggerFileInput} 
+                      className="w-full"
+                    >
+                      Choose Different Image
+                    </Button>
+                  </div>
+                ) : (
+                  <div 
+                    className="border-2 border-dashed rounded-lg p-6 flex flex-col items-center justify-center text-center cursor-pointer"
+                    onClick={triggerFileInput}
+                  >
+                    <Upload className="h-8 w-8 text-muted-foreground mb-2" />
+                    <p className="text-sm font-medium">Drag & drop an image here, or click to browse</p>
+                    <p className="text-xs text-muted-foreground mt-1">Recommended size: 1200 x 400px (PNG, JPG)</p>
+                    <Button type="button" variant="outline" size="sm" className="mt-4">
+                      Browse Files
+                    </Button>
+                  </div>
+                )}
+                <input
+                  type="file"
+                  ref={fileInputRef}
+                  accept="image/*"
+                  className="hidden"
+                  onChange={handleImageUpload}
+                />
               </CardContent>
             </Card>
             
