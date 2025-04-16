@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from "react";
 import { MainLayout } from "@/components/layout/MainLayout";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
@@ -727,3 +728,135 @@ const Profile = () => {
                     
                     <div className="space-y-2">
                       <Label htmlFor="github">GitHub</Label>
+                      <div className="flex">
+                        <div className="flex items-center justify-center w-10 rounded-l-md border border-r-0 border-input bg-muted px-3">
+                          <Github className="h-4 w-4 text-muted-foreground" />
+                        </div>
+                        <Input
+                          id="github"
+                          name="github"
+                          placeholder="https://github.com/yourusername"
+                          value={formData.github}
+                          onChange={handleChange}
+                          className="rounded-l-none"
+                        />
+                      </div>
+                    </div>
+                    
+                    <div className="space-y-2">
+                      <Label htmlFor="twitter">Twitter</Label>
+                      <div className="flex">
+                        <div className="flex items-center justify-center w-10 rounded-l-md border border-r-0 border-input bg-muted px-3">
+                          <Twitter className="h-4 w-4 text-muted-foreground" />
+                        </div>
+                        <Input
+                          id="twitter"
+                          name="twitter"
+                          placeholder="https://twitter.com/yourusername"
+                          value={formData.twitter}
+                          onChange={handleChange}
+                          className="rounded-l-none"
+                        />
+                      </div>
+                    </div>
+                  </CardContent>
+                  <CardFooter className="flex justify-end">
+                    <Button onClick={handleSaveProfile}>
+                      <Save className="mr-2 h-4 w-4" />
+                      Save Changes
+                    </Button>
+                  </CardFooter>
+                </Card>
+              </TabsContent>
+              
+              {user.role === "student" && (
+                <TabsContent value="resume">
+                  <Card>
+                    <CardHeader>
+                      <CardTitle>Resume</CardTitle>
+                      <CardDescription>
+                        Upload and manage your resume
+                      </CardDescription>
+                    </CardHeader>
+                    <CardContent className="space-y-6">
+                      {uploadedResume ? (
+                        <div className="border rounded-lg p-6">
+                          <div className="flex flex-col md:flex-row justify-between items-center gap-4">
+                            <div className="flex items-center space-x-4">
+                              <div className="p-3 bg-primary/10 rounded-md">
+                                <FileText className="h-6 w-6 text-primary" />
+                              </div>
+                              <div>
+                                <h4 className="font-medium">{uploadedResume}</h4>
+                                <p className="text-sm text-muted-foreground">Uploaded on April 12, 2023</p>
+                              </div>
+                            </div>
+                            <div className="flex space-x-2">
+                              <Button variant="outline" size="sm">
+                                <Download className="mr-2 h-4 w-4" />
+                                Download
+                              </Button>
+                              <Button variant="destructive" size="sm">
+                                Replace
+                              </Button>
+                            </div>
+                          </div>
+                        </div>
+                      ) : (
+                        <div className="border-2 border-dashed border-input rounded-lg p-10 text-center">
+                          <div className="flex flex-col items-center">
+                            <div className="p-3 bg-primary/10 rounded-full mb-4">
+                              <Upload className="h-10 w-10 text-primary" />
+                            </div>
+                            <h3 className="text-lg font-medium mb-2">Upload your resume</h3>
+                            <p className="text-muted-foreground mb-6 max-w-md mx-auto">
+                              Upload your resume to make it easier for employers to find you. We accept PDF, DOC, and DOCX files.
+                            </p>
+                            <div className="flex flex-col md:flex-row gap-4">
+                              <Input 
+                                type="file" 
+                                id="resume-upload"
+                                onChange={handleResumeChange}
+                                accept=".pdf,.doc,.docx"
+                              />
+                              <Button onClick={handleResumeUpload}>
+                                Upload Resume
+                              </Button>
+                            </div>
+                          </div>
+                        </div>
+                      )}
+                      
+                      <div className="flex items-start space-x-2 bg-muted/50 p-4 rounded-lg">
+                        <AlertTriangle className="h-5 w-5 text-amber-500 mt-0.5" />
+                        <div>
+                          <h4 className="text-sm font-medium">Important</h4>
+                          <p className="text-sm text-muted-foreground">
+                            Your resume will be visible to employers when you apply for internships. Make sure it's up to date and free of typos.
+                          </p>
+                        </div>
+                      </div>
+                    </CardContent>
+                    {uploadedResume && (
+                      <CardFooter>
+                        <Button 
+                          variant="outline"
+                          className="w-full" 
+                          onClick={() => navigate("/resume-builder")}
+                        >
+                          Update with Resume Builder
+                        </Button>
+                      </CardFooter>
+                    )}
+                  </Card>
+                </TabsContent>
+              )}
+            </Tabs>
+          </div>
+        </div>
+      </div>
+    </MainLayout>
+  );
+};
+
+export default Profile;
