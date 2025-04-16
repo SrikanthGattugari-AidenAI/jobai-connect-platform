@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from "react";
 import { MainLayout } from "@/components/layout/MainLayout";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
@@ -10,16 +9,16 @@ import { Textarea } from "@/components/ui/textarea";
 import { useAuth } from "@/context/AuthContext";
 import { useToast } from "@/hooks/use-toast";
 import { useUser } from "@/hooks/use-user";
-import { useNavigate } from "react-router-dom";
+import { useRouter } from "next/navigation";
 import { Skeleton } from "@/components/ui/skeleton";
 import { useResume } from "@/context/ResumeContext";
 import { FileText, Download, Upload, Eye } from "lucide-react";
 import { ResumePreviewDialog } from "@/components/resume/ResumePreviewDialog";
 
 const Profile = () => {
-  const { user: authUser, logout } = useAuth();
+  const { user: authUser, signOut } = useAuth();
   const { user, isLoading, updateUser } = useUser();
-  const navigate = useNavigate();
+  const router = useRouter();
   const { toast } = useToast();
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [name, setName] = useState("");
@@ -70,8 +69,8 @@ const Profile = () => {
 
   const handleSignOut = async () => {
     try {
-      await logout();
-      navigate("/");
+      await signOut();
+      router.push("/sign-in");
     } catch (error: any) {
       toast({
         variant: "destructive",

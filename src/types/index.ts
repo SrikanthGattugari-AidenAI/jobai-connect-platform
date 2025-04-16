@@ -1,12 +1,10 @@
+
 export interface User {
   id: string;
   name: string;
   email: string;
   role: "student" | "employer";
   profileImage: string;
-  bio?: string;
-  location?: string;
-  website?: string;
 }
 
 export interface Student extends User {
