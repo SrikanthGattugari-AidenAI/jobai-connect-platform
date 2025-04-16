@@ -1,22 +1,21 @@
 
-import { MainLayout } from "@/components/layout/MainLayout";
-import { mockInternships } from "@/lib/data";
-import {
-  HeroSection,
-  FeaturesSection,
-  FeaturedInternships,
-  MockInterviewSection,
-  SuccessStories,
-  CallToAction,
-  MarketInsightsSection,
-  CareerPathwaySection,
-  HackathonSection,
-  CareerRoadmapSection,
+import React from 'react';
+import { MainLayout } from '@/components/layout/MainLayout';
+import { 
+  HeroSection, 
+  FeaturesSection, 
+  FeaturedInternships, 
+  MockInterviewSection, 
+  SuccessStories, 
+  CallToAction, 
   MarketTrendsSection,
+  CareerRoadmapSection,
+  HackathonSection,
   TopCompaniesSection
-} from "@/components/home";
+} from '@/components/home';
+import { mockInternships } from '@/lib/data';
 
-const Index = () => {
+const Home = () => {
   // Featured internships (showing 3 from our mock data)
   const featuredInternships = mockInternships.slice(0, 3);
   
@@ -36,4 +35,4 @@ const Index = () => {
   );
 };
 
-export default Index;
+export default Home;
