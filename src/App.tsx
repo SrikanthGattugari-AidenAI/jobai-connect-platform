@@ -1,3 +1,4 @@
+
 import {
   createBrowserRouter,
   RouterProvider,
@@ -9,7 +10,7 @@ import Login from "./pages/login/Login";
 import Register from "./pages/register/Register";
 import Profile from "./pages/profile/Profile";
 import { AuthProvider } from "./context/AuthContext";
-import { AIProvider } from "./context/AiContext";
+import { AIProvider } from "./context/AIContext";
 import { CourseProvider } from "./context/CourseContext";
 import Courses from "./pages/courses/Courses";
 import CourseDetails from "./pages/courses/CourseDetails";
@@ -24,37 +25,31 @@ import { ResumeProvider } from "./context/ResumeContext";
 const router = createBrowserRouter([
   {
     path: "/",
-    element: <MainLayout />,
-    children: [
-      {
-        path: "/",
-        element: <Home />,
-      },
-      {
-        path: "/profile",
-        element: <Profile />,
-      },
-      {
-        path: "/courses",
-        element: <Courses />,
-      },
-      {
-        path: "/course-details/:courseId",
-        element: <CourseDetails />,
-      },
-      {
-        path: "/internship",
-        element: <Internship />,
-      },
-      {
-        path: "/resume-builder",
-        element: <ResumeBuilder />,
-      },
-      {
-        path: "/chatbot",
-        element: <Chatbot />,
-      },
-    ],
+    element: <Home />,
+  },
+  {
+    path: "/profile",
+    element: <Profile />,
+  },
+  {
+    path: "/courses",
+    element: <Courses />,
+  },
+  {
+    path: "/course-details/:courseId",
+    element: <CourseDetails />,
+  },
+  {
+    path: "/internship",
+    element: <Internship />,
+  },
+  {
+    path: "/resume-builder",
+    element: <ResumeBuilder />,
+  },
+  {
+    path: "/chatbot",
+    element: <Chatbot />,
   },
   {
     path: "/login",
