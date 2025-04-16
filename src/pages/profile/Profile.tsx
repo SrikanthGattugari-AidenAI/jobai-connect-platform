@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from "react";
 import { MainLayout } from "@/components/layout/MainLayout";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
@@ -25,13 +24,20 @@ import {
   Twitter,
   Save,
   Award,
-  FileText
+  FileText,
+  Upload,
+  Download,
+  AlertTriangle
 } from "lucide-react";
 
 const Profile = () => {
   const navigate = useNavigate();
   const { toast } = useToast();
   const { user, isAuthenticated, isLoading } = useAuth();
+  
+  // State for resume upload
+  const [resumeFile, setResumeFile] = useState<File | null>(null);
+  const [uploadedResume, setUploadedResume] = useState<string | null>("resume-example.pdf"); // Mock data - would come from user profile
   
   const [formData, setFormData] = useState({
     name: "",
@@ -72,6 +78,30 @@ const Profile = () => {
       ...prev,
       [name]: value
     }));
+  };
+  
+  const handleResumeChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (e.target.files && e.target.files[0]) {
+      setResumeFile(e.target.files[0]);
+    }
+  };
+  
+  const handleResumeUpload = () => {
+    if (resumeFile) {
+      // Here you would implement the actual upload logic
+      toast({
+        title: "Resume Uploaded",
+        description: `Your resume "${resumeFile.name}" has been uploaded successfully.`,
+      });
+      setUploadedResume(resumeFile.name);
+      setResumeFile(null);
+    } else {
+      toast({
+        title: "No File Selected",
+        description: "Please select a file to upload.",
+        variant: "destructive",
+      });
+    }
   };
   
   const handleSaveProfile = () => {
@@ -176,12 +206,12 @@ const Profile = () => {
                     <div>
                       <div className="flex justify-between text-sm mb-1">
                         <span>Resume Uploaded</span>
-                        <span>0%</span>
+                        <span>{uploadedResume ? "100%" : "0%"}</span>
                       </div>
                       <div className="w-full h-2 bg-muted rounded-full overflow-hidden">
                         <div 
                           className="h-full bg-primary rounded-full" 
-                          style={{ width: "0%" }}
+                          style={{ width: uploadedResume ? "100%" : "0%" }}
                         ></div>
                       </div>
                     </div>
@@ -292,6 +322,9 @@ const Profile = () => {
                 )}
                 <TabsTrigger value="skills">Skills & Experience</TabsTrigger>
                 <TabsTrigger value="social">Social Profiles</TabsTrigger>
+                {user.role === "student" && (
+                  <TabsTrigger value="resume">Resume</TabsTrigger>
+                )}
               </TabsList>
               
               <TabsContent value="personal">
@@ -694,52 +727,3 @@ const Profile = () => {
                     
                     <div className="space-y-2">
                       <Label htmlFor="github">GitHub</Label>
-                      <div className="flex">
-                        <div className="flex items-center justify-center w-10 rounded-l-md border border-r-0 border-input bg-muted px-3">
-                          <Github className="h-4 w-4 text-muted-foreground" />
-                        </div>
-                        <Input
-                          id="github"
-                          name="github"
-                          placeholder="https://github.com/yourusername"
-                          value={formData.github}
-                          onChange={handleChange}
-                          className="rounded-l-none"
-                        />
-                      </div>
-                    </div>
-                    
-                    <div className="space-y-2">
-                      <Label htmlFor="twitter">Twitter</Label>
-                      <div className="flex">
-                        <div className="flex items-center justify-center w-10 rounded-l-md border border-r-0 border-input bg-muted px-3">
-                          <Twitter className="h-4 w-4 text-muted-foreground" />
-                        </div>
-                        <Input
-                          id="twitter"
-                          name="twitter"
-                          placeholder="https://twitter.com/yourusername"
-                          value={formData.twitter}
-                          onChange={handleChange}
-                          className="rounded-l-none"
-                        />
-                      </div>
-                    </div>
-                  </CardContent>
-                  <CardFooter className="flex justify-end">
-                    <Button onClick={handleSaveProfile}>
-                      <Save className="mr-2 h-4 w-4" />
-                      Save Changes
-                    </Button>
-                  </CardFooter>
-                </Card>
-              </TabsContent>
-            </Tabs>
-          </div>
-        </div>
-      </div>
-    </MainLayout>
-  );
-};
-
-export default Profile;
