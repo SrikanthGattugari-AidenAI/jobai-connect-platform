@@ -1,5 +1,5 @@
+
 import React, { useState, useEffect } from "react";
-import { MainLayout } from "@/components/layout/MainLayout";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Label } from "@/components/ui/label";
@@ -9,16 +9,16 @@ import { Textarea } from "@/components/ui/textarea";
 import { useAuth } from "@/context/AuthContext";
 import { useToast } from "@/hooks/use-toast";
 import { useUser } from "@/hooks/use-user";
-import { useRouter } from "next/navigation";
+import { useNavigate } from "react-router-dom";
 import { Skeleton } from "@/components/ui/skeleton";
 import { useResume } from "@/context/ResumeContext";
 import { FileText, Download, Upload, Eye } from "lucide-react";
 import { ResumePreviewDialog } from "@/components/resume/ResumePreviewDialog";
 
 const Profile = () => {
-  const { user: authUser, signOut } = useAuth();
+  const { user: authUser, logout } = useAuth();
   const { user, isLoading, updateUser } = useUser();
-  const router = useRouter();
+  const navigate = useNavigate();
   const { toast } = useToast();
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [name, setName] = useState("");
@@ -69,8 +69,8 @@ const Profile = () => {
 
   const handleSignOut = async () => {
     try {
-      await signOut();
-      router.push("/sign-in");
+      await logout();
+      navigate("/");
     } catch (error: any) {
       toast({
         variant: "destructive",
