@@ -6,7 +6,7 @@ export interface Hackathon {
   description: string;
   startDate: string;
   endDate: string;
-  registrationEndDate: string;
+  registrationEndDate?: string | null;
   location: string;
   image: string;
   participants: number;
@@ -14,6 +14,6 @@ export interface Hackathon {
   categories: string[];
   prizes: string[];
   sponsoredBy: string[];
-  registrationFee: string;
+  registrationFee?: string;
   employerId?: string;
 }
