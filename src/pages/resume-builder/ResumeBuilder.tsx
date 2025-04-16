@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from "react";
 import { MainLayout } from "@/components/layout/MainLayout";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
@@ -11,12 +10,18 @@ import { ResumePreviewDialog } from "@/components/resume/ResumePreviewDialog";
 import { ATSScoreDialog } from "@/components/resume/ATSScoreDialog";
 import { ResumeTemplatePreview } from "@/components/resume/ResumeTemplatePreview";
 import { ResumeEditor } from "@/components/resume/ResumeEditor";
+import { useResume } from "@/context/ResumeContext";
 
 const ResumeBuilder = () => {
   const { user } = useAuth();
   const { toast } = useToast();
-  const [resumeFile, setResumeFile] = useState<File | null>(null);
-  const [uploadedResume, setUploadedResume] = useState<string | null>("resume-example.pdf"); // Mock data - would come from user profile
+  const { uploadedResume, resumePreviewUrl, setUploadedResume } = useResume();
+  const [isPreviewOpen, setIsPreviewOpen] = useState(false);
+  const [isATSDialogOpen, setIsATSDialogOpen] = useState(false);
+  const [atsScore, setAtsScore] = useState(0);
+  const [isTemplatePreviewOpen, setIsTemplatePreviewOpen] = useState(false);
+  const [selectedTemplate, setSelectedTemplate] = useState("");
+  const [isEditorOpen, setIsEditorOpen] = useState(false);
   
   // Template images
   const templateImages = {
@@ -24,14 +29,6 @@ const ResumeBuilder = () => {
     "Modern Template": "https://placehold.co/600x800/e2e8f0/1e293b?text=Modern+Template",
     "Technical Template": "https://placehold.co/600x800/e2e8f0/1e293b?text=Technical+Template",
   };
-
-  // State for dialogs
-  const [isPreviewOpen, setIsPreviewOpen] = useState(false);
-  const [isATSDialogOpen, setIsATSDialogOpen] = useState(false);
-  const [atsScore, setAtsScore] = useState(0);
-  const [isTemplatePreviewOpen, setIsTemplatePreviewOpen] = useState(false);
-  const [selectedTemplate, setSelectedTemplate] = useState("");
-  const [isEditorOpen, setIsEditorOpen] = useState(false);
 
   // Resume scoring logic
   const generateATSScore = () => {
@@ -43,19 +40,16 @@ const ResumeBuilder = () => {
   
   const handleResumeChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files && e.target.files[0]) {
-      setResumeFile(e.target.files[0]);
+      setUploadedResume(e.target.files[0]);
     }
   };
   
   const handleResumeUpload = () => {
-    if (resumeFile) {
-      // Here you would implement the actual upload logic
+    if (uploadedResume) {
       toast({
         title: "Resume Uploaded",
-        description: `Your resume "${resumeFile.name}" has been uploaded successfully.`,
+        description: `Your resume "${uploadedResume.name}" has been uploaded successfully.`,
       });
-      setUploadedResume(resumeFile.name);
-      setResumeFile(null);
     } else {
       toast({
         title: "No File Selected",
@@ -84,11 +78,27 @@ const ResumeBuilder = () => {
   };
 
   const handleDownloadResume = () => {
-    toast({
-      title: "Resume Downloaded",
-      description: "Your resume has been downloaded successfully.",
-    });
-    // Actual download logic would go here
+    if (resumePreviewUrl && uploadedResume) {
+      // Create an anchor element and set the href to the file
+      const a = document.createElement('a');
+      a.href = resumePreviewUrl;
+      a.download = uploadedResume.name || 'resume.pdf';
+      document.body.appendChild(a);
+      a.click();
+      // Clean up
+      document.body.removeChild(a);
+      
+      toast({
+        title: "Resume Downloaded",
+        description: "Your resume has been downloaded successfully.",
+      });
+    } else {
+      toast({
+        title: "No Resume Available",
+        description: "There is no resume available to download.",
+        variant: "destructive",
+      });
+    }
   };
 
   // If we're in editor mode, show the editor
@@ -145,8 +155,10 @@ const ResumeBuilder = () => {
                               <FileText className="h-5 w-5 text-primary" />
                             </div>
                             <div>
-                              <h4 className="font-medium">{uploadedResume}</h4>
-                              <p className="text-muted-foreground text-sm">Uploaded on April 15, 2025</p>
+                              <h4 className="font-medium">{uploadedResume.name}</h4>
+                              <p className="text-muted-foreground text-sm">
+                                Uploaded {new Date().toLocaleDateString()}
+                              </p>
                             </div>
                           </div>
                           <div className="grid grid-cols-2 gap-2">
@@ -214,16 +226,16 @@ const ResumeBuilder = () => {
                           PDF, DOC or DOCX (max. 5MB)
                         </p>
                       </label>
-                      {resumeFile && (
+                      {uploadedResume && (
                         <div className="mt-4">
                           <div className="flex items-center justify-between px-3 py-2 bg-muted rounded">
                             <div className="flex items-center">
                               <FileText className="h-4 w-4 mr-2 text-primary" />
-                              <span className="text-sm font-medium">{resumeFile.name}</span>
+                              <span className="text-sm font-medium">{uploadedResume.name}</span>
                             </div>
                             <Button
                               size="sm"
-                              onClick={() => setResumeFile(null)}
+                              onClick={() => setUploadedResume(null)}
                               variant="ghost"
                               className="h-8 w-8 p-0"
                             >
@@ -254,23 +266,31 @@ const ResumeBuilder = () => {
                       </CardDescription>
                     </CardHeader>
                     <CardContent className="min-h-[400px] flex items-center justify-center border rounded-md">
-                      <div className="text-center">
-                        <FileText className="h-16 w-16 text-muted-foreground mx-auto mb-4" />
-                        <h3 className="text-lg font-medium mb-2">Resume Preview</h3>
-                        <p className="text-muted-foreground mb-4">
-                          Download or replace your current resume
-                        </p>
-                        <div className="flex space-x-2 justify-center">
-                          <Button onClick={() => setIsEditorOpen(true)}>
-                            <Edit className="mr-2 h-4 w-4" />
-                            Edit in Builder
-                          </Button>
-                          <Button variant="outline" onClick={() => setIsPreviewOpen(true)}>
-                            <Eye className="mr-2 h-4 w-4" />
-                            View Resume
-                          </Button>
+                      {resumePreviewUrl ? (
+                        <iframe 
+                          src={resumePreviewUrl} 
+                          className="w-full h-[400px]" 
+                          title="Resume Preview"
+                        />
+                      ) : (
+                        <div className="text-center">
+                          <FileText className="h-16 w-16 text-muted-foreground mx-auto mb-4" />
+                          <h3 className="text-lg font-medium mb-2">Resume Preview</h3>
+                          <p className="text-muted-foreground mb-4">
+                            Download or replace your current resume
+                          </p>
+                          <div className="flex space-x-2 justify-center">
+                            <Button onClick={() => setIsEditorOpen(true)}>
+                              <Edit className="mr-2 h-4 w-4" />
+                              Edit in Builder
+                            </Button>
+                            <Button variant="outline" onClick={() => setIsPreviewOpen(true)}>
+                              <Eye className="mr-2 h-4 w-4" />
+                              View Resume
+                            </Button>
+                          </div>
                         </div>
-                      </div>
+                      )}
                     </CardContent>
                   </Card>
                 ) : (
@@ -291,11 +311,11 @@ const ResumeBuilder = () => {
                           Upload your existing resume or create a new one using our professional resume builder
                         </p>
                         <div className="flex flex-col sm:flex-row gap-4 justify-center">
-                          <Button size="lg">
+                          <Button size="lg" onClick={() => document.getElementById('resume-upload')?.click()}>
                             <Upload className="mr-2 h-4 w-4" />
                             Upload Resume
                           </Button>
-                          <Button size="lg" variant="outline">
+                          <Button size="lg" variant="outline" onClick={() => handleTemplateSelect("Blank Template")}>
                             Build New Resume
                             <ArrowRight className="ml-2 h-4 w-4" />
                           </Button>
@@ -370,7 +390,7 @@ const ResumeBuilder = () => {
         <ResumePreviewDialog 
           isOpen={isPreviewOpen}
           onClose={() => setIsPreviewOpen(false)}
-          resumeName={uploadedResume || ""}
+          resumeName={uploadedResume?.name || "Resume"}
         />
         
         <ATSScoreDialog
