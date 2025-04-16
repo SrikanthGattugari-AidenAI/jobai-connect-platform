@@ -1,55 +1,34 @@
-import React, { useState, useEffect } from "react";
+
+import React, { useState } from "react";
 import { MainLayout } from "@/components/layout/MainLayout";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { useAuth } from "@/context/AuthContext";
 import { useToast } from "@/hooks/use-toast";
-import { FileText, Upload, Download, Edit, Eye, ArrowRight, AlertTriangle, Award } from "lucide-react";
-import { ResumePreviewDialog } from "@/components/resume/ResumePreviewDialog";
-import { ATSScoreDialog } from "@/components/resume/ATSScoreDialog";
-import { ResumeTemplatePreview } from "@/components/resume/ResumeTemplatePreview";
-import { ResumeEditor } from "@/components/resume/ResumeEditor";
-import { useResume } from "@/context/ResumeContext";
+import { FileText, Upload, Download, Edit, Eye, ArrowRight, AlertTriangle } from "lucide-react";
 
 const ResumeBuilder = () => {
   const { user } = useAuth();
   const { toast } = useToast();
-  const { uploadedResume, resumePreviewUrl, setUploadedResume } = useResume();
-  const [isPreviewOpen, setIsPreviewOpen] = useState(false);
-  const [isATSDialogOpen, setIsATSDialogOpen] = useState(false);
-  const [atsScore, setAtsScore] = useState(0);
-  const [isTemplatePreviewOpen, setIsTemplatePreviewOpen] = useState(false);
-  const [selectedTemplate, setSelectedTemplate] = useState("");
-  const [isEditorOpen, setIsEditorOpen] = useState(false);
-  
-  // Template images
-  const templateImages = {
-    "Basic Template": "https://placehold.co/600x800/e2e8f0/1e293b?text=Basic+Template",
-    "Modern Template": "https://placehold.co/600x800/e2e8f0/1e293b?text=Modern+Template",
-    "Technical Template": "https://placehold.co/600x800/e2e8f0/1e293b?text=Technical+Template",
-  };
-
-  // Resume scoring logic
-  const generateATSScore = () => {
-    // Mock implementation - generates a random score between 50 and 95
-    const score = Math.floor(Math.random() * 46) + 50;
-    setAtsScore(score);
-    setIsATSDialogOpen(true);
-  };
+  const [resumeFile, setResumeFile] = useState<File | null>(null);
+  const [uploadedResume, setUploadedResume] = useState<string | null>("resume-example.pdf"); // Mock data - would come from user profile
   
   const handleResumeChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files && e.target.files[0]) {
-      setUploadedResume(e.target.files[0]);
+      setResumeFile(e.target.files[0]);
     }
   };
   
   const handleResumeUpload = () => {
-    if (uploadedResume) {
+    if (resumeFile) {
+      // Here you would implement the actual upload logic
       toast({
         title: "Resume Uploaded",
-        description: `Your resume "${uploadedResume.name}" has been uploaded successfully.`,
+        description: `Your resume "${resumeFile.name}" has been uploaded successfully.`,
       });
+      setUploadedResume(resumeFile.name);
+      setResumeFile(null);
     } else {
       toast({
         title: "No File Selected",
@@ -58,73 +37,6 @@ const ResumeBuilder = () => {
       });
     }
   };
-
-  const handleTemplateSelect = (templateName: string) => {
-    setSelectedTemplate(templateName);
-    setIsTemplatePreviewOpen(true);
-  };
-
-  const handleStartEditor = () => {
-    setIsEditorOpen(true);
-    setIsTemplatePreviewOpen(false);
-  };
-
-  const handleSaveResume = () => {
-    toast({
-      title: "Resume Saved",
-      description: "Your resume has been saved successfully.",
-    });
-    setIsEditorOpen(false);
-  };
-
-  const handleDownloadResume = () => {
-    if (resumePreviewUrl && uploadedResume) {
-      // Create an anchor element and set the href to the file
-      const a = document.createElement('a');
-      a.href = resumePreviewUrl;
-      a.download = uploadedResume.name || 'resume.pdf';
-      document.body.appendChild(a);
-      a.click();
-      // Clean up
-      document.body.removeChild(a);
-      
-      toast({
-        title: "Resume Downloaded",
-        description: "Your resume has been downloaded successfully.",
-      });
-    } else {
-      toast({
-        title: "No Resume Available",
-        description: "There is no resume available to download.",
-        variant: "destructive",
-      });
-    }
-  };
-
-  // If we're in editor mode, show the editor
-  if (isEditorOpen) {
-    return (
-      <MainLayout>
-        <div className="container-custom py-8 md:py-12">
-          <div className="flex items-center justify-between mb-8">
-            <div>
-              <h1 className="heading-2 mb-2">Resume Builder</h1>
-              <p className="text-muted-foreground">Edit your resume</p>
-            </div>
-            <Button variant="outline" onClick={() => setIsEditorOpen(false)}>
-              Back to Templates
-            </Button>
-          </div>
-          
-          <ResumeEditor 
-            templateName={selectedTemplate} 
-            onSave={handleSaveResume}
-            onDownload={handleDownloadResume}
-          />
-        </div>
-      </MainLayout>
-    );
-  }
 
   return (
     <MainLayout>
@@ -155,41 +67,20 @@ const ResumeBuilder = () => {
                               <FileText className="h-5 w-5 text-primary" />
                             </div>
                             <div>
-                              <h4 className="font-medium">{uploadedResume.name}</h4>
-                              <p className="text-muted-foreground text-sm">
-                                Uploaded {new Date().toLocaleDateString()}
-                              </p>
+                              <h4 className="font-medium">{uploadedResume}</h4>
+                              <p className="text-muted-foreground text-sm">Uploaded on April 15, 2025</p>
                             </div>
                           </div>
                           <div className="grid grid-cols-2 gap-2">
-                            <Button 
-                              variant="outline" 
-                              size="sm" 
-                              className="w-full"
-                              onClick={handleDownloadResume}
-                            >
+                            <Button variant="outline" size="sm" className="w-full">
                               <Download className="mr-2 h-4 w-4" />
                               Download
                             </Button>
-                            <Button 
-                              variant="outline" 
-                              size="sm" 
-                              className="w-full"
-                              onClick={() => setIsPreviewOpen(true)}
-                            >
+                            <Button variant="outline" size="sm" className="w-full">
                               <Eye className="mr-2 h-4 w-4" />
                               Preview
                             </Button>
                           </div>
-                          <Button
-                            variant="outline"
-                            size="sm"
-                            className="w-full"
-                            onClick={generateATSScore}
-                          >
-                            <Award className="mr-2 h-4 w-4" />
-                            Get ATS Score
-                          </Button>
                         </div>
                       </div>
                     ) : (
@@ -226,16 +117,16 @@ const ResumeBuilder = () => {
                           PDF, DOC or DOCX (max. 5MB)
                         </p>
                       </label>
-                      {uploadedResume && (
+                      {resumeFile && (
                         <div className="mt-4">
                           <div className="flex items-center justify-between px-3 py-2 bg-muted rounded">
                             <div className="flex items-center">
                               <FileText className="h-4 w-4 mr-2 text-primary" />
-                              <span className="text-sm font-medium">{uploadedResume.name}</span>
+                              <span className="text-sm font-medium">{resumeFile.name}</span>
                             </div>
                             <Button
                               size="sm"
-                              onClick={() => setUploadedResume(null)}
+                              onClick={() => setResumeFile(null)}
                               variant="ghost"
                               className="h-8 w-8 p-0"
                             >
@@ -266,31 +157,23 @@ const ResumeBuilder = () => {
                       </CardDescription>
                     </CardHeader>
                     <CardContent className="min-h-[400px] flex items-center justify-center border rounded-md">
-                      {resumePreviewUrl ? (
-                        <iframe 
-                          src={resumePreviewUrl} 
-                          className="w-full h-[400px]" 
-                          title="Resume Preview"
-                        />
-                      ) : (
-                        <div className="text-center">
-                          <FileText className="h-16 w-16 text-muted-foreground mx-auto mb-4" />
-                          <h3 className="text-lg font-medium mb-2">Resume Preview</h3>
-                          <p className="text-muted-foreground mb-4">
-                            Download or replace your current resume
-                          </p>
-                          <div className="flex space-x-2 justify-center">
-                            <Button onClick={() => setIsEditorOpen(true)}>
-                              <Edit className="mr-2 h-4 w-4" />
-                              Edit in Builder
-                            </Button>
-                            <Button variant="outline" onClick={() => setIsPreviewOpen(true)}>
-                              <Eye className="mr-2 h-4 w-4" />
-                              View Resume
-                            </Button>
-                          </div>
+                      <div className="text-center">
+                        <FileText className="h-16 w-16 text-muted-foreground mx-auto mb-4" />
+                        <h3 className="text-lg font-medium mb-2">Resume Preview</h3>
+                        <p className="text-muted-foreground mb-4">
+                          Download or replace your current resume
+                        </p>
+                        <div className="flex space-x-2 justify-center">
+                          <Button>
+                            <Edit className="mr-2 h-4 w-4" />
+                            Edit in Builder
+                          </Button>
+                          <Button variant="outline">
+                            <Download className="mr-2 h-4 w-4" />
+                            Download
+                          </Button>
                         </div>
-                      )}
+                      </div>
                     </CardContent>
                   </Card>
                 ) : (
@@ -311,11 +194,11 @@ const ResumeBuilder = () => {
                           Upload your existing resume or create a new one using our professional resume builder
                         </p>
                         <div className="flex flex-col sm:flex-row gap-4 justify-center">
-                          <Button size="lg" onClick={() => document.getElementById('resume-upload')?.click()}>
+                          <Button size="lg">
                             <Upload className="mr-2 h-4 w-4" />
                             Upload Resume
                           </Button>
-                          <Button size="lg" variant="outline" onClick={() => handleTemplateSelect("Blank Template")}>
+                          <Button size="lg" variant="outline">
                             Build New Resume
                             <ArrowRight className="ml-2 h-4 w-4" />
                           </Button>
@@ -336,40 +219,47 @@ const ResumeBuilder = () => {
               </CardHeader>
               <CardContent className="space-y-4">
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-                  {Object.entries(templateImages).map(([name, imageUrl]) => (
-                    <Card key={name} className="bg-card/50 border-2 hover:border-primary/50 transition-all cursor-pointer">
-                      <CardHeader className="p-4">
-                        <div className="p-2 bg-primary/10 w-fit rounded-md mb-2">
-                          <FileText className="h-5 w-5 text-primary" />
-                        </div>
-                        <CardTitle className="text-base">{name}</CardTitle>
-                        <CardDescription>
-                          {name === "Basic Template" 
-                            ? "Simple and clean professional template"
-                            : name === "Modern Template"
-                              ? "Creative design with modern styling"
-                              : "Perfect for technical and engineering roles"
-                          }
-                        </CardDescription>
-                      </CardHeader>
-                      <CardContent className="p-4 pt-0">
-                        <div className="aspect-[8.5/11] bg-muted rounded-md mb-3 border overflow-hidden">
-                          <img 
-                            src={imageUrl} 
-                            alt={name} 
-                            className="w-full h-full object-cover"
-                          />
-                        </div>
-                        <Button 
-                          className="w-full" 
-                          size="sm"
-                          onClick={() => handleTemplateSelect(name)}
-                        >
-                          Use Template
-                        </Button>
-                      </CardContent>
-                    </Card>
-                  ))}
+                  <Card className="bg-card/50 border-2 hover:border-primary/50 transition-all cursor-pointer">
+                    <CardHeader className="p-4">
+                      <div className="p-2 bg-primary/10 w-fit rounded-md mb-2">
+                        <FileText className="h-5 w-5 text-primary" />
+                      </div>
+                      <CardTitle className="text-base">Basic Template</CardTitle>
+                      <CardDescription>Simple and clean professional template</CardDescription>
+                    </CardHeader>
+                    <CardContent className="p-4 pt-0">
+                      <div className="aspect-[8.5/11] bg-muted rounded-md mb-3 border"></div>
+                      <Button className="w-full" size="sm">Use Template</Button>
+                    </CardContent>
+                  </Card>
+                  
+                  <Card className="bg-card/50 border-2 hover:border-primary/50 transition-all cursor-pointer">
+                    <CardHeader className="p-4">
+                      <div className="p-2 bg-primary/10 w-fit rounded-md mb-2">
+                        <FileText className="h-5 w-5 text-primary" />
+                      </div>
+                      <CardTitle className="text-base">Modern Template</CardTitle>
+                      <CardDescription>Creative design with modern styling</CardDescription>
+                    </CardHeader>
+                    <CardContent className="p-4 pt-0">
+                      <div className="aspect-[8.5/11] bg-muted rounded-md mb-3 border"></div>
+                      <Button className="w-full" size="sm">Use Template</Button>
+                    </CardContent>
+                  </Card>
+                  
+                  <Card className="bg-card/50 border-2 hover:border-primary/50 transition-all cursor-pointer">
+                    <CardHeader className="p-4">
+                      <div className="p-2 bg-primary/10 w-fit rounded-md mb-2">
+                        <FileText className="h-5 w-5 text-primary" />
+                      </div>
+                      <CardTitle className="text-base">Technical Template</CardTitle>
+                      <CardDescription>Perfect for technical and engineering roles</CardDescription>
+                    </CardHeader>
+                    <CardContent className="p-4 pt-0">
+                      <div className="aspect-[8.5/11] bg-muted rounded-md mb-3 border"></div>
+                      <Button className="w-full" size="sm">Use Template</Button>
+                    </CardContent>
+                  </Card>
                 </div>
                 
                 <div className="p-4 bg-muted/50 rounded-lg mt-6">
@@ -377,34 +267,12 @@ const ResumeBuilder = () => {
                   <p className="text-muted-foreground mb-4">
                     Start with a blank template and customize every aspect of your resume
                   </p>
-                  <Button onClick={() => handleTemplateSelect("Blank Template")}>
-                    Start From Scratch
-                  </Button>
+                  <Button>Start From Scratch</Button>
                 </div>
               </CardContent>
             </Card>
           </TabsContent>
         </Tabs>
-        
-        {/* Dialogs */}
-        <ResumePreviewDialog 
-          isOpen={isPreviewOpen}
-          onClose={() => setIsPreviewOpen(false)}
-          resumeName={uploadedResume?.name || "Resume"}
-        />
-        
-        <ATSScoreDialog
-          isOpen={isATSDialogOpen}
-          onClose={() => setIsATSDialogOpen(false)}
-          score={atsScore}
-        />
-        
-        <ResumeTemplatePreview
-          isOpen={isTemplatePreviewOpen}
-          onClose={() => setIsTemplatePreviewOpen(false)}
-          templateName={selectedTemplate}
-          onEdit={handleStartEditor}
-        />
       </div>
     </MainLayout>
   );
