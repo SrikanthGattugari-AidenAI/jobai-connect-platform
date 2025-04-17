@@ -1,6 +1,6 @@
 
 import { MainLayout } from "@/components/layout/MainLayout";
-import { mockInternships } from "@/lib/data";
+import { mockInternships, mockJobs } from "@/lib/data";
 import {
   HeroSection,
   FeaturesSection,
@@ -13,12 +13,16 @@ import {
   HackathonSection,
   CareerRoadmapSection,
   MarketTrendsSection,
-  TopCompaniesSection
+  TopCompaniesSection,
+  FeaturedJobs
 } from "@/components/home";
 
 const Index = () => {
   // Featured internships (showing 3 from our mock data)
   const featuredInternships = mockInternships.slice(0, 3);
+  
+  // Featured jobs (showing 3 from our mock data)
+  const featuredJobs = mockJobs.slice(0, 3);
   
   return (
     <MainLayout>
@@ -26,6 +30,7 @@ const Index = () => {
       <FeaturesSection />
       <MarketTrendsSection />
       <FeaturedInternships internships={featuredInternships} />
+      <FeaturedJobs jobs={featuredJobs} />
       <MockInterviewSection />
       <CareerRoadmapSection />
       <HackathonSection />

@@ -11,3 +11,4 @@ export * from "./HackathonSection";
 export * from "./CareerRoadmapSection";
 export * from "./MarketTrendsSection";
 export * from "./TopCompaniesSection";
+export * from "./FeaturedJobs";
