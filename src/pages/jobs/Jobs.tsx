@@ -35,7 +35,7 @@ const Jobs = () => {
     // Update URL with filters
     const params = new URLSearchParams();
     Object.entries(filters).forEach(([key, value]) => {
-      if (value) {
+      if (value && value !== "any") {
         params.set(key, value);
       }
     });
@@ -62,32 +62,32 @@ const Jobs = () => {
     }
     
     // Apply country filter
-    if (filters.country && filters.country !== "Remote") {
+    if (filters.country && filters.country !== "Remote" && filters.country !== "any") {
       filtered = filtered.filter(job => job.country === filters.country);
     }
     
     // Apply city filter
-    if (filters.city && filters.city !== "Remote") {
+    if (filters.city && filters.city !== "Remote" && filters.city !== "any") {
       filtered = filtered.filter(job => job.city === filters.city);
     }
     
     // Apply category filter
-    if (filters.category) {
+    if (filters.category && filters.category !== "any") {
       filtered = filtered.filter(job => job.category === filters.category);
     }
     
     // Apply role filter
-    if (filters.role) {
+    if (filters.role && filters.role !== "any") {
       filtered = filtered.filter(job => job.role === filters.role);
     }
     
     // Apply employment type filter
-    if (filters.employmentType) {
+    if (filters.employmentType && filters.employmentType !== "any") {
       filtered = filtered.filter(job => job.employmentType === filters.employmentType);
     }
     
     // Apply experience level filter
-    if (filters.experienceLevel) {
+    if (filters.experienceLevel && filters.experienceLevel !== "any") {
       filtered = filtered.filter(job => job.experienceLevel === filters.experienceLevel);
     }
     

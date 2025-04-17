@@ -191,7 +191,7 @@ export function JobFilter({ onFilterChange }: JobFilterProps) {
                 <SelectValue placeholder="Select Country" />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="">Any Country</SelectItem>
+                <SelectItem value="any">Any Country</SelectItem>
                 {countries.map((country) => (
                   <SelectItem key={country.name} value={country.name}>
                     {country.name}
@@ -213,7 +213,7 @@ export function JobFilter({ onFilterChange }: JobFilterProps) {
                 <SelectValue placeholder="Select City" />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="">Any City</SelectItem>
+                <SelectItem value="any">Any City</SelectItem>
                 {availableCities.map((city) => (
                   <SelectItem key={city} value={city}>
                     {city}
@@ -234,7 +234,7 @@ export function JobFilter({ onFilterChange }: JobFilterProps) {
                 <SelectValue placeholder="Select Job Type" />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="">Any Job Type</SelectItem>
+                <SelectItem value="any">Any Job Type</SelectItem>
                 {employmentTypes.map((type) => (
                   <SelectItem key={type} value={type}>
                     {type.replace('-', ' ')}
@@ -255,7 +255,7 @@ export function JobFilter({ onFilterChange }: JobFilterProps) {
                 <SelectValue placeholder="Select Category" />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="">Any Category</SelectItem>
+                <SelectItem value="any">Any Category</SelectItem>
                 {categories.map((category) => (
                   <SelectItem key={category} value={category}>
                     {category}
@@ -276,7 +276,7 @@ export function JobFilter({ onFilterChange }: JobFilterProps) {
                 <SelectValue placeholder="Select Role" />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="">Any Role</SelectItem>
+                <SelectItem value="any">Any Role</SelectItem>
                 {roles.map((role) => (
                   <SelectItem key={role} value={role}>
                     {role}
@@ -297,7 +297,7 @@ export function JobFilter({ onFilterChange }: JobFilterProps) {
                 <SelectValue placeholder="Select Level" />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="">Any Level</SelectItem>
+                <SelectItem value="any">Any Level</SelectItem>
                 {experienceLevels.map((level) => (
                   <SelectItem key={level} value={level}>
                     {level.charAt(0).toUpperCase() + level.slice(1)}
