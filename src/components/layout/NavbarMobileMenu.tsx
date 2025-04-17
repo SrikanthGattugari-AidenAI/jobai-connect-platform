@@ -77,6 +77,14 @@ export const NavbarMobileMenu = ({ isMenuOpen, toggleMenu, handleLogout }: Navba
                 Internships
               </Link>
               <Link
+                to="/jobs"
+                className="flex w-full items-center rounded-md p-2 hover:bg-accent"
+                onClick={handleLinkClick}
+              >
+                <Briefcase className="mr-2 h-5 w-5" />
+                Jobs
+              </Link>
+              <Link
                 to="/hackathons"
                 className="flex w-full items-center rounded-md p-2 hover:bg-accent"
                 onClick={handleLinkClick}

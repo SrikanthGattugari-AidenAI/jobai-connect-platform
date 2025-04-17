@@ -49,6 +49,14 @@ export const NavbarDesktopLinks = () => {
                 <span>Internships</span>
               </Link>
               <Link 
+                to="/jobs" 
+                className="flex items-center space-x-2 px-4 py-2 text-sm hover:bg-accent hover:text-accent-foreground"
+                onClick={handleLinkClick}
+              >
+                <Briefcase className="h-4 w-4" />
+                <span>Jobs</span>
+              </Link>
+              <Link 
                 to="/hackathons" 
                 className="flex items-center space-x-2 px-4 py-2 text-sm hover:bg-accent hover:text-accent-foreground"
                 onClick={handleLinkClick}
