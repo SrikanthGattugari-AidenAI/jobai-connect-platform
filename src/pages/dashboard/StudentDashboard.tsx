@@ -7,7 +7,8 @@ import { useAuth } from "@/context/AuthContext";
 import { useInternships } from "@/context/InternshipContext";
 import { useCourses } from "@/context/CourseContext";
 import { useAI } from "@/context/AIContext";
-import { Internship, Course, Application } from "@/types";
+import { useJobs } from "@/context/JobContext";
+import { Internship, Course, Application, Job } from "@/types";
 import { Badge } from "@/components/ui/badge";
 import { 
   BookOpen, 
@@ -40,11 +41,13 @@ const StudentDashboard = () => {
     getCompletedCourses 
   } = useCourses();
   const { recommendSkills } = useAI();
+  const { jobs, getSavedJobs } = useJobs();
   
   const [savedInternships, setSavedInternships] = useState<Internship[]>([]);
   const [applications, setApplications] = useState<Application[]>([]);
   const [enrolledCourses, setEnrolledCourses] = useState<Course[]>([]);
   const [recommendedInternships, setRecommendedInternships] = useState<Internship[]>([]);
+  const [recommendedJobs, setRecommendedJobs] = useState<Job[]>([]);
   const [recommendedSkills, setRecommendedSkills] = useState<string[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [totalJobs, setTotalJobs] = useState(0);
@@ -87,6 +90,13 @@ const StudentDashboard = () => {
       recommended.sort((a, b) => new Date(b.postedDate).getTime() - new Date(a.postedDate).getTime());
       // Take first 3
       setRecommendedInternships(recommended.slice(0, 3));
+      
+      // Get recommended jobs (simple algorithm for demo)
+      let recommendedJobsList = [...jobs];
+      // Sort by posting date (newest first)
+      recommendedJobsList.sort((a, b) => new Date(b.postedDate).getTime() - new Date(a.postedDate).getTime());
+      // Take first 3
+      setRecommendedJobs(recommendedJobsList.slice(0, 3));
       
       // Get skill recommendations
       try {
@@ -144,7 +154,7 @@ const StudentDashboard = () => {
     };
     
     loadDashboardData();
-  }, [user, internships, courses]);
+  }, [user, internships, courses, jobs]);
   
   const getStatusColor = (status: string) => {
     switch (status) {
@@ -229,7 +239,6 @@ const StudentDashboard = () => {
         
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
           <div className="lg:col-span-2 space-y-8">
-            {/* Job Analytics Section */}
             <Card>
               <CardHeader>
                 <div className="flex items-center justify-between">
@@ -466,6 +475,82 @@ const StudentDashboard = () => {
                 <div className="flex items-center text-sm text-muted-foreground w-full">
                   <Sparkles className="mr-2 h-4 w-4 text-primary" />
                   <span>Recommendations are based on your profile and activity</span>
+                </div>
+              </CardFooter>
+            </Card>
+            
+            {/* Recommended Jobs Section */}
+            <Card>
+              <CardHeader>
+                <div className="flex items-center justify-between">
+                  <CardTitle>Recommended Jobs</CardTitle>
+                  <Button variant="ghost" size="sm" onClick={() => navigate("/jobs")}>
+                    View All
+                  </Button>
+                </div>
+                <CardDescription>
+                  Personalized job recommendations based on your profile
+                </CardDescription>
+              </CardHeader>
+              <CardContent>
+                <div className="space-y-4">
+                  {recommendedJobs.map((job) => (
+                    <div 
+                      key={job.id} 
+                      className="border rounded-lg p-4 hover:border-primary transition-colors cursor-pointer"
+                      onClick={() => navigate(`/jobs/${job.id}`)}
+                    >
+                      <div className="flex flex-col md:flex-row gap-4">
+                        <div className="md:w-3/4">
+                          <div className="flex items-center space-x-4 mb-2">
+                            {job.companyLogo ? (
+                              <div className="h-10 w-10 rounded-md overflow-hidden border flex-shrink-0">
+                                <img 
+                                  src={job.companyLogo} 
+                                  alt={job.company} 
+                                  className="h-full w-full object-cover"
+                                />
+                              </div>
+                            ) : (
+                              <div className="h-10 w-10 rounded-md bg-muted flex items-center justify-center flex-shrink-0">
+                                <span className="text-lg font-bold">{job.company.charAt(0)}</span>
+                              </div>
+                            )}
+                            <div>
+                              <h3 className="font-medium">{job.title}</h3>
+                              <p className="text-sm text-muted-foreground">{job.company}</p>
+                            </div>
+                          </div>
+                          <div className="flex flex-wrap gap-2 mt-2">
+                            <div className="flex items-center text-sm">
+                              <MapPin className="mr-1 h-4 w-4 text-muted-foreground" />
+                              <span>{job.isRemote ? "Remote" : `${job.city}, ${job.country}`}</span>
+                            </div>
+                            <div className="flex items-center text-sm">
+                              <Briefcase className="mr-1 h-4 w-4 text-muted-foreground" />
+                              <span className="capitalize">{job.employmentType.replace('-', ' ')}</span>
+                            </div>
+                          </div>
+                        </div>
+                        <div className="md:w-1/4 flex flex-col justify-center">
+                          {job.salary.isDisclosed && (
+                            <div className="flex items-center text-sm font-medium">
+                              <DollarSign className="mr-1 h-4 w-4" />
+                              <span>
+                                {`${job.salary.min?.toLocaleString()}-${job.salary.max?.toLocaleString()} ${job.salary.currency}/year`}
+                              </span>
+                            </div>
+                          )}
+                        </div>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </CardContent>
+              <CardFooter>
+                <div className="flex items-center text-sm text-muted-foreground w-full">
+                  <Sparkles className="mr-2 h-4 w-4 text-primary" />
+                  <span>Recommendations are based on your profile and recent job market trends</span>
                 </div>
               </CardFooter>
             </Card>
