@@ -1,4 +1,3 @@
-
 import React, { useState } from "react";
 import { MainLayout } from "@/components/layout/MainLayout";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
@@ -8,6 +7,8 @@ import { useAuth } from "@/context/AuthContext";
 import { useToast } from "@/hooks/use-toast";
 import { FileText, Upload, Download, Edit, Eye, ArrowRight, AlertTriangle, CheckCircle } from "lucide-react";
 import { Progress } from "@/components/ui/progress";
+import ResumePreview from "../profile/ResumePreview";
+import ATSScoreCard from "../profile/ATSScoreCard";
 
 const ResumeBuilder = () => {
   const { user } = useAuth();
@@ -76,8 +77,9 @@ const ResumeBuilder = () => {
           </TabsList>
           
           <TabsContent value="uploaded">
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-              <div className="md:col-span-1">
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-6 items-start">
+              {/* LEFT COLUMN: Upload, ATS, and actions */}
+              <div className="md:col-span-1 flex flex-col gap-6">
                 <Card>
                   <CardHeader>
                     <CardTitle>Your Resume</CardTitle>
@@ -180,125 +182,37 @@ const ResumeBuilder = () => {
                     </div>
                   </CardContent>
                 </Card>
+
+                {uploadedResume && (
+                  <ATSScoreCard
+                    score={atsScore}
+                    aiFeedback={[
+                      "Use more specific keywords: Include more industry-specific terms relevant to the jobs you're applying for.",
+                      "Great work experience section: Your experience is well described with quantifiable achievements.",
+                      "Improve skills section: List your skills in a more scannable format for ATS systems.",
+                    ]}
+                    onDownloadImprovedResume={handleDownloadImprovedResume}
+                  />
+                )}
               </div>
               
+              {/* RIGHT COLUMN: Resume Preview always visible */}
               <div className="md:col-span-2">
                 {uploadedResume ? (
-                  <div className="space-y-6">
-                    <Card>
-                      <CardHeader>
-                        <CardTitle>Resume Preview</CardTitle>
-                        <CardDescription>
-                          View and manage your uploaded resume
-                        </CardDescription>
-                      </CardHeader>
-                      <CardContent className="min-h-[300px] flex items-center justify-center border rounded-md">
-                        <div className="p-4 w-full">
-                          <div className="text-center mb-6">
-                            <FileText className="h-16 w-16 text-primary mx-auto mb-4" />
-                            <h3 className="text-lg font-medium">{uploadedResume}</h3>
-                            <p className="text-muted-foreground mt-2">
-                              Resume preview
-                            </p>
-                          </div>
-                          
-                          {/* Mock preview - in a real app, you would render the actual resume content */}
-                          <div className="border-t border-b py-4 my-4">
-                            <div className="max-w-xl mx-auto text-left space-y-4">
-                              <h2 className="text-xl font-bold">John Smith</h2>
-                              <p className="text-sm text-muted-foreground">
-                                Software Engineer | React Developer | TypeScript Expert
-                              </p>
-                              <div className="space-y-2">
-                                <h3 className="font-semibold text-md">Experience</h3>
-                                <div className="text-sm">
-                                  <p className="font-medium">Senior Developer - Tech Company</p>
-                                  <p className="text-muted-foreground">Jan 2023 - Present</p>
-                                </div>
-                              </div>
-                              <div className="space-y-2">
-                                <h3 className="font-semibold text-md">Education</h3>
-                                <div className="text-sm">
-                                  <p className="font-medium">B.S. Computer Science</p>
-                                  <p className="text-muted-foreground">University of Technology, 2018-2022</p>
-                                </div>
-                              </div>
-                            </div>
-                          </div>
-                          
-                          <div className="flex space-x-2 justify-center">
-                            <Button>
-                              <Edit className="mr-2 h-4 w-4" />
-                              Edit in Builder
-                            </Button>
-                            <Button variant="outline" onClick={() => console.log("Downloading resume:", uploadedResume)}>
-                              <Download className="mr-2 h-4 w-4" />
-                              Download
-                            </Button>
-                          </div>
-                        </div>
-                      </CardContent>
-                    </Card>
-                    
-                    {showATSAnalysis && (
-                      <Card>
-                        <CardHeader>
-                          <CardTitle>ATS Score Analysis</CardTitle>
-                          <CardDescription>
-                            See how your resume performs with Applicant Tracking Systems
-                          </CardDescription>
-                        </CardHeader>
-                        <CardContent className="space-y-6">
-                          <div className="flex flex-col md:flex-row justify-between md:items-end gap-6">
-                            <div className="space-y-2 flex-1">
-                              <div className="flex justify-between">
-                                <span className="font-medium">ATS Compatibility Score</span>
-                                <span className="font-bold">{atsScore}/100</span>
-                              </div>
-                              <Progress value={atsScore} className="h-2" />
-                              
-                              <div className="pt-2 text-sm text-muted-foreground">
-                                {atsScore >= 80 ? (
-                                  <div className="flex items-center text-green-600">
-                                    <CheckCircle className="h-4 w-4 mr-2" />
-                                    <span>Your resume is well-optimized for ATS systems</span>
-                                  </div>
-                                ) : (
-                                  <div className="flex items-center text-amber-600">
-                                    <AlertTriangle className="h-4 w-4 mr-2" />
-                                    <span>Your resume needs optimization for better ATS compatibility</span>
-                                  </div>
-                                )}
-                              </div>
-                            </div>
-                            
-                            <Button onClick={handleDownloadImprovedResume}>
-                              <Download className="mr-2 h-4 w-4" />
-                              Download Improved Resume
-                            </Button>
-                          </div>
-                          
-                          <div className="space-y-4 pt-4 border-t">
-                            <h3 className="font-medium">AI Feedback</h3>
-                            <div className="space-y-3 text-sm">
-                              <div className="p-3 bg-amber-50 text-amber-800 rounded-md">
-                                <p className="font-medium">Use more specific keywords</p>
-                                <p className="mt-1">Include more industry-specific terms relevant to the jobs you're applying for.</p>
-                              </div>
-                              <div className="p-3 bg-green-50 text-green-800 rounded-md">
-                                <p className="font-medium">Great work experience section</p>
-                                <p className="mt-1">Your experience is well described with quantifiable achievements.</p>
-                              </div>
-                              <div className="p-3 bg-amber-50 text-amber-800 rounded-md">
-                                <p className="font-medium">Improve skills section</p>
-                                <p className="mt-1">List your skills in a more scannable format for ATS systems.</p>
-                              </div>
-                            </div>
-                          </div>
-                        </CardContent>
-                      </Card>
-                    )}
-                  </div>
+                  <Card>
+                    <CardHeader>
+                      <CardTitle>Resume Preview</CardTitle>
+                      <CardDescription>
+                        View and manage your uploaded resume
+                      </CardDescription>
+                    </CardHeader>
+                    <CardContent>
+                      <ResumePreview
+                        fileUrl={resumeFile ? URL.createObjectURL(resumeFile) : uploadedResume}
+                        fileName={resumeFile ? resumeFile.name : uploadedResume}
+                      />
+                    </CardContent>
+                  </Card>
                 ) : (
                   <Card>
                     <CardHeader>
