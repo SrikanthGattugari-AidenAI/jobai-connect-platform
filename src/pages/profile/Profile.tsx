@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from "react";
 import { MainLayout } from "@/components/layout/MainLayout";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
@@ -58,7 +59,15 @@ const Profile = () => {
     bio: ""
   });
   
-  const [resumeUrl, setResumeUrl] = useState<string | null>(null); // For preview
+  const [resumeUrl, setResumeUrl] = useState<string | null>("https://example.com/resume-example.pdf"); // For preview
+  
+  // Dummy ATS score data
+  const [atsScore, setAtsScore] = useState(78);
+  const [atsFeedback, setAtsFeedback] = useState([
+    "Add more quantifiable achievements to your experience section",
+    "Include more industry-specific keywords relevant to your target role",
+    "Consider adding a skills section with technical competencies"
+  ]);
   
   useEffect(() => {
     if (!isLoading && !isAuthenticated) {
@@ -133,6 +142,14 @@ const Profile = () => {
     if (fileInput) {
       fileInput.click();
     }
+  };
+  
+  const handleImprovedResumeDownload = () => {
+    toast({
+      title: "Improved Resume Downloaded",
+      description: "Your AI-improved resume has been downloaded.",
+    });
+    // In a real app, this would download an actual improved resume file
   };
   
   const handleSaveProfile = () => {
@@ -725,4 +742,206 @@ const Profile = () => {
                     <div className="space-y-2">
                       <Label htmlFor="website">Personal Website</Label>
                       <div className="flex">
-                        <div className="flex items-center justify-center w-10 rounded-l-
+                        <div className="flex items-center justify-center w-10 rounded-l-md border border-r-0 border-input bg-muted px-3">
+                          <Globe className="h-4 w-4 text-muted-foreground" />
+                        </div>
+                        <Input
+                          id="website"
+                          name="website"
+                          placeholder="https://yourwebsite.com"
+                          value={formData.website}
+                          onChange={handleChange}
+                          className="rounded-l-none"
+                        />
+                      </div>
+                    </div>
+                    
+                    <div className="space-y-2">
+                      <Label htmlFor="linkedin">LinkedIn</Label>
+                      <div className="flex">
+                        <div className="flex items-center justify-center w-10 rounded-l-md border border-r-0 border-input bg-muted px-3">
+                          <Linkedin className="h-4 w-4 text-muted-foreground" />
+                        </div>
+                        <Input
+                          id="linkedin"
+                          name="linkedin"
+                          placeholder="linkedin.com/in/username"
+                          value={formData.linkedin}
+                          onChange={handleChange}
+                          className="rounded-l-none"
+                        />
+                      </div>
+                    </div>
+                    
+                    <div className="space-y-2">
+                      <Label htmlFor="github">GitHub</Label>
+                      <div className="flex">
+                        <div className="flex items-center justify-center w-10 rounded-l-md border border-r-0 border-input bg-muted px-3">
+                          <Github className="h-4 w-4 text-muted-foreground" />
+                        </div>
+                        <Input
+                          id="github"
+                          name="github"
+                          placeholder="github.com/username"
+                          value={formData.github}
+                          onChange={handleChange}
+                          className="rounded-l-none"
+                        />
+                      </div>
+                    </div>
+                    
+                    <div className="space-y-2">
+                      <Label htmlFor="twitter">X (Twitter)</Label>
+                      <div className="flex">
+                        <div className="flex items-center justify-center w-10 rounded-l-md border border-r-0 border-input bg-muted px-3">
+                          <Twitter className="h-4 w-4 text-muted-foreground" />
+                        </div>
+                        <Input
+                          id="twitter"
+                          name="twitter"
+                          placeholder="twitter.com/username"
+                          value={formData.twitter}
+                          onChange={handleChange}
+                          className="rounded-l-none"
+                        />
+                      </div>
+                    </div>
+                  </CardContent>
+                  <CardFooter className="flex justify-end">
+                    <Button onClick={handleSaveProfile}>
+                      <Save className="mr-2 h-4 w-4" />
+                      Save Changes
+                    </Button>
+                  </CardFooter>
+                </Card>
+              </TabsContent>
+              
+              {user.role === "student" && (
+                <TabsContent value="resume">
+                  <Card>
+                    <CardHeader>
+                      <CardTitle>Resume</CardTitle>
+                      <CardDescription>
+                        Upload, view and manage your resume
+                      </CardDescription>
+                    </CardHeader>
+                    <CardContent>
+                      <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+                        <div className="space-y-6">
+                          <div className="space-y-3">
+                            <h3 className="text-base font-medium">Upload Resume</h3>
+                            <p className="text-sm text-muted-foreground">
+                              Upload your resume in PDF, DOC, or DOCX format. This will be shared with potential employers.
+                            </p>
+                            
+                            {uploadedResume ? (
+                              <div className="space-y-4">
+                                <div className="flex items-center justify-between border rounded-lg p-3 bg-muted/50">
+                                  <div className="flex items-center gap-3">
+                                    <div className="p-2 bg-primary/10 rounded-md">
+                                      <FileText className="h-5 w-5 text-primary" />
+                                    </div>
+                                    <div>
+                                      <p className="font-medium text-sm">{uploadedResume}</p>
+                                      <p className="text-xs text-muted-foreground">Uploaded on April 10, 2025</p>
+                                    </div>
+                                  </div>
+                                  <div className="flex gap-2">
+                                    <Button size="icon" variant="ghost" onClick={handleDownloadResume}>
+                                      <Download className="h-4 w-4" />
+                                    </Button>
+                                    <Button size="icon" variant="ghost" onClick={handleReplaceResume}>
+                                      <Upload className="h-4 w-4" />
+                                    </Button>
+                                  </div>
+                                </div>
+                                
+                                <input 
+                                  type="file" 
+                                  id="resume-replace-input" 
+                                  className="hidden" 
+                                  accept=".pdf,.doc,.docx"
+                                  onChange={handleResumeChange}
+                                />
+                                
+                                {/* ATS Score Card */}
+                                <ATSScoreCard 
+                                  score={atsScore} 
+                                  aiFeedback={atsFeedback}
+                                  onDownloadImprovedResume={handleImprovedResumeDownload} 
+                                />
+                              </div>
+                            ) : (
+                              <div className="border-2 border-dashed border-input rounded-lg p-8 text-center">
+                                <input
+                                  type="file"
+                                  className="hidden"
+                                  id="resume-upload"
+                                  accept=".pdf,.doc,.docx"
+                                  onChange={handleResumeChange}
+                                />
+                                <label
+                                  htmlFor="resume-upload"
+                                  className="cursor-pointer flex flex-col items-center justify-center"
+                                >
+                                  <div className="p-3 bg-primary/10 rounded-full mb-4">
+                                    <Upload className="h-6 w-6 text-primary" />
+                                  </div>
+                                  <span className="text-sm font-medium mb-1">
+                                    Click to upload resume
+                                  </span>
+                                  <span className="text-xs text-muted-foreground">
+                                    PDF, DOC or DOCX (max. 5MB)
+                                  </span>
+                                </label>
+                                
+                                {resumeFile && (
+                                  <div className="mt-4">
+                                    <p className="text-sm">{resumeFile.name}</p>
+                                    <Button 
+                                      onClick={handleResumeUpload} 
+                                      size="sm" 
+                                      className="mt-2"
+                                    >
+                                      <Upload className="mr-2 h-4 w-4" />
+                                      Upload
+                                    </Button>
+                                  </div>
+                                )}
+                              </div>
+                            )}
+                          </div>
+                        </div>
+                        
+                        {/* Preview */}
+                        <div className="space-y-3">
+                          <h3 className="text-base font-medium">Resume Preview</h3>
+                          
+                          {uploadedResume && resumeUrl ? (
+                            <ResumePreview 
+                              fileUrl={resumeUrl}
+                              fileName={uploadedResume}
+                            />
+                          ) : (
+                            <div className="border rounded-md p-6 text-center bg-muted h-80 flex flex-col items-center justify-center">
+                              <FileText className="h-10 w-10 text-muted-foreground mb-2" />
+                              <p className="text-muted-foreground">
+                                Upload a resume to see preview
+                              </p>
+                            </div>
+                          )}
+                        </div>
+                      </div>
+                    </CardContent>
+                  </Card>
+                </TabsContent>
+              )}
+            </Tabs>
+          </div>
+        </div>
+      </div>
+    </MainLayout>
+  );
+};
+
+export default Profile;
