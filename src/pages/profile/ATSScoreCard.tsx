@@ -1,7 +1,6 @@
 
 import React from "react";
-import { Gauge } from "recharts";
-import { Download, AlertTriangle } from "lucide-react";
+import { AlertTriangle, Download } from "lucide-react";
 
 interface ATSScoreCardProps {
   score: number; // 0 - 100
@@ -14,7 +13,7 @@ const ATSScoreCard: React.FC<ATSScoreCardProps> = ({ score, aiFeedback, onDownlo
     <div className="rounded-xl border p-6 bg-background flex flex-col items-center space-y-4 shadow-lg">
       <div className="w-full flex flex-col items-center">
         <div className="w-40 h-32 mb-2 relative">
-          {/* Recharts Gauge for ATS Score */}
+          {/* Custom gauge for ATS Score */}
           <GaugeChart score={score} />
           <div className="absolute top-[60%] left-1/2 -translate-x-1/2 text-center pointer-events-none">
             <div className="text-3xl font-bold text-primary">{score}%</div>
@@ -45,14 +44,12 @@ const ATSScoreCard: React.FC<ATSScoreCardProps> = ({ score, aiFeedback, onDownlo
   );
 };
 
-/** Simple Gauge using recharts, customized for 0-100 percent */
+/** Custom gauge chart implementation using SVG */
 const GaugeChart: React.FC<{ score: number }> = ({ score }) => {
-  // Recharts Gauge is generally supported with a PieChart, but let's do a half-circle for ATS
-  // We'll represent the score as the "filled" portion.
-  // We'll use slices with different colors for the filled/unfilled portion.
+  // Ensure score is within bounds
   const value = Math.max(0, Math.min(score, 100));
   const filled = value;
-  const empty = 100 - value;
+  
   return (
     <svg width={160} height={90} viewBox="0 0 160 90">
       {/* Gray background arc */}
