@@ -28,7 +28,8 @@ import {
   FileText,
   Upload,
   Download,
-  AlertTriangle
+  AlertTriangle,
+  Eye
 } from "lucide-react";
 import ResumePreview from "./ResumePreview";
 import ATSScoreCard from "./ATSScoreCard";
@@ -68,6 +69,9 @@ const Profile = () => {
     "Include more industry-specific keywords relevant to your target role",
     "Consider adding a skills section with technical competencies"
   ]);
+
+  // Add upload date state
+  const [uploadDate, setUploadDate] = useState<string>("April 15, 2025");
   
   useEffect(() => {
     if (!isLoading && !isAuthenticated) {
@@ -104,14 +108,20 @@ const Profile = () => {
   
   const handleResumeUpload = () => {
     if (resumeFile) {
+      const currentDate = new Date().toLocaleDateString('en-US', { 
+        year: 'numeric', 
+        month: 'long', 
+        day: 'numeric' 
+      });
+      
       toast({
         title: "Resume Uploaded",
         description: `Your resume "${resumeFile.name}" has been uploaded successfully.`,
       });
       console.log("Resume uploaded and file path:", resumeFile.name, resumeUrl);
       setUploadedResume(resumeFile.name);
+      setUploadDate(currentDate);
       setResumeFile(null);
-      // (In real app, backend URL should be stored)
     } else {
       toast({
         title: "No File Selected",
@@ -135,6 +145,14 @@ const Profile = () => {
       a.click();
       document.body.removeChild(a);
     }
+  };
+
+  const handlePreviewResume = () => {
+    console.log("Previewing resume:", uploadedResume);
+    toast({
+      title: "Resume Preview",
+      description: "Opening resume preview.",
+    });
   };
   
   const handleReplaceResume = () => {
@@ -735,75 +753,77 @@ const Profile = () => {
                   <CardHeader>
                     <CardTitle>Social Profiles</CardTitle>
                     <CardDescription>
-                      Link your social media accounts
+                      Connect your social media accounts
                     </CardDescription>
                   </CardHeader>
                   <CardContent className="space-y-4">
-                    <div className="space-y-2">
-                      <Label htmlFor="website">Personal Website</Label>
-                      <div className="flex">
-                        <div className="flex items-center justify-center w-10 rounded-l-md border border-r-0 border-input bg-muted px-3">
-                          <Globe className="h-4 w-4 text-muted-foreground" />
+                    <div className="grid grid-cols-1 gap-4">
+                      <div className="space-y-2">
+                        <Label htmlFor="website">Personal Website</Label>
+                        <div className="flex">
+                          <div className="bg-muted flex items-center px-3 rounded-l-md border border-r-0 border-input">
+                            <Globe className="h-4 w-4 text-muted-foreground" />
+                          </div>
+                          <Input
+                            id="website"
+                            name="website"
+                            placeholder="https://yourwebsite.com"
+                            className="rounded-l-none"
+                            value={formData.website}
+                            onChange={handleChange}
+                          />
                         </div>
-                        <Input
-                          id="website"
-                          name="website"
-                          placeholder="https://yourwebsite.com"
-                          value={formData.website}
-                          onChange={handleChange}
-                          className="rounded-l-none"
-                        />
                       </div>
-                    </div>
-                    
-                    <div className="space-y-2">
-                      <Label htmlFor="linkedin">LinkedIn</Label>
-                      <div className="flex">
-                        <div className="flex items-center justify-center w-10 rounded-l-md border border-r-0 border-input bg-muted px-3">
-                          <Linkedin className="h-4 w-4 text-muted-foreground" />
+                      
+                      <div className="space-y-2">
+                        <Label htmlFor="linkedin">LinkedIn</Label>
+                        <div className="flex">
+                          <div className="bg-muted flex items-center px-3 rounded-l-md border border-r-0 border-input">
+                            <Linkedin className="h-4 w-4 text-muted-foreground" />
+                          </div>
+                          <Input
+                            id="linkedin"
+                            name="linkedin"
+                            placeholder="linkedin.com/in/username"
+                            className="rounded-l-none"
+                            value={formData.linkedin}
+                            onChange={handleChange}
+                          />
                         </div>
-                        <Input
-                          id="linkedin"
-                          name="linkedin"
-                          placeholder="linkedin.com/in/username"
-                          value={formData.linkedin}
-                          onChange={handleChange}
-                          className="rounded-l-none"
-                        />
                       </div>
-                    </div>
-                    
-                    <div className="space-y-2">
-                      <Label htmlFor="github">GitHub</Label>
-                      <div className="flex">
-                        <div className="flex items-center justify-center w-10 rounded-l-md border border-r-0 border-input bg-muted px-3">
-                          <Github className="h-4 w-4 text-muted-foreground" />
+                      
+                      <div className="space-y-2">
+                        <Label htmlFor="github">GitHub</Label>
+                        <div className="flex">
+                          <div className="bg-muted flex items-center px-3 rounded-l-md border border-r-0 border-input">
+                            <Github className="h-4 w-4 text-muted-foreground" />
+                          </div>
+                          <Input
+                            id="github"
+                            name="github"
+                            placeholder="github.com/username"
+                            className="rounded-l-none"
+                            value={formData.github}
+                            onChange={handleChange}
+                          />
                         </div>
-                        <Input
-                          id="github"
-                          name="github"
-                          placeholder="github.com/username"
-                          value={formData.github}
-                          onChange={handleChange}
-                          className="rounded-l-none"
-                        />
                       </div>
-                    </div>
-                    
-                    <div className="space-y-2">
-                      <Label htmlFor="twitter">X (Twitter)</Label>
-                      <div className="flex">
-                        <div className="flex items-center justify-center w-10 rounded-l-md border border-r-0 border-input bg-muted px-3">
-                          <Twitter className="h-4 w-4 text-muted-foreground" />
+                      
+                      <div className="space-y-2">
+                        <Label htmlFor="twitter">Twitter</Label>
+                        <div className="flex">
+                          <div className="bg-muted flex items-center px-3 rounded-l-md border border-r-0 border-input">
+                            <Twitter className="h-4 w-4 text-muted-foreground" />
+                          </div>
+                          <Input
+                            id="twitter"
+                            name="twitter"
+                            placeholder="twitter.com/username"
+                            className="rounded-l-none"
+                            value={formData.twitter}
+                            onChange={handleChange}
+                          />
                         </div>
-                        <Input
-                          id="twitter"
-                          name="twitter"
-                          placeholder="twitter.com/username"
-                          value={formData.twitter}
-                          onChange={handleChange}
-                          className="rounded-l-none"
-                        />
                       </div>
                     </div>
                   </CardContent>
@@ -820,118 +840,147 @@ const Profile = () => {
                 <TabsContent value="resume">
                   <Card>
                     <CardHeader>
-                      <CardTitle>Resume</CardTitle>
+                      <CardTitle>Resume Management</CardTitle>
                       <CardDescription>
-                        Upload, view and manage your resume
+                        Upload and manage your resume
                       </CardDescription>
                     </CardHeader>
-                    <CardContent>
-                      <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-                        <div className="space-y-6">
-                          <div className="space-y-3">
-                            <h3 className="text-base font-medium">Upload Resume</h3>
-                            <p className="text-sm text-muted-foreground">
-                              Upload your resume in PDF, DOC, or DOCX format. This will be shared with potential employers.
-                            </p>
-                            
-                            {uploadedResume ? (
-                              <div className="space-y-4">
-                                <div className="flex items-center justify-between border rounded-lg p-3 bg-muted/50">
-                                  <div className="flex items-center gap-3">
-                                    <div className="p-2 bg-primary/10 rounded-md">
-                                      <FileText className="h-5 w-5 text-primary" />
-                                    </div>
-                                    <div>
-                                      <p className="font-medium text-sm">{uploadedResume}</p>
-                                      <p className="text-xs text-muted-foreground">Uploaded on April 10, 2025</p>
-                                    </div>
-                                  </div>
-                                  <div className="flex gap-2">
-                                    <Button size="icon" variant="ghost" onClick={handleDownloadResume}>
-                                      <Download className="h-4 w-4" />
-                                    </Button>
-                                    <Button size="icon" variant="ghost" onClick={handleReplaceResume}>
-                                      <Upload className="h-4 w-4" />
-                                    </Button>
-                                  </div>
-                                </div>
-                                
-                                <input 
-                                  type="file" 
-                                  id="resume-replace-input" 
-                                  className="hidden" 
-                                  accept=".pdf,.doc,.docx"
-                                  onChange={handleResumeChange}
-                                />
-                                
-                                {/* ATS Score Card */}
-                                <ATSScoreCard 
-                                  score={atsScore} 
-                                  aiFeedback={atsFeedback}
-                                  onDownloadImprovedResume={handleImprovedResumeDownload} 
-                                />
-                              </div>
-                            ) : (
-                              <div className="border-2 border-dashed border-input rounded-lg p-8 text-center">
+                    <CardContent className="space-y-6">
+                      {/* Current Resume Status */}
+                      {uploadedResume ? (
+                        <div className="border rounded-lg p-4">
+                          <div className="flex items-start space-x-4">
+                            <div className="p-2 bg-primary/10 rounded-md">
+                              <FileText className="h-5 w-5 text-primary" />
+                            </div>
+                            <div className="flex-1">
+                              <h4 className="font-medium">{uploadedResume}</h4>
+                              <p className="text-muted-foreground text-sm">Uploaded on {uploadDate}</p>
+                              <div className="mt-4 flex flex-wrap gap-3">
+                                <Button 
+                                  variant="outline" 
+                                  size="sm"
+                                  onClick={handleDownloadResume}
+                                >
+                                  <Download className="mr-2 h-4 w-4" />
+                                  Download
+                                </Button>
+                                <Button 
+                                  variant="outline" 
+                                  size="sm"
+                                  onClick={handlePreviewResume}
+                                >
+                                  <Eye className="mr-2 h-4 w-4" />
+                                  Preview
+                                </Button>
+                                <Button 
+                                  variant="outline" 
+                                  size="sm"
+                                  onClick={handleReplaceResume}
+                                >
+                                  <Upload className="mr-2 h-4 w-4" />
+                                  Replace
+                                </Button>
                                 <input
                                   type="file"
+                                  id="resume-replace-input"
                                   className="hidden"
-                                  id="resume-upload"
                                   accept=".pdf,.doc,.docx"
                                   onChange={handleResumeChange}
                                 />
-                                <label
-                                  htmlFor="resume-upload"
-                                  className="cursor-pointer flex flex-col items-center justify-center"
-                                >
-                                  <div className="p-3 bg-primary/10 rounded-full mb-4">
-                                    <Upload className="h-6 w-6 text-primary" />
-                                  </div>
-                                  <span className="text-sm font-medium mb-1">
-                                    Click to upload resume
-                                  </span>
-                                  <span className="text-xs text-muted-foreground">
-                                    PDF, DOC or DOCX (max. 5MB)
-                                  </span>
-                                </label>
-                                
-                                {resumeFile && (
-                                  <div className="mt-4">
-                                    <p className="text-sm">{resumeFile.name}</p>
-                                    <Button 
-                                      onClick={handleResumeUpload} 
-                                      size="sm" 
-                                      className="mt-2"
-                                    >
-                                      <Upload className="mr-2 h-4 w-4" />
-                                      Upload
-                                    </Button>
-                                  </div>
-                                )}
                               </div>
-                            )}
+                            </div>
                           </div>
                         </div>
-                        
-                        {/* Preview */}
-                        <div className="space-y-3">
-                          <h3 className="text-base font-medium">Resume Preview</h3>
-                          
-                          {uploadedResume && resumeUrl ? (
-                            <ResumePreview 
-                              fileUrl={resumeUrl}
+                      ) : (
+                        <div className="text-center py-6">
+                          <div className="mx-auto w-12 h-12 rounded-full bg-muted flex items-center justify-center mb-4">
+                            <AlertTriangle className="h-6 w-6 text-muted-foreground" />
+                          </div>
+                          <h3 className="text-lg font-medium mb-2">No Resume Found</h3>
+                          <p className="text-muted-foreground mb-4">
+                            Upload your resume to showcase your skills and experience
+                          </p>
+                        </div>
+                      )}
+                      
+                      {/* Upload Resume Section */}
+                      {!uploadedResume && (
+                        <div className="border-2 border-dashed border-input rounded-lg p-6">
+                          <div className="text-center">
+                            <input
+                              type="file"
+                              id="resume-upload"
+                              className="hidden"
+                              accept=".pdf,.doc,.docx"
+                              onChange={handleResumeChange}
+                            />
+                            <label
+                              htmlFor="resume-upload"
+                              className="cursor-pointer flex flex-col items-center justify-center"
+                            >
+                              <div className="w-12 h-12 bg-primary/10 rounded-full flex items-center justify-center mb-4">
+                                <Upload className="h-5 w-5 text-primary" />
+                              </div>
+                              <h4 className="text-sm font-medium mb-1">
+                                Click to upload resume
+                              </h4>
+                              <p className="text-xs text-muted-foreground mb-4">
+                                PDF, DOC or DOCX (max. 5MB)
+                              </p>
+                            </label>
+                          </div>
+                        </div>
+                      )}
+                      
+                      {/* Show this if a file is selected but not yet uploaded */}
+                      {resumeFile && (
+                        <div className="mt-6">
+                          <div className="flex items-center justify-between px-4 py-3 bg-muted rounded">
+                            <div className="flex items-center">
+                              <FileText className="h-4 w-4 mr-2 text-primary" />
+                              <span className="text-sm font-medium">{resumeFile.name}</span>
+                            </div>
+                            <Button
+                              size="sm"
+                              onClick={() => setResumeFile(null)}
+                              variant="ghost"
+                              className="h-8 w-8 p-0"
+                            >
+                              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="lucide lucide-x"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg>
+                            </Button>
+                          </div>
+                          <Button 
+                            onClick={handleResumeUpload} 
+                            className="w-full mt-4"
+                          >
+                            <Upload className="mr-2 h-4 w-4" />
+                            Upload Resume
+                          </Button>
+                        </div>
+                      )}
+                      
+                      {/* ATS Score Card */}
+                      {uploadedResume && (
+                        <ATSScoreCard
+                          score={atsScore}
+                          aiFeedback={atsFeedback}
+                          onDownloadImprovedResume={handleImprovedResumeDownload}
+                        />
+                      )}
+                      
+                      {/* Resume Preview */}
+                      {uploadedResume && (
+                        <div className="mt-6">
+                          <h3 className="text-lg font-medium mb-4">Resume Preview</h3>
+                          <div className="border rounded-lg p-4 bg-muted/30">
+                            <ResumePreview
+                              fileUrl={resumeUrl || ""}
                               fileName={uploadedResume}
                             />
-                          ) : (
-                            <div className="border rounded-md p-6 text-center bg-muted h-80 flex flex-col items-center justify-center">
-                              <FileText className="h-10 w-10 text-muted-foreground mb-2" />
-                              <p className="text-muted-foreground">
-                                Upload a resume to see preview
-                              </p>
-                            </div>
-                          )}
+                          </div>
                         </div>
-                      </div>
+                      )}
                     </CardContent>
                   </Card>
                 </TabsContent>
@@ -945,3 +994,4 @@ const Profile = () => {
 };
 
 export default Profile;
+
