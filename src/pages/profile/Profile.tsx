@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from "react";
 import { MainLayout } from "@/components/layout/MainLayout";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
@@ -28,7 +27,8 @@ import {
   FileText,
   Upload,
   Download,
-  AlertTriangle
+  AlertTriangle,
+  Eye
 } from "lucide-react";
 import ResumePreview from "./ResumePreview";
 import ATSScoreCard from "./ATSScoreCard";
@@ -68,6 +68,9 @@ const Profile = () => {
     "Include more industry-specific keywords relevant to your target role",
     "Consider adding a skills section with technical competencies"
   ]);
+
+  // Add upload date state
+  const [uploadDate, setUploadDate] = useState<string>("April 15, 2025");
   
   useEffect(() => {
     if (!isLoading && !isAuthenticated) {
@@ -104,14 +107,20 @@ const Profile = () => {
   
   const handleResumeUpload = () => {
     if (resumeFile) {
+      const currentDate = new Date().toLocaleDateString('en-US', { 
+        year: 'numeric', 
+        month: 'long', 
+        day: 'numeric' 
+      });
+      
       toast({
         title: "Resume Uploaded",
         description: `Your resume "${resumeFile.name}" has been uploaded successfully.`,
       });
       console.log("Resume uploaded and file path:", resumeFile.name, resumeUrl);
       setUploadedResume(resumeFile.name);
+      setUploadDate(currentDate);
       setResumeFile(null);
-      // (In real app, backend URL should be stored)
     } else {
       toast({
         title: "No File Selected",
@@ -135,6 +144,14 @@ const Profile = () => {
       a.click();
       document.body.removeChild(a);
     }
+  };
+
+  const handlePreviewResume = () => {
+    console.log("Previewing resume:", uploadedResume);
+    toast({
+      title: "Resume Preview",
+      description: "Opening resume preview.",
+    });
   };
   
   const handleReplaceResume = () => {
@@ -713,235 +730,4 @@ const Profile = () => {
                                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="lucide lucide-pencil"><path d="M17 3a2.85 2.83 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5Z"/><path d="m15 5 4 4"/></svg>
                               </Button>
                               <Button variant="ghost" size="icon">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="lucide lucide-trash-2"><path d="M3 6h18"/><path d="M19 6v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6"/><path d="M8 6V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2"/><line x1="10" x2="10" y1="11" y2="17"/><line x1="14" x2="14" y1="11" y2="17"/></svg>
-                              </Button>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  </CardContent>
-                  <CardFooter className="flex justify-end">
-                    <Button onClick={handleSaveProfile}>
-                      <Save className="mr-2 h-4 w-4" />
-                      Save Changes
-                    </Button>
-                  </CardFooter>
-                </Card>
-              </TabsContent>
-              
-              <TabsContent value="social">
-                <Card>
-                  <CardHeader>
-                    <CardTitle>Social Profiles</CardTitle>
-                    <CardDescription>
-                      Link your social media accounts
-                    </CardDescription>
-                  </CardHeader>
-                  <CardContent className="space-y-4">
-                    <div className="space-y-2">
-                      <Label htmlFor="website">Personal Website</Label>
-                      <div className="flex">
-                        <div className="flex items-center justify-center w-10 rounded-l-md border border-r-0 border-input bg-muted px-3">
-                          <Globe className="h-4 w-4 text-muted-foreground" />
-                        </div>
-                        <Input
-                          id="website"
-                          name="website"
-                          placeholder="https://yourwebsite.com"
-                          value={formData.website}
-                          onChange={handleChange}
-                          className="rounded-l-none"
-                        />
-                      </div>
-                    </div>
-                    
-                    <div className="space-y-2">
-                      <Label htmlFor="linkedin">LinkedIn</Label>
-                      <div className="flex">
-                        <div className="flex items-center justify-center w-10 rounded-l-md border border-r-0 border-input bg-muted px-3">
-                          <Linkedin className="h-4 w-4 text-muted-foreground" />
-                        </div>
-                        <Input
-                          id="linkedin"
-                          name="linkedin"
-                          placeholder="linkedin.com/in/username"
-                          value={formData.linkedin}
-                          onChange={handleChange}
-                          className="rounded-l-none"
-                        />
-                      </div>
-                    </div>
-                    
-                    <div className="space-y-2">
-                      <Label htmlFor="github">GitHub</Label>
-                      <div className="flex">
-                        <div className="flex items-center justify-center w-10 rounded-l-md border border-r-0 border-input bg-muted px-3">
-                          <Github className="h-4 w-4 text-muted-foreground" />
-                        </div>
-                        <Input
-                          id="github"
-                          name="github"
-                          placeholder="github.com/username"
-                          value={formData.github}
-                          onChange={handleChange}
-                          className="rounded-l-none"
-                        />
-                      </div>
-                    </div>
-                    
-                    <div className="space-y-2">
-                      <Label htmlFor="twitter">X (Twitter)</Label>
-                      <div className="flex">
-                        <div className="flex items-center justify-center w-10 rounded-l-md border border-r-0 border-input bg-muted px-3">
-                          <Twitter className="h-4 w-4 text-muted-foreground" />
-                        </div>
-                        <Input
-                          id="twitter"
-                          name="twitter"
-                          placeholder="twitter.com/username"
-                          value={formData.twitter}
-                          onChange={handleChange}
-                          className="rounded-l-none"
-                        />
-                      </div>
-                    </div>
-                  </CardContent>
-                  <CardFooter className="flex justify-end">
-                    <Button onClick={handleSaveProfile}>
-                      <Save className="mr-2 h-4 w-4" />
-                      Save Changes
-                    </Button>
-                  </CardFooter>
-                </Card>
-              </TabsContent>
-              
-              {user.role === "student" && (
-                <TabsContent value="resume">
-                  <Card>
-                    <CardHeader>
-                      <CardTitle>Resume</CardTitle>
-                      <CardDescription>
-                        Upload, view and manage your resume
-                      </CardDescription>
-                    </CardHeader>
-                    <CardContent>
-                      <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-                        <div className="space-y-6">
-                          <div className="space-y-3">
-                            <h3 className="text-base font-medium">Upload Resume</h3>
-                            <p className="text-sm text-muted-foreground">
-                              Upload your resume in PDF, DOC, or DOCX format. This will be shared with potential employers.
-                            </p>
-                            
-                            {uploadedResume ? (
-                              <div className="space-y-4">
-                                <div className="flex items-center justify-between border rounded-lg p-3 bg-muted/50">
-                                  <div className="flex items-center gap-3">
-                                    <div className="p-2 bg-primary/10 rounded-md">
-                                      <FileText className="h-5 w-5 text-primary" />
-                                    </div>
-                                    <div>
-                                      <p className="font-medium text-sm">{uploadedResume}</p>
-                                      <p className="text-xs text-muted-foreground">Uploaded on April 10, 2025</p>
-                                    </div>
-                                  </div>
-                                  <div className="flex gap-2">
-                                    <Button size="icon" variant="ghost" onClick={handleDownloadResume}>
-                                      <Download className="h-4 w-4" />
-                                    </Button>
-                                    <Button size="icon" variant="ghost" onClick={handleReplaceResume}>
-                                      <Upload className="h-4 w-4" />
-                                    </Button>
-                                  </div>
-                                </div>
-                                
-                                <input 
-                                  type="file" 
-                                  id="resume-replace-input" 
-                                  className="hidden" 
-                                  accept=".pdf,.doc,.docx"
-                                  onChange={handleResumeChange}
-                                />
-                                
-                                {/* ATS Score Card */}
-                                <ATSScoreCard 
-                                  score={atsScore} 
-                                  aiFeedback={atsFeedback}
-                                  onDownloadImprovedResume={handleImprovedResumeDownload} 
-                                />
-                              </div>
-                            ) : (
-                              <div className="border-2 border-dashed border-input rounded-lg p-8 text-center">
-                                <input
-                                  type="file"
-                                  className="hidden"
-                                  id="resume-upload"
-                                  accept=".pdf,.doc,.docx"
-                                  onChange={handleResumeChange}
-                                />
-                                <label
-                                  htmlFor="resume-upload"
-                                  className="cursor-pointer flex flex-col items-center justify-center"
-                                >
-                                  <div className="p-3 bg-primary/10 rounded-full mb-4">
-                                    <Upload className="h-6 w-6 text-primary" />
-                                  </div>
-                                  <span className="text-sm font-medium mb-1">
-                                    Click to upload resume
-                                  </span>
-                                  <span className="text-xs text-muted-foreground">
-                                    PDF, DOC or DOCX (max. 5MB)
-                                  </span>
-                                </label>
-                                
-                                {resumeFile && (
-                                  <div className="mt-4">
-                                    <p className="text-sm">{resumeFile.name}</p>
-                                    <Button 
-                                      onClick={handleResumeUpload} 
-                                      size="sm" 
-                                      className="mt-2"
-                                    >
-                                      <Upload className="mr-2 h-4 w-4" />
-                                      Upload
-                                    </Button>
-                                  </div>
-                                )}
-                              </div>
-                            )}
-                          </div>
-                        </div>
-                        
-                        {/* Preview */}
-                        <div className="space-y-3">
-                          <h3 className="text-base font-medium">Resume Preview</h3>
-                          
-                          {uploadedResume && resumeUrl ? (
-                            <ResumePreview 
-                              fileUrl={resumeUrl}
-                              fileName={uploadedResume}
-                            />
-                          ) : (
-                            <div className="border rounded-md p-6 text-center bg-muted h-80 flex flex-col items-center justify-center">
-                              <FileText className="h-10 w-10 text-muted-foreground mb-2" />
-                              <p className="text-muted-foreground">
-                                Upload a resume to see preview
-                              </p>
-                            </div>
-                          )}
-                        </div>
-                      </div>
-                    </CardContent>
-                  </Card>
-                </TabsContent>
-              )}
-            </Tabs>
-          </div>
-        </div>
-      </div>
-    </MainLayout>
-  );
-};
-
-export default Profile;
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="lucide lucide-trash-2"><path d="M3 6h18"/><path d="M19 6v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6"/><path d="M8 6V4c0-1 1-2 2-
