@@ -20,9 +20,6 @@ const ResumeBuilder = () => {
   const [atsScore, setAtsScore] = useState<number>(76); // Dummy ATS score
   const [showATSAnalysis, setShowATSAnalysis] = useState<boolean>(false);
   
-  // Add upload date state
-  const [uploadDate, setUploadDate] = useState<string>("April 15, 2025");
-  
   const handleResumeChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files && e.target.files[0]) {
       setResumeFile(e.target.files[0]);
@@ -31,21 +28,16 @@ const ResumeBuilder = () => {
   
   const handleResumeUpload = () => {
     if (resumeFile) {
-      const currentDate = new Date().toLocaleDateString('en-US', { 
-        year: 'numeric', 
-        month: 'long', 
-        day: 'numeric' 
-      });
-      
+      // Here you would implement the actual upload logic
       toast({
         title: "Resume Uploaded",
         description: `Your resume "${resumeFile.name}" has been uploaded successfully.`,
       });
       console.log("Resume uploaded:", resumeFile.name);
       setUploadedResume(resumeFile.name);
-      setUploadDate(currentDate);
       setResumeFile(null);
-      setAtsScore(Math.floor(Math.random() * 30) + 70);
+      // Generate new ATS score when resume is uploaded
+      setAtsScore(Math.floor(Math.random() * 30) + 70); // Random score between 70-99
       setShowATSAnalysis(true);
     } else {
       toast({
@@ -72,25 +64,6 @@ const ResumeBuilder = () => {
     });
   };
 
-  const handleDownloadResume = () => {
-    // In a real app, this would download the actual file from your backend
-    if (uploadedResume) {
-      toast({
-        title: "Downloading Resume",
-        description: "Your resume is being downloaded.",
-      });
-      
-      // Simulating download - in a real app, you'd use the actual file URL
-      const a = document.createElement('a');
-      a.href = '#'; // This would be the actual file URL in production
-      a.download = uploadedResume;
-      document.body.appendChild(a);
-      a.click();
-      document.body.removeChild(a);
-    }
-  };
-
-  // Update the resume section in the JSX
   return (
     <MainLayout>
       <div className="container-custom py-8 md:py-12">
@@ -122,7 +95,7 @@ const ResumeBuilder = () => {
                             </div>
                             <div>
                               <h4 className="font-medium">{uploadedResume}</h4>
-                              <p className="text-muted-foreground text-sm">Uploaded on {uploadDate}</p>
+                              <p className="text-muted-foreground text-sm">Uploaded on April 15, 2025</p>
                             </div>
                           </div>
                           <div className="grid grid-cols-2 gap-2">
@@ -130,7 +103,7 @@ const ResumeBuilder = () => {
                               variant="outline" 
                               size="sm" 
                               className="w-full"
-                              onClick={handleDownloadResume}
+                              onClick={() => console.log("Downloading resume:", uploadedResume)}
                             >
                               <Download className="mr-2 h-4 w-4" />
                               Download
