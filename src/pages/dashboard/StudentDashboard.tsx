@@ -1,4 +1,3 @@
-
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
@@ -9,8 +8,9 @@ import { useInternships } from "@/context/InternshipContext";
 import { useCourses } from "@/context/CourseContext";
 import { useAI } from "@/context/AIContext";
 import { useJobs } from "@/context/JobContext";
+import { StudentJourney } from "@/components/dashboard/StudentJourney";
 import { Internship, Course, Application } from "@/types";
-import { Job } from "@/types/job"; // Fixed import path for Job type
+import { Job } from "@/types/job";
 import { Badge } from "@/components/ui/badge";
 import { 
   BookOpen, 
@@ -200,6 +200,8 @@ const StudentDashboard = () => {
             </Button>
           </div>
         </div>
+
+        <StudentJourney />
         
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
           <Card>
