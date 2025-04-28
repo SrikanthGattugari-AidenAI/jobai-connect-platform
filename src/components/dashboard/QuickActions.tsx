@@ -2,7 +2,7 @@
 import { useNavigate } from "react-router-dom";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { BuildingIcon, BookOpen, Map, Trophy, FileText } from "lucide-react";
+import { Mic, BookOpen, Map, Trophy, FileText } from "lucide-react";
 
 export function QuickActions() {
   const navigate = useNavigate();
@@ -13,9 +13,9 @@ export function QuickActions() {
         <CardTitle className="text-lg font-semibold">Quick Actions</CardTitle>
       </CardHeader>
       <CardContent className="space-y-2">
-        <Button variant="outline" className="w-full justify-start hover:bg-slate-50" onClick={() => navigate("/companies")}>
-          <BuildingIcon className="mr-2 h-4 w-4" />
-          Companies Viewing Your Profile
+        <Button variant="outline" className="w-full justify-start hover:bg-slate-50" onClick={() => navigate("/mock-interview")}>
+          <Mic className="mr-2 h-4 w-4" />
+          Practice Mock Interviews
         </Button>
         <Button variant="outline" className="w-full justify-start hover:bg-slate-50" onClick={() => navigate("/courses")}>
           <BookOpen className="mr-2 h-4 w-4" />
