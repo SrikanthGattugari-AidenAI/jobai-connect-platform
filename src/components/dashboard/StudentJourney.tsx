@@ -12,6 +12,7 @@ interface JourneyStep {
   isCurrent?: boolean;
   badge?: string;
   link: string;
+  bgColor?: string;
 }
 
 const journeySteps: JourneyStep[] = [
@@ -20,103 +21,117 @@ const journeySteps: JourneyStep[] = [
     title: "Profile",
     isCurrent: true,
     badge: "70%",
-    link: "/profile"
+    link: "/profile",
+    bgColor: "bg-gradient-to-r from-blue-50 to-blue-100"
   },
   {
     id: "courses",
     title: "Courses & Roadmap",
     isOptional: true,
-    link: "/courses"
+    link: "/courses",
+    bgColor: "bg-gradient-to-r from-purple-50 to-purple-100"
   },
   {
     id: "jobs",
     title: "Job Recommendations",
     isOptional: true,
-    link: "/jobs"
+    link: "/jobs",
+    bgColor: "bg-gradient-to-r from-green-50 to-green-100"
   },
   {
     id: "mock",
     title: "Mock Interview",
     isOptional: true,
-    link: "/mock-interview"
+    link: "/mock-interview",
+    bgColor: "bg-gradient-to-r from-yellow-50 to-yellow-100"
   },
   {
     id: "l1",
     title: "L1 Interview",
-    link: "/interviews"
+    link: "/interviews",
+    bgColor: "bg-gradient-to-r from-orange-50 to-orange-100"
   },
   {
     id: "feedback",
     title: "Feedback & Insights",
     badge: "2 Available",
-    link: "/feedback"
+    link: "/feedback",
+    bgColor: "bg-gradient-to-r from-teal-50 to-teal-100"
   }
 ];
 
 export function StudentJourney() {
   const navigate = useNavigate();
+  const currentPath = window.location.pathname;
 
   return (
     <div className="w-full bg-card border rounded-lg p-6 mb-8">
       <h2 className="text-lg font-semibold mb-6">Your Journey</h2>
       <ScrollArea className="w-full">
         <div className="flex space-x-4 min-w-max pb-4">
-          {journeySteps.map((step, index) => (
-            <div 
-              key={step.id}
-              className="relative flex flex-col items-center"
-              onClick={() => navigate(step.link)}
-            >
-              <div
-                className={cn(
-                  "relative cursor-pointer group transition-all",
-                  "flex items-center justify-center",
-                  "h-24 w-48 px-4",
-                  "border rounded-md",
-                  "hover:shadow-lg hover:scale-105",
-                  step.isCurrent && "border-primary bg-primary/5 shadow-sm ring-1 ring-primary/20",
-                  step.isCompleted && "opacity-75"
-                )}
+          {journeySteps.map((step, index) => {
+            const isActive = currentPath === step.link;
+            return (
+              <div 
+                key={step.id}
+                className="relative flex flex-col items-center"
+                onClick={() => navigate(step.link)}
               >
-                {/* Chevron shape */}
                 <div
                   className={cn(
-                    "absolute right-0 h-6 w-6 transform rotate-45 border-t border-r",
-                    step.isCurrent ? "border-primary/20" : "border-border",
-                    "translate-x-2"
+                    "relative cursor-pointer group transition-all",
+                    "flex items-center justify-center",
+                    "h-24 w-48 px-4",
+                    "border rounded-md",
+                    "hover:shadow-lg hover:scale-105",
+                    step.bgColor,
+                    isActive && "ring-2 ring-primary shadow-lg scale-105",
+                    step.isCurrent && "border-primary bg-primary/5 shadow-sm ring-1 ring-primary/20",
+                    step.isCompleted && "opacity-75"
                   )}
-                />
-                
-                {/* Content */}
-                <div className="flex flex-col items-center justify-center space-y-2 z-10">
-                  <span className="font-medium text-sm text-center">{step.title}</span>
+                >
+                  {/* Chevron shape */}
+                  <div
+                    className={cn(
+                      "absolute right-0 h-6 w-6 transform rotate-45 border-t border-r",
+                      isActive ? "border-primary" : "border-border",
+                      step.bgColor,
+                      "translate-x-2"
+                    )}
+                  />
                   
-                  {step.isOptional && (
-                    <Badge 
-                      variant="outline" 
-                      className="text-xs bg-muted/50"
-                    >
-                      Optional
-                    </Badge>
-                  )}
-                  
-                  {step.badge && (
-                    <Badge 
-                      className={cn(
-                        "text-xs",
-                        step.id === "profile" ? "bg-primary/20 text-primary hover:bg-primary/30" : ""
-                      )}
-                    >
-                      {step.badge}
-                    </Badge>
-                  )}
+                  {/* Content */}
+                  <div className="flex flex-col items-center justify-center space-y-2 z-10">
+                    <span className="font-medium text-sm text-center">{step.title}</span>
+                    
+                    {step.isOptional && (
+                      <Badge 
+                        variant="outline" 
+                        className="text-xs bg-muted/50"
+                      >
+                        Optional
+                      </Badge>
+                    )}
+                    
+                    {step.badge && (
+                      <Badge 
+                        className={cn(
+                          "text-xs",
+                          step.id === "profile" ? "bg-primary/20 text-primary hover:bg-primary/30" : ""
+                        )}
+                      >
+                        {step.badge}
+                      </Badge>
+                    )}
+                  </div>
                 </div>
               </div>
-            </div>
-          ))}
+            );
+          })}
         </div>
         <ScrollBar orientation="horizontal" />
       </ScrollArea>
     </div>
   );
 }
+
