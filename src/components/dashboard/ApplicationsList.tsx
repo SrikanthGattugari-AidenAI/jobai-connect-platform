@@ -1,7 +1,6 @@
 
 import { useNavigate } from "react-router-dom";
 import { format } from "date-fns";
-import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Clock } from "lucide-react";
 import { Application, Internship } from "@/types";
@@ -32,21 +31,16 @@ export function ApplicationsList({ applications, internships }: ApplicationsList
   };
 
   return (
-    <Card>
-      <CardHeader>
-        <div className="flex items-center justify-between">
-          <CardTitle>Your Applications</CardTitle>
-          <Button variant="ghost" size="sm" onClick={() => navigate("/internships")}>
-            View All
-          </Button>
-        </div>
+    <Card className="bg-gradient-to-b from-white to-slate-50">
+      <CardHeader className="pb-3">
+        <CardTitle>Applications Tracking</CardTitle>
         <CardDescription>
-          Track the status of your internship applications
+          Track your internship application progress
         </CardDescription>
       </CardHeader>
       <CardContent>
         {applications.length > 0 ? (
-          <div className="space-y-4">
+          <div className="space-y-3">
             {applications.map((application) => {
               const internship = internships.find(i => i.id === application.internshipId);
               if (!internship) return null;
@@ -54,19 +48,19 @@ export function ApplicationsList({ applications, internships }: ApplicationsList
               return (
                 <div 
                   key={application.id} 
-                  className="border rounded-lg p-4 hover:border-primary transition-colors cursor-pointer"
+                  className="border rounded-lg p-3 hover:border-primary transition-colors cursor-pointer bg-white"
                   onClick={() => navigate(`/internships/${internship.id}`)}
                 >
-                  <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
+                  <div className="flex flex-col md:flex-row md:items-center justify-between gap-3">
                     <div>
-                      <h3 className="font-medium">{internship.title}</h3>
+                      <h3 className="font-medium text-sm">{internship.title}</h3>
                       <p className="text-sm text-muted-foreground">{internship.company}</p>
-                      <div className="flex items-center text-sm mt-2">
-                        <Clock className="mr-2 h-4 w-4 text-muted-foreground" />
+                      <div className="flex items-center text-xs mt-2 text-muted-foreground">
+                        <Clock className="mr-1 h-3 w-3" />
                         <span>Applied on {format(new Date(application.appliedDate), "MMM d, yyyy")}</span>
                       </div>
                     </div>
-                    <div className="flex flex-col items-start md:items-end">
+                    <div>
                       <span className={`px-2 py-1 rounded text-xs font-medium capitalize ${getStatusColor(application.status)}`}>
                         {application.status}
                       </span>
@@ -78,10 +72,7 @@ export function ApplicationsList({ applications, internships }: ApplicationsList
           </div>
         ) : (
           <div className="text-center py-6">
-            <p className="text-muted-foreground mb-4">You haven't applied to any internships yet.</p>
-            <Button onClick={() => navigate("/internships")}>
-              Browse Internships
-            </Button>
+            <p className="text-muted-foreground text-sm">No applications yet.</p>
           </div>
         )}
       </CardContent>
