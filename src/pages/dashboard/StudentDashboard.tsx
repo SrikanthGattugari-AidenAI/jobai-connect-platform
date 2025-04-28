@@ -21,7 +21,7 @@ const StudentDashboard = () => {
   const { courses, getEnrolledCourses } = useCourses();
   const { jobs } = useJobs();
   
-  // Sample application data
+  // Sample application data with fixed status values that match the Application type
   const sampleApplications = [
     {
       id: "app1",
@@ -29,7 +29,7 @@ const StudentDashboard = () => {
       internshipId: "int1",
       coverLetter: "Cover letter content",
       appliedDate: "2025-04-20T10:00:00.000Z",
-      status: "reviewing"
+      status: "reviewing" as const
     },
     {
       id: "app2",
@@ -37,7 +37,7 @@ const StudentDashboard = () => {
       internshipId: "int2",
       coverLetter: "Cover letter content",
       appliedDate: "2025-04-18T10:00:00.000Z",
-      status: "shortlisted"
+      status: "shortlisted" as const
     },
     {
       id: "app3",
@@ -45,7 +45,7 @@ const StudentDashboard = () => {
       internshipId: "int3",
       coverLetter: "Cover letter content",
       appliedDate: "2025-04-15T10:00:00.000Z",
-      status: "accepted"
+      status: "accepted" as const
     }
   ];
 
