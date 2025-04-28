@@ -10,6 +10,7 @@ interface JourneyStep {
   isOptional?: boolean;
   isCompleted?: boolean;
   isCurrent?: boolean;
+  isNew?: boolean;
   badge?: string;
   link: string;
   bgColor?: string;
@@ -25,37 +26,29 @@ const journeySteps: JourneyStep[] = [
     bgColor: "bg-gradient-to-r from-blue-50 to-blue-100"
   },
   {
-    id: "courses",
-    title: "Courses & Roadmap",
-    isOptional: true,
-    link: "/courses",
-    bgColor: "bg-gradient-to-r from-purple-50 to-purple-100"
-  },
-  {
     id: "jobs",
     title: "Job Recommendations",
-    isOptional: true,
+    isNew: true,
     link: "/jobs",
     bgColor: "bg-gradient-to-r from-green-50 to-green-100"
   },
   {
-    id: "mock",
-    title: "Mock Interview",
-    isOptional: true,
+    id: "interview",
+    title: "Interview Agent",
     link: "/mock-interview",
-    bgColor: "bg-gradient-to-r from-yellow-50 to-yellow-100"
-  },
-  {
-    id: "l1",
-    title: "L1 Interview",
-    link: "/interviews",
-    bgColor: "bg-gradient-to-r from-orange-50 to-orange-100"
+    bgColor: "bg-gradient-to-r from-purple-50 to-purple-100"
   },
   {
     id: "feedback",
-    title: "Feedback & Insights",
+    title: "Feedback",
     badge: "2 Available",
     link: "/feedback",
+    bgColor: "bg-gradient-to-r from-orange-50 to-orange-100"
+  },
+  {
+    id: "leaderboard",
+    title: "Leaderboard",
+    link: "/leaderboard",
     bgColor: "bg-gradient-to-r from-teal-50 to-teal-100"
   }
 ];
@@ -66,7 +59,7 @@ export function StudentJourney() {
 
   return (
     <div className="w-full bg-card border rounded-lg p-6 mb-8">
-      <h2 className="text-lg font-semibold mb-6">Your Journey</h2>
+      <h2 className="text-lg font-semibold mb-6">My Journey</h2>
       <ScrollArea className="w-full">
         <div className="flex space-x-4 min-w-max pb-4">
           {journeySteps.map((step, index) => {
@@ -104,12 +97,12 @@ export function StudentJourney() {
                   <div className="flex flex-col items-center justify-center space-y-2 z-10">
                     <span className="font-medium text-sm text-center">{step.title}</span>
                     
-                    {step.isOptional && (
+                    {step.isNew && (
                       <Badge 
-                        variant="outline" 
-                        className="text-xs bg-muted/50"
+                        variant="default" 
+                        className="text-xs bg-primary/20 text-primary"
                       >
-                        Optional
+                        New
                       </Badge>
                     )}
                     
@@ -134,4 +127,3 @@ export function StudentJourney() {
     </div>
   );
 }
-

@@ -3,16 +3,16 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 
 interface DashboardStatsProps {
   totalJobs: number;
-  applicationCount: number;
+  confidenceScore: number;
   enrolledCoursesCount: number;
-  savedInternshipsCount: number;
+  dreamInternshipsCount: number;
 }
 
 export function DashboardStats({ 
   totalJobs,
-  applicationCount,
+  confidenceScore,
   enrolledCoursesCount,
-  savedInternshipsCount
+  dreamInternshipsCount
 }: DashboardStatsProps) {
   return (
     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
@@ -27,10 +27,10 @@ export function DashboardStats({
       
       <Card>
         <CardHeader className="pb-2">
-          <CardTitle className="text-sm font-medium text-muted-foreground">Active Applications</CardTitle>
+          <CardTitle className="text-sm font-medium text-muted-foreground">Confidence Score</CardTitle>
         </CardHeader>
         <CardContent>
-          <div className="text-3xl font-bold">{applicationCount}</div>
+          <div className="text-3xl font-bold">{confidenceScore}%</div>
         </CardContent>
       </Card>
       
@@ -45,10 +45,10 @@ export function DashboardStats({
       
       <Card>
         <CardHeader className="pb-2">
-          <CardTitle className="text-sm font-medium text-muted-foreground">Saved Internships</CardTitle>
+          <CardTitle className="text-sm font-medium text-muted-foreground">Dream Internships</CardTitle>
         </CardHeader>
         <CardContent>
-          <div className="text-3xl font-bold">{savedInternshipsCount}</div>
+          <div className="text-3xl font-bold">{dreamInternshipsCount}</div>
         </CardContent>
       </Card>
     </div>
