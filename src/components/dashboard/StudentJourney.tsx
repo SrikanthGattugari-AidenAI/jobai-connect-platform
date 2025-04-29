@@ -104,7 +104,7 @@ export function StudentJourney() {
                   className={cn(
                     "relative cursor-pointer group transition-all",
                     "flex items-center justify-center",
-                    "h-20 w-40 px-3", // Made smaller here
+                    "h-20 w-40 px-3", 
                     "border rounded-md",
                     "hover:shadow-lg",
                     step.bgColor,
@@ -116,7 +116,7 @@ export function StudentJourney() {
                   {/* Chevron shape with animation */}
                   <motion.div
                     className={cn(
-                      "absolute right-0 h-5 w-5 transform rotate-45 border-t border-r", // Made smaller
+                      "absolute right-0 h-5 w-5 transform rotate-45 border-t border-r", 
                       isActive ? "border-white" : "border-border",
                       step.bgColor,
                       "translate-x-2"
@@ -127,7 +127,7 @@ export function StudentJourney() {
                   
                   {/* Content */}
                   <div className="flex flex-col items-center justify-center space-y-1 z-10">
-                    <span className="font-medium text-xs text-center">{step.title}</span>
+                    <span className="font-bold text-xs text-center">{step.title}</span>
                     
                     {step.isNew && (
                       <motion.div
@@ -136,7 +136,7 @@ export function StudentJourney() {
                       >
                         <Badge 
                           variant="default" 
-                          className="text-xs bg-white/20 text-white"
+                          className="text-xs bg-green-500 hover:bg-green-600 text-white"
                         >
                           New
                         </Badge>
@@ -147,7 +147,8 @@ export function StudentJourney() {
                       <Badge 
                         className={cn(
                           "text-xs",
-                          step.id === "profile" ? "bg-white/20 text-white hover:bg-white/30" : ""
+                          step.id === "profile" ? "bg-green-500 hover:bg-green-600 text-white" : 
+                          step.id === "feedback" ? "bg-green-500 hover:bg-green-600 text-white" : ""
                         )}
                       >
                         {step.badge}
