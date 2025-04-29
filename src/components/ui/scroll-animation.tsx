@@ -21,7 +21,11 @@ export const ScrollAnimation: React.FC<ScrollAnimationProps> = ({
 }) => {
   const controls = useAnimation();
   const ref = useRef(null);
-  const isInView = useInView(ref, { once, threshold });
+  // Fix: Use amount instead of threshold for the useInView hook
+  const isInView = useInView(ref, { 
+    once, 
+    amount: threshold // Using amount instead of threshold
+  });
   
   const variants = {
     hidden: {
