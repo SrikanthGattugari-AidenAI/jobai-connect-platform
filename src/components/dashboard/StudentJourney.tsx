@@ -4,6 +4,7 @@ import { Badge } from "@/components/ui/badge";
 import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
 import { cn } from "@/lib/utils";
 import { motion } from "framer-motion";
+import { LayoutDashboard } from "lucide-react";
 
 interface JourneyStep {
   id: string;
@@ -19,6 +20,13 @@ interface JourneyStep {
 }
 
 const journeySteps: JourneyStep[] = [
+  {
+    id: "dashboard",
+    title: "Dashboard",
+    link: "/dashboard",
+    bgColor: "bg-gradient-to-r from-yellow-50 to-yellow-100",
+    icon: <LayoutDashboard className="h-4 w-4 mr-1" />
+  },
   {
     id: "profile",
     title: "Profile",
@@ -127,7 +135,9 @@ export function StudentJourney() {
                   
                   {/* Content */}
                   <div className="flex flex-col items-center justify-center space-y-1 z-10">
-                    <span className="font-bold text-center">{step.title}</span>
+                    <span className="font-bold text-center flex items-center">
+                      {step.icon}{step.title}
+                    </span>
                     
                     {step.isNew && (
                       <motion.div
