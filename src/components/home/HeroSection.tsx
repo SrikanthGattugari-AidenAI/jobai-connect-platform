@@ -4,7 +4,7 @@ import { useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
-import { Search, Sparkles, BarChart, GraduationCap, Briefcase } from "lucide-react";
+import { Search, Sparkles, BarChart, GraduationCap, Briefcase, CheckCircle } from "lucide-react";
 
 export const HeroSection = () => {
   const [searchQuery, setSearchQuery] = useState("");
@@ -27,11 +27,22 @@ export const HeroSection = () => {
               </Badge>
             </div>
             <h1 className="heading-1 text-gray-900">
-              Find Your Perfect Internship with <span className="text-brand-purple">AI-Powered</span> Matching
+              Your Career Journey <span className="text-brand-purple">Simplified</span> with AI
             </h1>
             <p className="text-xl text-gray-600">
-              Connect with top employers, develop skills, and launch your career through personalized internship opportunities.
+              From finding internships to preparing for interviews, our AI-powered platform makes every step of your career journey seamless and intuitive.
             </p>
+            
+            <div className="space-y-3">
+              {["Find perfect internships with smart matching", 
+                "Prepare for interviews with AI simulations", 
+                "Track your progress with personalized insights"].map((item, index) => (
+                <div key={index} className="flex items-start">
+                  <CheckCircle className="h-5 w-5 text-primary mt-1 mr-3 flex-shrink-0" />
+                  <p className="text-gray-700">{item}</p>
+                </div>
+              ))}
+            </div>
             
             <form onSubmit={handleSearch} className="flex w-full max-w-lg space-x-2">
               <div className="relative flex-grow">
@@ -76,11 +87,14 @@ export const HeroSection = () => {
           </div>
           
           <div className="relative lg:h-[500px] animation-fade-up">
-            <img
-              src="https://images.unsplash.com/photo-1529156069898-49953e39b3ac"
-              alt="Students collaborating"
-              className="rounded-lg shadow-xl h-full w-full object-cover"
-            />
+            <div className="relative z-10">
+              <img
+                src="https://images.unsplash.com/photo-1519389950473-47ba0277781c"
+                alt="Students collaborating"
+                className="rounded-lg shadow-xl h-full w-full object-cover"
+              />
+            </div>
+            
             <div className="absolute -bottom-6 -left-6 bg-white p-4 rounded-lg shadow-lg hidden md:block">
               <div className="flex items-center space-x-3 text-sm">
                 <Sparkles className="h-5 w-5 text-brand-purple" />
@@ -93,6 +107,9 @@ export const HeroSection = () => {
                 <span>10,000+ internships available</span>
               </div>
             </div>
+            
+            <div className="absolute -bottom-4 right-12 w-32 h-32 bg-primary/5 rounded-full blur-3xl -z-10"></div>
+            <div className="absolute -top-4 left-12 w-32 h-32 bg-brand-purple/5 rounded-full blur-3xl -z-10"></div>
           </div>
         </div>
       </div>

@@ -14,7 +14,8 @@ import {
   CareerRoadmapSection,
   MarketTrendsSection,
   TopCompaniesSection,
-  FeaturedJobs
+  FeaturedJobs,
+  VoiceSearchSection
 } from "@/components/home";
 
 const Index = () => {
@@ -29,6 +30,7 @@ const Index = () => {
       <HeroSection />
       <FeaturesSection />
       <MarketTrendsSection />
+      <VoiceSearchSection />
       <FeaturedInternships internships={featuredInternships} />
       <FeaturedJobs jobs={featuredJobs} />
       <MockInterviewSection />

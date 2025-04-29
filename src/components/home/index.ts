@@ -12,3 +12,4 @@ export * from "./CareerRoadmapSection";
 export * from "./MarketTrendsSection";
 export * from "./TopCompaniesSection";
 export * from "./FeaturedJobs";
+export * from "./VoiceSearchSection";
