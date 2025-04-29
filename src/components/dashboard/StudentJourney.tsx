@@ -4,7 +4,7 @@ import { Badge } from "@/components/ui/badge";
 import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
 import { cn } from "@/lib/utils";
 import { motion } from "framer-motion";
-import { LayoutDashboard } from "lucide-react";
+import { LayoutDashboard, Code } from "lucide-react";
 
 interface JourneyStep {
   id: string;
@@ -47,6 +47,14 @@ const journeySteps: JourneyStep[] = [
     title: "Interview Agent",
     link: "/mock-interview",
     bgColor: "bg-gradient-to-r from-purple-50 to-purple-100"
+  },
+  {
+    id: "l1-interview",
+    title: "L1 Technical Interview",
+    isNew: true,
+    link: "/l1-technical-interview",
+    bgColor: "bg-gradient-to-r from-indigo-50 to-indigo-100",
+    icon: <Code className="h-4 w-4 mr-1" />
   },
   {
     id: "feedback",
