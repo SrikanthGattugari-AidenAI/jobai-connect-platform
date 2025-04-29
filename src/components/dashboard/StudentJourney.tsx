@@ -74,14 +74,14 @@ export function StudentJourney() {
 
   return (
     <motion.div 
-      className="w-full bg-white border rounded-lg p-4 mb-6 shadow-sm"
+      className="w-full bg-white border rounded-lg p-6 mb-6 shadow-sm"
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       transition={{ duration: 0.5 }}
     >
-      <h2 className="text-lg font-semibold mb-4 text-gray-800">My Journey</h2>
+      <h2 className="text-lg font-semibold mb-5 text-gray-800">My Journey</h2>
       <ScrollArea className="w-full">
-        <div className="flex space-x-4 min-w-max pb-3">
+        <div className="flex space-x-5 min-w-max pb-4 px-1">
           {journeySteps.map((step, index) => {
             const isActive = currentPath.includes(step.link.replace('/', ''));
             return (
@@ -127,7 +127,7 @@ export function StudentJourney() {
                   
                   {/* Content */}
                   <div className="flex flex-col items-center justify-center space-y-1 z-10">
-                    <span className="font-bold text-xs text-center">{step.title}</span>
+                    <span className="font-bold text-center">{step.title}</span>
                     
                     {step.isNew && (
                       <motion.div

@@ -5,6 +5,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Clock, ChevronRight } from "lucide-react";
 import { Application, Internship } from "@/types";
 import { motion } from "framer-motion";
+import { ScrollAnimation } from "@/components/ui/scroll-animation";
 
 interface ApplicationsListProps {
   applications: Application[];
@@ -53,59 +54,62 @@ export function ApplicationsList({ applications, internships }: ApplicationsList
   };
 
   return (
-    <Card className="bg-gradient-to-b from-white to-slate-50 overflow-hidden">
-      <CardHeader className="pb-3">
-        <CardTitle className="text-lg font-semibold">Applications Tracking</CardTitle>
-        <CardDescription>
-          Track your internship application progress
-        </CardDescription>
-      </CardHeader>
-      <CardContent>
-        {applications.length > 0 ? (
-          <motion.div 
-            className="space-y-3"
-            variants={containerVariants}
-            initial="hidden"
-            animate="visible"
-          >
-            {applications.map((application) => {
-              const internship = internships.find(i => i.id === application.internshipId);
-              if (!internship) return null;
-              
-              return (
-                <motion.div 
-                  key={application.id} 
-                  className="border rounded-lg p-3 hover:border-primary transition-all cursor-pointer bg-white backdrop-blur-sm"
-                  onClick={() => navigate(`/internships/${internship.id}`)}
-                  variants={itemVariants}
-                  whileHover="hover"
-                >
-                  <div className="flex flex-col md:flex-row md:items-center justify-between gap-3">
-                    <div className="flex-1">
-                      <h3 className="font-medium text-sm">{internship.title}</h3>
-                      <p className="text-sm text-muted-foreground">{internship.company}</p>
-                      <div className="flex items-center text-xs mt-2 text-muted-foreground">
-                        <Clock className="mr-1 h-3 w-3" />
-                        <span>Applied on {format(new Date(application.appliedDate), "MMM d, yyyy")}</span>
+    <ScrollAnimation animation="fadeIn">
+      <Card className="bg-gradient-to-b from-white to-slate-50 overflow-hidden">
+        <CardHeader className="pb-3">
+          <CardTitle className="text-lg font-semibold">Applications Tracking</CardTitle>
+          <CardDescription>
+            Track your internship application progress
+          </CardDescription>
+        </CardHeader>
+        <CardContent>
+          {applications.length > 0 ? (
+            <motion.div 
+              className="space-y-3"
+              variants={containerVariants}
+              initial="hidden"
+              animate="visible"
+            >
+              {applications.map((application, index) => {
+                const internship = internships.find(i => i.id === application.internshipId);
+                if (!internship) return null;
+                
+                return (
+                  <ScrollAnimation key={application.id} delay={index * 0.1} animation="popUp">
+                    <motion.div 
+                      className="border rounded-lg p-3 hover:border-primary transition-all cursor-pointer bg-white backdrop-blur-sm"
+                      onClick={() => navigate(`/internships/${internship.id}`)}
+                      variants={itemVariants}
+                      whileHover="hover"
+                    >
+                      <div className="flex flex-col md:flex-row md:items-center justify-between gap-3">
+                        <div className="flex-1">
+                          <h3 className="font-medium text-sm">{internship.title}</h3>
+                          <p className="text-sm text-muted-foreground">{internship.company}</p>
+                          <div className="flex items-center text-xs mt-2 text-muted-foreground">
+                            <Clock className="mr-1 h-3 w-3" />
+                            <span>Applied on {format(new Date(application.appliedDate), "MMM d, yyyy")}</span>
+                          </div>
+                        </div>
+                        <div className="flex items-center gap-3">
+                          <span className={`px-2 py-1 rounded text-xs font-medium capitalize ${getStatusColor(application.status)}`}>
+                            {application.status}
+                          </span>
+                          <ChevronRight className="h-4 w-4 text-muted-foreground" />
+                        </div>
                       </div>
-                    </div>
-                    <div className="flex items-center gap-3">
-                      <span className={`px-2 py-1 rounded text-xs font-medium capitalize ${getStatusColor(application.status)}`}>
-                        {application.status}
-                      </span>
-                      <ChevronRight className="h-4 w-4 text-muted-foreground" />
-                    </div>
-                  </div>
-                </motion.div>
-              );
-            })}
-          </motion.div>
-        ) : (
-          <div className="text-center py-6">
-            <p className="text-muted-foreground text-sm">No applications yet.</p>
-          </div>
-        )}
-      </CardContent>
-    </Card>
+                    </motion.div>
+                  </ScrollAnimation>
+                );
+              })}
+            </motion.div>
+          ) : (
+            <div className="text-center py-6">
+              <p className="text-muted-foreground text-sm">No applications yet.</p>
+            </div>
+          )}
+        </CardContent>
+      </Card>
+    </ScrollAnimation>
   );
 }
