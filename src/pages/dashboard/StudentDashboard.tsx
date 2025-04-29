@@ -13,6 +13,7 @@ import { MyJobsStatus } from "@/components/dashboard/MyJobsStatus";
 import { ApplicationsList } from "@/components/dashboard/ApplicationsList";
 import { QuickActions } from "@/components/dashboard/QuickActions";
 import { MainLayout } from "@/components/layout/MainLayout";
+import { motion } from "framer-motion";
 
 const StudentDashboard = () => {
   const navigate = useNavigate();
@@ -124,6 +125,23 @@ const StudentDashboard = () => {
     { status: "Offers", count: 2 }
   ];
 
+  // Container animation variants
+  const containerVariants = {
+    hidden: { opacity: 0 },
+    visible: { 
+      opacity: 1,
+      transition: {
+        staggerChildren: 0.1
+      }
+    }
+  };
+
+  // Item animation variants
+  const itemVariants = {
+    hidden: { opacity: 0, y: 20 },
+    visible: { opacity: 1, y: 0 }
+  };
+
   useEffect(() => {
     const loadDashboardData = async () => {
       if (!user) return;
@@ -147,43 +165,60 @@ const StudentDashboard = () => {
   return (
     <MainLayout>
       <div className="container-custom py-8 md:py-12">
-        <div className="flex flex-col md:flex-row md:items-center justify-between gap-6 mb-8">
-          <div>
-            <h1 className="heading-2 mb-2">Student Dashboard</h1>
-            <p className="text-muted-foreground">
-              Welcome back, {user.name}! Here's an overview of your journey.
-            </p>
-          </div>
-          <div className="flex space-x-4">
-            <Button onClick={() => navigate("/companies")}>
-              <BuildingIcon className="mr-2 h-4 w-4" />
-              Companies Viewing Your Profile
-            </Button>
-          </div>
-        </div>
+        <motion.div 
+          variants={containerVariants}
+          initial="hidden"
+          animate="visible"
+          className="space-y-8"
+        >
+          <motion.div 
+            variants={itemVariants}
+            className="flex flex-col md:flex-row md:items-center justify-between gap-6 mb-8"
+          >
+            <div>
+              <h1 className="heading-2 mb-2">Student Dashboard</h1>
+              <p className="text-muted-foreground">
+                Welcome back, {user.name}! Here's an overview of your journey.
+              </p>
+            </div>
+            <div className="flex space-x-4">
+              <Button 
+                onClick={() => navigate("/companies")}
+                className="bg-gradient-to-r from-primary to-primary/90 hover:from-primary/90 hover:to-primary transition-all hover:shadow-lg"
+              >
+                <BuildingIcon className="mr-2 h-4 w-4" />
+                Companies Viewing Your Profile
+              </Button>
+            </div>
+          </motion.div>
 
-        <StudentJourney />
-        
-        <DashboardStats 
-          totalJobs={jobs.length}
-          confidenceScore={confidenceScore}
-          enrolledCoursesCount={enrolledCourses.length}
-          dreamInternshipsCount={getSavedInternships(user.id).length}
-        />
-        
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-          <div className="lg:col-span-2 space-y-8">
-            <MyJobsStatus statuses={jobStatuses} />
-            <ApplicationsList 
-              applications={sampleApplications}
-              internships={sampleInternships}
-            />
-          </div>
+          <motion.div variants={itemVariants}>
+            <StudentJourney />
+          </motion.div>
           
-          <div className="space-y-8">
-            <QuickActions />
+          <motion.div variants={itemVariants}>
+            <DashboardStats 
+              totalJobs={jobs.length}
+              confidenceScore={confidenceScore}
+              enrolledCoursesCount={enrolledCourses.length}
+              dreamInternshipsCount={getSavedInternships(user.id).length}
+            />
+          </motion.div>
+          
+          <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+            <motion.div variants={itemVariants} className="lg:col-span-2 space-y-8">
+              <MyJobsStatus statuses={jobStatuses} />
+              <ApplicationsList 
+                applications={sampleApplications}
+                internships={sampleInternships}
+              />
+            </motion.div>
+            
+            <motion.div variants={itemVariants} className="space-y-8">
+              <QuickActions />
+            </motion.div>
           </div>
-        </div>
+        </motion.div>
       </div>
     </MainLayout>
   );

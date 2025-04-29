@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { Badge } from "@/components/ui/badge";
 import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
 import { cn } from "@/lib/utils";
+import { motion } from "framer-motion";
 
 interface JourneyStep {
   id: string;
@@ -14,6 +15,7 @@ interface JourneyStep {
   badge?: string;
   link: string;
   bgColor?: string;
+  icon?: React.ReactNode;
 }
 
 const journeySteps: JourneyStep[] = [
@@ -46,6 +48,13 @@ const journeySteps: JourneyStep[] = [
     bgColor: "bg-gradient-to-r from-orange-50 to-orange-100"
   },
   {
+    id: "hackathons",
+    title: "Hackathons",
+    isNew: true,
+    link: "/hackathons",
+    bgColor: "bg-gradient-to-r from-pink-50 to-pink-100"
+  },
+  {
     id: "leaderboard",
     title: "Leaderboard",
     link: "/leaderboard",
@@ -57,17 +66,38 @@ export function StudentJourney() {
   const navigate = useNavigate();
   const currentPath = window.location.pathname;
 
+  const cardVariants = {
+    initial: { opacity: 0, y: 20 },
+    animate: { opacity: 1, y: 0 },
+    hover: { scale: 1.05, boxShadow: "0 10px 15px rgba(0, 0, 0, 0.1)" }
+  };
+
   return (
-    <div className="w-full bg-card border rounded-lg p-6 mb-8">
+    <motion.div 
+      className="w-full bg-gradient-to-br from-white to-slate-50 border rounded-lg p-6 mb-8"
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      transition={{ duration: 0.5 }}
+    >
       <h2 className="text-lg font-semibold mb-6">My Journey</h2>
       <ScrollArea className="w-full">
         <div className="flex space-x-4 min-w-max pb-4">
           {journeySteps.map((step, index) => {
             const isActive = currentPath === step.link;
             return (
-              <div 
+              <motion.div 
                 key={step.id}
                 className="relative flex flex-col items-center"
+                initial="initial"
+                animate="animate"
+                whileHover="hover"
+                variants={cardVariants}
+                transition={{ 
+                  type: "spring", 
+                  stiffness: 260,
+                  damping: 20,
+                  delay: index * 0.1 
+                }}
                 onClick={() => navigate(step.link)}
               >
                 <div
@@ -76,21 +106,23 @@ export function StudentJourney() {
                     "flex items-center justify-center",
                     "h-24 w-48 px-4",
                     "border rounded-md",
-                    "hover:shadow-lg hover:scale-105",
+                    "hover:shadow-lg",
                     step.bgColor,
-                    isActive && "ring-2 ring-primary shadow-lg scale-105",
+                    isActive && "ring-2 ring-primary shadow-lg",
                     step.isCurrent && "border-primary bg-primary/5 shadow-sm ring-1 ring-primary/20",
                     step.isCompleted && "opacity-75"
                   )}
                 >
-                  {/* Chevron shape */}
-                  <div
+                  {/* Chevron shape with animation */}
+                  <motion.div
                     className={cn(
                       "absolute right-0 h-6 w-6 transform rotate-45 border-t border-r",
                       isActive ? "border-primary" : "border-border",
                       step.bgColor,
                       "translate-x-2"
                     )}
+                    animate={isActive ? { scale: [1, 1.2, 1] } : {}}
+                    transition={{ repeat: isActive ? Infinity : 0, duration: 2 }}
                   />
                   
                   {/* Content */}
@@ -98,12 +130,17 @@ export function StudentJourney() {
                     <span className="font-medium text-sm text-center">{step.title}</span>
                     
                     {step.isNew && (
-                      <Badge 
-                        variant="default" 
-                        className="text-xs bg-primary/20 text-primary"
+                      <motion.div
+                        animate={{ scale: [1, 1.1, 1] }}
+                        transition={{ repeat: Infinity, duration: 2 }}
                       >
-                        New
-                      </Badge>
+                        <Badge 
+                          variant="default" 
+                          className="text-xs bg-primary/20 text-primary"
+                        >
+                          New
+                        </Badge>
+                      </motion.div>
                     )}
                     
                     {step.badge && (
@@ -118,12 +155,12 @@ export function StudentJourney() {
                     )}
                   </div>
                 </div>
-              </div>
+              </motion.div>
             );
           })}
         </div>
         <ScrollBar orientation="horizontal" />
       </ScrollArea>
-    </div>
+    </motion.div>
   );
 }
