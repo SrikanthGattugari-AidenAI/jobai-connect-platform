@@ -52,10 +52,12 @@ interface UseSpeechRecognitionReturn {
   supported: boolean;
 }
 
-// Get the Speech Recognition API
-const SpeechRecognitionAPI = window.SpeechRecognition || 
+// Get the Speech Recognition API with proper TypeScript handling
+const SpeechRecognitionAPI = typeof window !== 'undefined' ? (
+  (window as any).SpeechRecognition || 
   (window as any).webkitSpeechRecognition || 
-  null;
+  null
+) : null;
 
 export function useSpeechRecognition(): UseSpeechRecognitionReturn {
   const [transcript, setTranscript] = useState("");

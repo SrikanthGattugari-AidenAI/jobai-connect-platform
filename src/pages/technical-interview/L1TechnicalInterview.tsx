@@ -81,7 +81,6 @@ const L1TechnicalInterview = () => {
       toast({
         title: "Response saved",
         description: "Your answer has been recorded.",
-        icon: <CheckCircle className="h-4 w-4 text-green-500" />
       });
       
       // Move to next question or finish interview
