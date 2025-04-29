@@ -74,14 +74,14 @@ export function StudentJourney() {
 
   return (
     <motion.div 
-      className="w-full bg-gradient-to-br from-white to-slate-50 border rounded-lg p-6 mb-8"
+      className="w-full bg-gradient-to-b from-[#002369] to-[#346DFF] border rounded-lg p-4 mb-6"
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       transition={{ duration: 0.5 }}
     >
-      <h2 className="text-lg font-semibold mb-6">My Journey</h2>
+      <h2 className="text-lg font-semibold mb-4 text-white">My Journey</h2>
       <ScrollArea className="w-full">
-        <div className="flex space-x-4 min-w-max pb-4">
+        <div className="flex space-x-4 min-w-max pb-3">
           {journeySteps.map((step, index) => {
             const isActive = currentPath === step.link;
             return (
@@ -104,20 +104,20 @@ export function StudentJourney() {
                   className={cn(
                     "relative cursor-pointer group transition-all",
                     "flex items-center justify-center",
-                    "h-24 w-48 px-4",
+                    "h-20 w-40 px-3", // Made smaller here
                     "border rounded-md",
                     "hover:shadow-lg",
                     step.bgColor,
-                    isActive && "ring-2 ring-primary shadow-lg",
-                    step.isCurrent && "border-primary bg-primary/5 shadow-sm ring-1 ring-primary/20",
+                    isActive && "ring-2 ring-white shadow-lg",
+                    step.isCurrent && "border-white bg-primary/5 shadow-sm ring-1 ring-white/20",
                     step.isCompleted && "opacity-75"
                   )}
                 >
                   {/* Chevron shape with animation */}
                   <motion.div
                     className={cn(
-                      "absolute right-0 h-6 w-6 transform rotate-45 border-t border-r",
-                      isActive ? "border-primary" : "border-border",
+                      "absolute right-0 h-5 w-5 transform rotate-45 border-t border-r", // Made smaller
+                      isActive ? "border-white" : "border-border",
                       step.bgColor,
                       "translate-x-2"
                     )}
@@ -126,8 +126,8 @@ export function StudentJourney() {
                   />
                   
                   {/* Content */}
-                  <div className="flex flex-col items-center justify-center space-y-2 z-10">
-                    <span className="font-medium text-sm text-center">{step.title}</span>
+                  <div className="flex flex-col items-center justify-center space-y-1 z-10">
+                    <span className="font-medium text-xs text-center">{step.title}</span>
                     
                     {step.isNew && (
                       <motion.div
@@ -136,7 +136,7 @@ export function StudentJourney() {
                       >
                         <Badge 
                           variant="default" 
-                          className="text-xs bg-primary/20 text-primary"
+                          className="text-xs bg-white/20 text-white"
                         >
                           New
                         </Badge>
@@ -147,7 +147,7 @@ export function StudentJourney() {
                       <Badge 
                         className={cn(
                           "text-xs",
-                          step.id === "profile" ? "bg-primary/20 text-primary hover:bg-primary/30" : ""
+                          step.id === "profile" ? "bg-white/20 text-white hover:bg-white/30" : ""
                         )}
                       >
                         {step.badge}

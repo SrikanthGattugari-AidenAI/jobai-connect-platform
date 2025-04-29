@@ -1,4 +1,3 @@
-
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "@/context/AuthContext";
@@ -7,7 +6,6 @@ import { useCourses } from "@/context/CourseContext";
 import { useJobs } from "@/context/JobContext";
 import { Button } from "@/components/ui/button";
 import { BuildingIcon } from "lucide-react";
-import { StudentJourney } from "@/components/dashboard/StudentJourney";
 import { DashboardStats } from "@/components/dashboard/DashboardStats";
 import { MyJobsStatus } from "@/components/dashboard/MyJobsStatus";
 import { ApplicationsList } from "@/components/dashboard/ApplicationsList";
@@ -164,7 +162,7 @@ const StudentDashboard = () => {
   
   return (
     <MainLayout>
-      <div className="container-custom py-8 md:py-12">
+      <div className="container-custom py-4 md:py-6">
         <motion.div 
           variants={containerVariants}
           initial="hidden"
@@ -190,10 +188,6 @@ const StudentDashboard = () => {
                 Companies Viewing Your Profile
               </Button>
             </div>
-          </motion.div>
-
-          <motion.div variants={itemVariants}>
-            <StudentJourney />
           </motion.div>
           
           <motion.div variants={itemVariants}>
