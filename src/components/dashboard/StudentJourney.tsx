@@ -74,16 +74,16 @@ export function StudentJourney() {
 
   return (
     <motion.div 
-      className="w-full bg-gradient-to-b from-[#002369] to-[#346DFF] border rounded-lg p-4 mb-6"
+      className="w-full bg-white border rounded-lg p-4 mb-6 shadow-sm"
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       transition={{ duration: 0.5 }}
     >
-      <h2 className="text-lg font-semibold mb-4 text-white">My Journey</h2>
+      <h2 className="text-lg font-semibold mb-4 text-gray-800">My Journey</h2>
       <ScrollArea className="w-full">
         <div className="flex space-x-4 min-w-max pb-3">
           {journeySteps.map((step, index) => {
-            const isActive = currentPath === step.link;
+            const isActive = currentPath.includes(step.link.replace('/', ''));
             return (
               <motion.div 
                 key={step.id}
@@ -106,10 +106,10 @@ export function StudentJourney() {
                     "flex items-center justify-center",
                     "h-20 w-40 px-3", 
                     "border rounded-md",
-                    "hover:shadow-lg",
+                    "hover:border-2 hover:border-primary hover:shadow-lg",
                     step.bgColor,
-                    isActive && "ring-2 ring-white shadow-lg",
-                    step.isCurrent && "border-white bg-primary/5 shadow-sm ring-1 ring-white/20",
+                    isActive && "ring-2 ring-primary shadow-lg border-primary",
+                    step.isCurrent && "shadow-sm",
                     step.isCompleted && "opacity-75"
                   )}
                 >
@@ -117,7 +117,7 @@ export function StudentJourney() {
                   <motion.div
                     className={cn(
                       "absolute right-0 h-5 w-5 transform rotate-45 border-t border-r", 
-                      isActive ? "border-white" : "border-border",
+                      isActive ? "border-primary" : "border-border",
                       step.bgColor,
                       "translate-x-2"
                     )}
