@@ -5,8 +5,11 @@ interface UseWebcamReturn {
   webcamRef: React.RefObject<HTMLVideoElement>;
   isConnected: boolean;
   stream: MediaStream | null;
-  startWebcam: () => Promise<void>;
+  startWebcam: (userId?: string) => Promise<void>;
   stopWebcam: () => void;
+  lastError: string | null;
+  isTerminated: boolean;
+  terminationReason: string | null;
 }
 
 export function useWebcam(): UseWebcamReturn {
@@ -14,9 +17,13 @@ export function useWebcam(): UseWebcamReturn {
   const [stream, setStream] = useState<MediaStream | null>(null);
   const [isConnected, setIsConnected] = useState(false);
   const socketRef = useRef<WebSocket | null>(null);
+  const frameIntervalRef = useRef<number | null>(null);
+  const [lastError, setLastError] = useState<string | null>(null);
+  const [isTerminated, setIsTerminated] = useState(false);
+  const [terminationReason, setTerminationReason] = useState<string | null>(null);
 
   // Function to start the webcam
-  const startWebcam = async () => {
+  const startWebcam = async (userId?: string) => {
     try {
       const mediaStream = await navigator.mediaDevices.getUserMedia({
         video: true,
@@ -29,37 +36,53 @@ export function useWebcam(): UseWebcamReturn {
       
       setStream(mediaStream);
       setIsConnected(true);
+      setLastError(null);
       
-      // Set up WebSocket connection
+      // Only connect WebSocket after camera is successfully started
       if (!socketRef.current || socketRef.current.readyState !== WebSocket.OPEN) {
-        connectWebSocket(mediaStream);
+        connectWebSocket(mediaStream, userId);
       }
     } catch (error) {
       console.error('Error accessing webcam:', error);
       setIsConnected(false);
+      setLastError('Unable to access webcam. Please check your camera permissions.');
     }
   };
 
   // Function to stop the webcam
   const stopWebcam = () => {
+    // Clear the frame capture interval
+    if (frameIntervalRef.current) {
+      clearInterval(frameIntervalRef.current);
+      frameIntervalRef.current = null;
+    }
+
+    // Close the WebSocket connection if open
+    if (socketRef.current) {
+      if (socketRef.current.readyState === WebSocket.OPEN || 
+          socketRef.current.readyState === WebSocket.CONNECTING) {
+        socketRef.current.close();
+      }
+      socketRef.current = null;
+    }
+
+    // Stop all video tracks
     if (stream) {
       stream.getTracks().forEach(track => track.stop());
       setStream(null);
       setIsConnected(false);
-      
-      if (socketRef.current) {
-        socketRef.current.close();
-        socketRef.current = null;
-      }
     }
   };
 
   // Function to connect WebSocket and send frames
-  const connectWebSocket = (mediaStream: MediaStream) => {
-    // For demo purposes - in production replace with actual server
+  const connectWebSocket = (mediaStream: MediaStream, userId?: string) => {
     try {
-      // Note: This is a placeholder URL, it won't actually connect
-      socketRef.current = new WebSocket('ws://localhost:4000/video');
+      // Use the correct WebSocket endpoint with user ID if provided
+      const wsEndpoint = userId 
+        ? `ws://localhost:8525/video/${userId}` 
+        : 'ws://localhost:8525/video';
+      
+      socketRef.current = new WebSocket(wsEndpoint);
       
       socketRef.current.onopen = () => {
         console.log('WebSocket connection established');
@@ -74,34 +97,60 @@ export function useWebcam(): UseWebcamReturn {
         canvas.width = 320;  // Reduced size for efficiency
         canvas.height = 240;
         
+        // Clear any existing interval
+        if (frameIntervalRef.current) {
+          clearInterval(frameIntervalRef.current);
+        }
+        
+        // Set up new interval to capture and send frames
         const frameInterval = setInterval(() => {
-          if (video.readyState === video.HAVE_ENOUGH_DATA && socketRef.current?.readyState === WebSocket.OPEN) {
+          if (video.readyState === video.HAVE_ENOUGH_DATA && 
+              socketRef.current?.readyState === WebSocket.OPEN) {
+            
             ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
             
             // Convert the frame to a JPEG and send via WebSocket
             canvas.toBlob((blob) => {
               if (blob && socketRef.current?.readyState === WebSocket.OPEN) {
-                // In a real implementation, you would send the blob here
-                console.log('Frame captured and ready to send, size:', blob.size);
-                
-                // For demo, we won't actually send to avoid console spam
-                // socketRef.current.send(blob);
+                socketRef.current.send(blob);
               }
             }, 'image/jpeg', 0.7);
           }
         }, 100); // Send 10 fps
         
-        socketRef.current.onclose = () => {
-          clearInterval(frameInterval);
-          console.log('WebSocket connection closed');
-        };
+        frameIntervalRef.current = frameInterval;
+      };
+      
+      socketRef.current.onmessage = (event) => {
+        try {
+          const message = JSON.parse(event.data);
+          
+          // Handle termination message from backend
+          if (message.action === "TERMINATE_INTERVIEW") {
+            setIsTerminated(true);
+            setTerminationReason(message.reason || "Interview terminated by system");
+            stopWebcam();
+          }
+        } catch (error) {
+          console.error('Error processing WebSocket message:', error);
+        }
+      };
+      
+      socketRef.current.onclose = () => {
+        console.log('WebSocket connection closed');
+        if (frameIntervalRef.current) {
+          clearInterval(frameIntervalRef.current);
+          frameIntervalRef.current = null;
+        }
       };
       
       socketRef.current.onerror = (error) => {
         console.error('WebSocket error:', error);
+        setLastError('Connection to interview server failed');
       };
     } catch (error) {
       console.error('WebSocket connection error:', error);
+      setLastError('Failed to establish connection to interview server');
     }
   };
 
@@ -118,5 +167,8 @@ export function useWebcam(): UseWebcamReturn {
     stream,
     startWebcam,
     stopWebcam,
+    lastError,
+    isTerminated,
+    terminationReason,
   };
 }

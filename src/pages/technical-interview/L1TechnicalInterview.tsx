@@ -22,7 +22,16 @@ const INTERVIEW_QUESTIONS = [
 ];
 
 const L1TechnicalInterview = () => {
-  const { webcamRef, isConnected, startWebcam, stopWebcam } = useWebcam();
+  const { 
+    webcamRef, 
+    isConnected, 
+    startWebcam, 
+    stopWebcam,
+    lastError,
+    isTerminated,
+    terminationReason
+  } = useWebcam();
+
   const { 
     transcript, 
     setTranscript, 
@@ -30,6 +39,7 @@ const L1TechnicalInterview = () => {
     toggleListening, 
     supported 
   } = useSpeechRecognition();
+
   const { toast } = useToast();
   const navigate = useNavigate();
 
@@ -37,10 +47,34 @@ const L1TechnicalInterview = () => {
   const [isInterviewStarted, setIsInterviewStarted] = useState(false);
   const [responses, setResponses] = useState<Array<{ question: string; response: string }>>([]);
 
-  // Start webcam when interview starts
+  // Monitor termination status and redirect if terminated
+  useEffect(() => {
+    if (isTerminated && terminationReason) {
+      toast({
+        title: "Interview Terminated",
+        description: terminationReason,
+        variant: "destructive",
+      });
+      navigate("/terminated", { state: { reason: terminationReason } });
+    }
+  }, [isTerminated, terminationReason, navigate, toast]);
+
+  // Handle errors from webcam
+  useEffect(() => {
+    if (lastError) {
+      toast({
+        title: "Connection Error",
+        description: lastError,
+        variant: "destructive",
+      });
+    }
+  }, [lastError, toast]);
+
+  // Start webcam when interview starts with mock user ID
   useEffect(() => {
     if (isInterviewStarted) {
-      startWebcam();
+      // In a real app, you would use the actual user ID
+      startWebcam("user-123");
     } else {
       stopWebcam();
     }
@@ -104,18 +138,37 @@ const L1TechnicalInterview = () => {
     setIsInterviewStarted(false);
     stopWebcam();
     
-    // In a real app, you would send the responses to your backend
-    console.log("Interview responses:", responses);
+    // In a real app, send the responses to your backend
+    const submitResponses = async () => {
+      try {
+        // Simulate API call
+        console.log("Interview responses:", responses);
+        
+        // In a real app, you would send data to the backend
+        // await fetch('/api/process', {
+        //   method: 'POST',
+        //   headers: { 'Content-Type': 'application/json' },
+        //   body: JSON.stringify({ responses })
+        // });
+        
+        toast({
+          title: "Interview completed",
+          description: "Thank you for completing your L1 Technical Interview!",
+        });
+        
+        // Navigate to processing page
+        navigate("/processing");
+      } catch (error) {
+        console.error("Error submitting responses:", error);
+        toast({
+          title: "Submission error",
+          description: "Failed to submit your responses. Please try again.",
+          variant: "destructive",
+        });
+      }
+    };
     
-    toast({
-      title: "Interview completed",
-      description: "Thank you for completing your L1 Technical Interview!",
-    });
-    
-    // Navigate back to dashboard or results page
-    setTimeout(() => {
-      navigate("/dashboard");
-    }, 2000);
+    submitResponses();
   };
 
   return (

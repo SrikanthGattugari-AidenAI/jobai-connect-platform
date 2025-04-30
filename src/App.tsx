@@ -1,3 +1,4 @@
+
 import React from "react";
 import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
@@ -43,6 +44,8 @@ import CompanyDetail from "./pages/companies/CompanyDetail";
 import Profile from "./pages/profile/Profile";
 import Settings from "./pages/settings/Settings";
 import L1TechnicalInterview from "./pages/technical-interview/L1TechnicalInterview";
+import { ProcessingScreen } from "./components/technical-interview/ProcessingScreen";
+import { TerminatedScreen } from "./components/technical-interview/TerminatedScreen";
 
 const queryClient = new QueryClient();
 
@@ -92,6 +95,8 @@ const App = () => (
                         <Route path="/profile" element={<Profile />} />
                         <Route path="/settings" element={<Settings />} />
                         <Route path="/l1-technical-interview" element={<L1TechnicalInterview />} />
+                        <Route path="/processing" element={<ProcessingScreen />} />
+                        <Route path="/terminated" element={<TerminatedScreen />} />
                         <Route path="*" element={<NotFound />} />
                       </Routes>
                       <Chatbot />
