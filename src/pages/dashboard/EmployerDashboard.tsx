@@ -1,3 +1,4 @@
+
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
@@ -80,10 +81,10 @@ const EmployerDashboard = () => {
   const [totalJobs, setTotalJobs] = useState(0);
   
   useEffect(() => {
-    const loadDashboardData = async () => {
+    const loadDashboardData = () => {
       if (!user) return;
       
-      // Get posted internships
+      // Get posted internships - these are synchronous functions
       const internships = getEmployerInternships(user.id);
       setPostedInternships(internships);
       setTotalJobs(internships.length);
@@ -104,7 +105,7 @@ const EmployerDashboard = () => {
     };
     
     loadDashboardData();
-  }, [user]);
+  }, [user, getEmployerInternships, getApplicationsForInternship]);
   
   const handleStatusChange = async (applicationId: string, status: Application["status"]) => {
     try {
