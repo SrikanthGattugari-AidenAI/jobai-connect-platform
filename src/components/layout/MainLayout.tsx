@@ -3,6 +3,7 @@ import { ReactNode } from "react";
 import { Navbar } from "./Navbar";
 import { Footer } from "./Footer";
 import { StudentJourney } from "../dashboard/StudentJourney";
+import { EmployerJourney } from "../dashboard/EmployerJourney";
 import { useAuth } from "@/context/AuthContext";
 
 interface MainLayoutProps {
@@ -19,6 +20,11 @@ export function MainLayout({ children }: MainLayoutProps) {
         {user && user.role === "student" && (
           <div className="container-custom pt-4">
             <StudentJourney />
+          </div>
+        )}
+        {user && user.role === "employer" && (
+          <div className="container-custom pt-4">
+            <EmployerJourney />
           </div>
         )}
         {children}

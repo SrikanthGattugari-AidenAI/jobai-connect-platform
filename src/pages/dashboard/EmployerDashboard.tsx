@@ -147,7 +147,7 @@ const EmployerDashboard = () => {
           <div>
             <h1 className="heading-2 mb-2">Employer Dashboard</h1>
             <p className="text-muted-foreground">
-              Welcome back, {user.name}! Manage your internship listings and applications.
+              Welcome back, {user?.name}! Manage your internship listings and applications.
             </p>
           </div>
           <div className="flex space-x-3">
@@ -200,7 +200,7 @@ const EmployerDashboard = () => {
               <CardHeader>
                 <div className="flex items-center justify-between">
                   <CardTitle>AI Candidate Matching</CardTitle>
-                  <Button variant="ghost" size="sm">
+                  <Button variant="ghost" size="sm" onClick={() => navigate("/employer/candidates")}>
                     View All Matches
                   </Button>
                 </div>
@@ -270,7 +270,7 @@ const EmployerDashboard = () => {
                 </div>
                 
                 <div className="mt-4 pt-4 border-t">
-                  <Button variant="outline" className="w-full">
+                  <Button variant="outline" className="w-full" onClick={() => navigate("/employer/candidates")}>
                     <Search className="mr-2 h-4 w-4" />
                     Find More Matching Candidates
                   </Button>
@@ -280,7 +280,12 @@ const EmployerDashboard = () => {
           
             <Card>
               <CardHeader>
-                <CardTitle>Your Internship Listings</CardTitle>
+                <div className="flex items-center justify-between">
+                  <CardTitle>Your Internship Listings</CardTitle>
+                  <Button variant="ghost" size="sm" onClick={() => navigate("/employer/manage-jobs")}>
+                    View All
+                  </Button>
+                </div>
                 <CardDescription>
                   Manage your active internship postings
                 </CardDescription>
@@ -288,7 +293,7 @@ const EmployerDashboard = () => {
               <CardContent>
                 {postedInternships.length > 0 ? (
                   <div className="space-y-4">
-                    {postedInternships.map((internship) => (
+                    {postedInternships.slice(0, 3).map((internship) => (
                       <div 
                         key={internship.id} 
                         className="border rounded-lg p-4 hover:border-primary transition-colors cursor-pointer"
@@ -310,15 +315,24 @@ const EmployerDashboard = () => {
                             <div className="flex mt-2 space-x-2">
                               <Button variant="outline" size="sm" onClick={(e) => {
                                 e.stopPropagation();
-                                // Implementation for view applications would go here
+                                navigate(`/employer/candidates?jobId=${internship.id}`);
                               }}>
-                                View Applications
+                                View Matching Candidates
                               </Button>
                             </div>
                           </div>
                         </div>
                       </div>
                     ))}
+                    {postedInternships.length > 3 && (
+                      <Button 
+                        variant="outline" 
+                        className="w-full" 
+                        onClick={() => navigate("/employer/manage-jobs")}
+                      >
+                        View All {postedInternships.length} Job Listings
+                      </Button>
+                    )}
                   </div>
                 ) : (
                   <div className="text-center py-6">
@@ -486,13 +500,13 @@ const EmployerDashboard = () => {
                   <Trophy className="mr-2 h-4 w-4" />
                   Host Hackathon
                 </Button>
-                <Button variant="outline" className="w-full justify-start">
+                <Button variant="outline" className="w-full justify-start" onClick={() => navigate("/employer/candidates")}>
                   <UserCheck className="mr-2 h-4 w-4" />
                   View AI Matched Candidates
                 </Button>
-                <Button variant="outline" className="w-full justify-start" onClick={() => navigate("/internships")}>
+                <Button variant="outline" className="w-full justify-start" onClick={() => navigate("/employer/manage-jobs")}>
                   <Briefcase className="mr-2 h-4 w-4" />
-                  Manage Internships
+                  Manage Jobs
                 </Button>
                 <Button variant="outline" className="w-full justify-start">
                   <Users className="mr-2 h-4 w-4" />

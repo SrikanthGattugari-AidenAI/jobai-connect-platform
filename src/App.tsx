@@ -28,6 +28,8 @@ import CourseDetail from "./pages/courses/CourseDetail";
 import MockInterview from "./pages/mock-interview/MockInterview";
 import MockInterviewSession from "./pages/mock-interview/MockInterviewSession";
 import Dashboard from "./pages/dashboard/Dashboard";
+import ManageJobs from "./pages/employer/ManageJobs";
+import CandidateMatching from "./pages/employer/CandidateMatching";
 import MarketTrends from "./pages/market-trends/MarketTrends";
 import CareerPath from "./pages/career-path/CareerPath";
 import TechnicalChallenge from "./pages/technical-challenge/TechnicalChallenge";
@@ -78,6 +80,8 @@ const App = () => (
                         <Route path="/technical-challenge" element={<TechnicalChallenge />} />
                         <Route path="/technical-challenge/:id" element={<TechnicalChallenge />} />
                         <Route path="/dashboard" element={<Dashboard />} />
+                        <Route path="/employer/manage-jobs" element={<ManageJobs />} />
+                        <Route path="/employer/candidates" element={<CandidateMatching />} />
                         <Route path="/market-trends" element={<MarketTrends />} />
                         <Route path="/career-path" element={<CareerPath />} />
                         <Route path="/career-roadmaps/:id" element={<CareerPath />} />
