@@ -23,8 +23,6 @@ import InternshipDetail from "./pages/internships/InternshipDetail";
 import PostInternship from "./pages/internships/PostInternship";
 import Jobs from "./pages/jobs/Jobs";
 import JobDetail from "./pages/jobs/JobDetail";
-import ManageJobs from "./pages/jobs/ManageJobs";
-import CandidateMatching from "./pages/candidate-matching/CandidateMatching";
 import Courses from "./pages/courses/Courses";
 import CourseDetail from "./pages/courses/CourseDetail";
 import MockInterview from "./pages/mock-interview/MockInterview";
@@ -73,9 +71,6 @@ const App = () => (
                         <Route path="/post-internship" element={<PostInternship />} />
                         <Route path="/jobs" element={<Jobs />} />
                         <Route path="/jobs/:id" element={<JobDetail />} />
-                        <Route path="/manage-jobs" element={<ManageJobs />} />
-                        <Route path="/candidate-matching" element={<CandidateMatching />} />
-                        <Route path="/candidate-matching/:jobId" element={<CandidateMatching />} />
                         <Route path="/courses" element={<Courses />} />
                         <Route path="/courses/:id" element={<CourseDetail />} />
                         <Route path="/mock-interview" element={<MockInterview />} />

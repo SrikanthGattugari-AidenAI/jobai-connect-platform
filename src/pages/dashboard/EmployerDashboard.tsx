@@ -1,10 +1,8 @@
-
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { MainLayout } from "@/components/layout/MainLayout";
-import { EmployerNavigation } from "@/components/dashboard/EmployerNavigation";
 import { useAuth } from "@/context/AuthContext";
 import { useInternships } from "@/context/InternshipContext";
 import { useAI } from "@/context/AIContext";
@@ -144,8 +142,6 @@ const EmployerDashboard = () => {
   
   return (
     <MainLayout>
-      <EmployerNavigation />
-      
       <div className="container-custom py-8 md:py-12">
         <div className="flex flex-col md:flex-row md:items-center justify-between gap-6 mb-8">
           <div>
@@ -204,7 +200,7 @@ const EmployerDashboard = () => {
               <CardHeader>
                 <div className="flex items-center justify-between">
                   <CardTitle>AI Candidate Matching</CardTitle>
-                  <Button variant="ghost" size="sm" onClick={() => navigate("/candidate-matching")}>
+                  <Button variant="ghost" size="sm">
                     View All Matches
                   </Button>
                 </div>
@@ -274,7 +270,7 @@ const EmployerDashboard = () => {
                 </div>
                 
                 <div className="mt-4 pt-4 border-t">
-                  <Button variant="outline" className="w-full" onClick={() => navigate("/candidate-matching")}>
+                  <Button variant="outline" className="w-full">
                     <Search className="mr-2 h-4 w-4" />
                     Find More Matching Candidates
                   </Button>
@@ -284,12 +280,7 @@ const EmployerDashboard = () => {
           
             <Card>
               <CardHeader>
-                <div className="flex items-center justify-between">
-                  <CardTitle>Your Internship Listings</CardTitle>
-                  <Button variant="ghost" size="sm" onClick={() => navigate("/manage-jobs")}>
-                    View All Jobs
-                  </Button>
-                </div>
+                <CardTitle>Your Internship Listings</CardTitle>
                 <CardDescription>
                   Manage your active internship postings
                 </CardDescription>
@@ -491,21 +482,21 @@ const EmployerDashboard = () => {
                   <Plus className="mr-2 h-4 w-4" />
                   Post New Internship
                 </Button>
-                <Button variant="outline" className="w-full justify-start" onClick={() => navigate("/manage-jobs")}>
-                  <Briefcase className="mr-2 h-4 w-4" />
-                  Manage Jobs
-                </Button>
-                <Button variant="outline" className="w-full justify-start" onClick={() => navigate("/candidate-matching")}>
-                  <UserCheck className="mr-2 h-4 w-4" />
-                  View AI Matched Candidates
-                </Button>
                 <Button variant="outline" className="w-full justify-start" onClick={() => navigate("/hackathons/create")}>
                   <Trophy className="mr-2 h-4 w-4" />
                   Host Hackathon
                 </Button>
-                <Button variant="outline" className="w-full justify-start" onClick={() => navigate("/hackathons/employer")}>
+                <Button variant="outline" className="w-full justify-start">
+                  <UserCheck className="mr-2 h-4 w-4" />
+                  View AI Matched Candidates
+                </Button>
+                <Button variant="outline" className="w-full justify-start" onClick={() => navigate("/internships")}>
                   <Briefcase className="mr-2 h-4 w-4" />
-                  Manage Hackathons
+                  Manage Internships
+                </Button>
+                <Button variant="outline" className="w-full justify-start">
+                  <Users className="mr-2 h-4 w-4" />
+                  View All Applicants
                 </Button>
                 <Button variant="outline" className="w-full justify-start">
                   <FileText className="mr-2 h-4 w-4" />
