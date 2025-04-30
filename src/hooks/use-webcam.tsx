@@ -1,4 +1,3 @@
-
 import { useState, useEffect, useRef } from 'react';
 
 interface UseWebcamReturn {
@@ -17,7 +16,7 @@ export function useWebcam(): UseWebcamReturn {
   const [stream, setStream] = useState<MediaStream | null>(null);
   const [isConnected, setIsConnected] = useState(false);
   const socketRef = useRef<WebSocket | null>(null);
-  const frameIntervalRef = useRef<number | null>(null);
+  const frameIntervalRef = useRef<ReturnType<typeof setInterval> | null>(null);
   const [lastError, setLastError] = useState<string | null>(null);
   const [isTerminated, setIsTerminated] = useState(false);
   const [terminationReason, setTerminationReason] = useState<string | null>(null);
