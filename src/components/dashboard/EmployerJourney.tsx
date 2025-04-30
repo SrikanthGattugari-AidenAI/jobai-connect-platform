@@ -44,7 +44,7 @@ const journeySteps: JourneyStep[] = [
   {
     id: "hackathons",
     title: "Hackathons",
-    link: "/hackathons/employer",
+    link: "/employer/hackathons",
     bgColor: "bg-gradient-to-r from-pink-50 to-pink-100",
     icon: <Award className="h-4 w-4 mr-1" />,
     isNew: true
