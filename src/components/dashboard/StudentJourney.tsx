@@ -60,7 +60,7 @@ const journeySteps: JourneyStep[] = [
     id: "feedback",
     title: "Feedback",
     badge: "2 Available",
-    link: "/feedback",
+    link: "/interview-feedback",
     bgColor: "bg-gradient-to-r from-orange-50 to-orange-100"
   },
   {
