@@ -47,10 +47,16 @@ export const UserMenu = () => {
           <span>Dashboard</span>
         </DropdownMenuItem>
         {user?.role === "student" ? (
-          <DropdownMenuItem onClick={() => navigate("/dashboard")}>
-            <FileText className="mr-2 h-4 w-4" />
-            <span>My Applications</span>
-          </DropdownMenuItem>
+          <>
+            <DropdownMenuItem onClick={() => navigate("/applications")}>
+              <Briefcase className="mr-2 h-4 w-4" />
+              <span>My Applications</span>
+            </DropdownMenuItem>
+            <DropdownMenuItem onClick={() => navigate("/offers")}>
+              <FileText className="mr-2 h-4 w-4" />
+              <span>Offer Letters</span>
+            </DropdownMenuItem>
+          </>
         ) : (
           <DropdownMenuItem onClick={() => navigate("/post-internship")}>
             <Briefcase className="mr-2 h-4 w-4" />
