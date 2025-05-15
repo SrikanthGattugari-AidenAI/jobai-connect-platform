@@ -4,16 +4,24 @@ import { useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Link } from "react-router-dom";
 import { MainLayout } from "@/components/layout/MainLayout";
+import { useToast } from "@/components/ui/use-toast";
 
 const NotFound = () => {
   const location = useLocation();
+  const { toast } = useToast();
 
   useEffect(() => {
     console.error(
       "404 Error: User attempted to access non-existent route:",
       location.pathname
     );
-  }, [location.pathname]);
+    
+    toast({
+      title: "Page not found",
+      description: `The page ${location.pathname} does not exist or may have been moved.`,
+      variant: "destructive",
+    });
+  }, [location.pathname, toast]);
 
   return (
     <MainLayout>

@@ -1,5 +1,5 @@
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { MainLayout } from "@/components/layout/MainLayout";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { useOfferLetters } from "@/context/OfferLetterContext";
@@ -7,19 +7,59 @@ import { OfferLetterList } from "@/components/offers/OfferLetterList";
 import { OfferLetterDetail } from "@/components/offers/OfferLetterDetail";
 import { Skeleton } from "@/components/ui/skeleton";
 import { OfferLetter } from "@/types/offer";
+import { useToast } from "@/components/ui/use-toast";
 
 const OfferLetters = () => {
   const { offerLetters, isLoading, signOffer, rejectOffer } = useOfferLetters();
   const [selectedOfferId, setSelectedOfferId] = useState<string | null>(null);
   const [activeTab, setActiveTab] = useState<"unsigned" | "signed">("unsigned");
+  const { toast } = useToast();
+  
+  useEffect(() => {
+    console.log("OfferLetters component mounted");
+    console.log("Current offer letters:", offerLetters);
+    
+    // Auto-select the first offer if available
+    if (offerLetters.length > 0 && !selectedOfferId) {
+      const tabOffers = offerLetters.filter(offer => 
+        activeTab === "unsigned" 
+          ? offer.status === "unsigned" 
+          : ["signed", "rejected"].includes(offer.status)
+      );
+      
+      if (tabOffers.length > 0) {
+        setSelectedOfferId(tabOffers[0].id);
+      }
+    }
+  }, [offerLetters, activeTab, selectedOfferId]);
 
   const handleSelectOffer = (offer: OfferLetter) => {
     setSelectedOfferId(offer.id);
+    console.log("Selected offer:", offer);
   };
 
   const handleTabChange = (value: string) => {
     setActiveTab(value as "unsigned" | "signed");
     setSelectedOfferId(null);
+    console.log("Tab changed to:", value);
+  };
+  
+  const handleSignOffer = (id: string) => {
+    signOffer(id);
+    toast({
+      title: "Offer Signed",
+      description: "You've successfully signed the offer letter.",
+      variant: "default",
+    });
+  };
+  
+  const handleRejectOffer = (id: string) => {
+    rejectOffer(id);
+    toast({
+      title: "Offer Rejected",
+      description: "You've rejected the offer letter.",
+      variant: "destructive",
+    });
   };
 
   const filteredOffers = offerLetters.filter(offer => {
@@ -88,8 +128,8 @@ const OfferLetters = () => {
             {selectedOffer ? (
               <OfferLetterDetail 
                 offer={selectedOffer}
-                onSign={signOffer}
-                onReject={rejectOffer}
+                onSign={handleSignOffer}
+                onReject={handleRejectOffer}
               />
             ) : (
               <div className="flex flex-col items-center justify-center h-full py-16 text-center text-muted-foreground border rounded-lg bg-muted/10">
