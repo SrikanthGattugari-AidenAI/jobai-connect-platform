@@ -5,7 +5,7 @@ import {
   BookOpen, 
   Code2, 
   FileText, 
-  MicScreen, 
+  Mic, 
   TrendingUp, 
   Handshake, 
   BriefcaseBusiness, 
@@ -20,7 +20,7 @@ export function QuickActions() {
   const studentActions = [
     { title: "Applied Jobs", icon: BriefcaseBusiness, href: "/applications" },
     { title: "Offer Letters", icon: FileText, href: "/offers" },
-    { title: "Take Mock Interview", icon: MicScreen, href: "/mock-interview" },
+    { title: "Take Mock Interview", icon: Mic, href: "/mock-interview" },
     { title: "Try Technical Challenge", icon: Code2, href: "/technical-challenge" },
     { title: "Update Your Profile", icon: User, href: "/profile" },
     { title: "Explore Job Market Trends", icon: TrendingUp, href: "/market-trends" },
