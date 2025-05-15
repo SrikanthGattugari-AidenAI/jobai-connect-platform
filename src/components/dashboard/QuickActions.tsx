@@ -1,100 +1,55 @@
 
-import { useNavigate } from "react-router-dom";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { Mic, BookOpen, Map, Trophy, FileText, BuildingIcon } from "lucide-react";
-import { motion } from "framer-motion";
-import { ScrollAnimation } from "@/components/ui/scroll-animation";
+import { Link } from "react-router-dom";
+import { 
+  BookOpen, 
+  Code2, 
+  FileText, 
+  MicScreen, 
+  TrendingUp, 
+  Handshake, 
+  BriefcaseBusiness, 
+  Trophy,
+  User
+} from "lucide-react";
+import { useAuth } from "@/context/AuthContext";
 
 export function QuickActions() {
-  const navigate = useNavigate();
-
-  // Animation variants
-  const containerVariants = {
-    hidden: { opacity: 0 },
-    show: {
-      opacity: 1,
-      transition: {
-        staggerChildren: 0.1
-      }
-    }
-  };
-
-  const itemVariants = {
-    hidden: { opacity: 0, y: 10 },
-    show: { opacity: 1, y: 0 }
-  };
-
+  const { user } = useAuth();
+  
+  const studentActions = [
+    { title: "Applied Jobs", icon: BriefcaseBusiness, href: "/applications" },
+    { title: "Offer Letters", icon: FileText, href: "/offers" },
+    { title: "Take Mock Interview", icon: MicScreen, href: "/mock-interview" },
+    { title: "Try Technical Challenge", icon: Code2, href: "/technical-challenge" },
+    { title: "Update Your Profile", icon: User, href: "/profile" },
+    { title: "Explore Job Market Trends", icon: TrendingUp, href: "/market-trends" },
+    { title: "Join a Hackathon", icon: Trophy, href: "/hackathons" },
+    { title: "Explore Courses", icon: BookOpen, href: "/courses" }
+  ];
+  
+  const employerActions = [
+    { title: "Post a New Job", icon: BriefcaseBusiness, href: "/employer/post-job" },
+    { title: "View Candidates", icon: Handshake, href: "/employer/candidates" },
+    { title: "Host a Hackathon", icon: Trophy, href: "/hackathons/create" },
+    { title: "Company Profile", icon: User, href: "/profile" }
+  ];
+  
+  const actions = user?.role === "employer" ? employerActions : studentActions;
+  
   return (
-    <ScrollAnimation animation="fadeIn">
-      <Card className="bg-gradient-to-b from-white to-slate-50 border-slate-200">
-        <CardHeader className="pb-3">
-          <CardTitle className="text-lg font-semibold">Quick Actions</CardTitle>
-        </CardHeader>
-        <CardContent className="space-y-2">
-          <motion.div
-            variants={containerVariants}
-            initial="hidden"
-            animate="show"
-            className="space-y-2"
+    <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4">
+      {actions.map((action) => (
+        <Link to={action.href} key={action.title}>
+          <Button
+            variant="outline"
+            className="w-full h-auto flex flex-col items-center gap-2 p-4 border-dashed hover:border-solid"
           >
-            <motion.div variants={itemVariants}>
-              <Button 
-                variant="outline" 
-                className="w-full justify-start hover:bg-slate-50 hover:scale-[1.02] transition-all" 
-                onClick={() => navigate("/mock-interview")}
-              >
-                <Mic className="mr-2 h-4 w-4 text-primary" />
-                Practice Mock Interviews
-              </Button>
-            </motion.div>
-            
-            <motion.div variants={itemVariants}>
-              <Button 
-                variant="outline" 
-                className="w-full justify-start hover:bg-slate-50 hover:scale-[1.02] transition-all" 
-                onClick={() => navigate("/courses")}
-              >
-                <BookOpen className="mr-2 h-4 w-4 text-emerald-500" />
-                Recommended Courses
-              </Button>
-            </motion.div>
-            
-            <motion.div variants={itemVariants}>
-              <Button 
-                variant="outline" 
-                className="w-full justify-start hover:bg-slate-50 hover:scale-[1.02] transition-all" 
-                onClick={() => navigate("/career-roadmaps")}
-              >
-                <Map className="mr-2 h-4 w-4 text-blue-500" />
-                Recommended Roadmaps
-              </Button>
-            </motion.div>
-            
-            <motion.div variants={itemVariants}>
-              <Button 
-                variant="outline" 
-                className="w-full justify-start hover:bg-slate-50 hover:scale-[1.02] transition-all" 
-                onClick={() => navigate("/hackathons")}
-              >
-                <Trophy className="mr-2 h-4 w-4 text-amber-500" />
-                Recommended Hackathons
-              </Button>
-            </motion.div>
-            
-            <motion.div variants={itemVariants}>
-              <Button 
-                variant="outline" 
-                className="w-full justify-start hover:bg-slate-50 hover:scale-[1.02] transition-all" 
-                onClick={() => navigate("/resume-builder")}
-              >
-                <FileText className="mr-2 h-4 w-4 text-violet-500" />
-                Enrich Resume
-              </Button>
-            </motion.div>
-          </motion.div>
-        </CardContent>
-      </Card>
-    </ScrollAnimation>
+            <action.icon className="h-6 w-6" />
+            <span className="text-sm text-center">{action.title}</span>
+          </Button>
+        </Link>
+      ))}
+    </div>
   );
 }

@@ -13,6 +13,7 @@ import { ChatbotProvider } from "@/context/ChatbotContext";
 import { JobProvider } from "@/context/JobContext";
 import { FeedbackProvider } from "@/context/FeedbackContext";
 import { JobApplicationProvider } from "@/context/JobApplicationContext";
+import { OfferLetterProvider } from "@/context/OfferLetterContext";
 import { Chatbot } from "@/components/chatbot/Chatbot";
 
 // Pages
@@ -52,6 +53,7 @@ import { ProcessingScreen } from "./components/technical-interview/ProcessingScr
 import { TerminatedScreen } from "./components/technical-interview/TerminatedScreen";
 import InterviewFeedback from "./pages/feedback/InterviewFeedback";
 import JobApplications from "./pages/applications/JobApplications";
+import OfferLetters from "./pages/offers/OfferLetters";
 
 const queryClient = new QueryClient();
 
@@ -66,55 +68,58 @@ const App = () => (
                 <JobProvider>
                   <FeedbackProvider>
                     <JobApplicationProvider>
-                      <TooltipProvider>
-                        <Toaster />
-                        <Sonner />
-                        <BrowserRouter>
-                          <Routes>
-                            <Route path="/" element={<Index />} />
-                            <Route path="/login/:role" element={<Login />} />
-                            <Route path="/register/:role" element={<Register />} />
-                            <Route path="/internships" element={<Internships />} />
-                            <Route path="/internships/:id" element={<InternshipDetail />} />
-                            <Route path="/post-internship" element={<PostInternship />} />
-                            <Route path="/jobs" element={<Jobs />} />
-                            <Route path="/jobs/:id" element={<JobDetail />} />
-                            <Route path="/courses" element={<Courses />} />
-                            <Route path="/courses/:id" element={<CourseDetail />} />
-                            <Route path="/mock-interview" element={<MockInterview />} />
-                            <Route path="/mock-interview/:id" element={<MockInterviewSession />} />
-                            <Route path="/technical-challenge" element={<TechnicalChallenge />} />
-                            <Route path="/technical-challenge/:id" element={<TechnicalChallenge />} />
-                            <Route path="/dashboard" element={<Dashboard />} />
-                            <Route path="/employer/manage-jobs" element={<ManageJobs />} />
-                            <Route path="/employer/candidates" element={<CandidateMatching />} />
-                            <Route path="/employer/hackathons" element={<EmployerHackathons />} />
-                            <Route path="/market-trends" element={<MarketTrends />} />
-                            <Route path="/career-path" element={<CareerPath />} />
-                            <Route path="/career-roadmaps/:id" element={<CareerPath />} />
-                            <Route path="/career-roadmaps" element={<CareerPath />} />
-                            <Route path="/hackathons" element={<Hackathons />} />
-                            <Route path="/hackathons/:id" element={<HackathonDetail />} />
-                            <Route path="/hackathons/create" element={<CreateHackathon />} />
-                            <Route path="/hackathons/employer" element={<EmployerHackathons />} />
-                            <Route path="/hackathons/view/:id" element={<HackathonDetailPage />} />
-                            <Route path="/resume-builder" element={<ResumeBuilder />} />
-                            <Route path="/blog" element={<Blog />} />
-                            <Route path="/blog/:id" element={<BlogPost />} />
-                            <Route path="/companies" element={<CompanyProfiles />} />
-                            <Route path="/companies/:id" element={<CompanyDetail />} />
-                            <Route path="/profile" element={<Profile />} />
-                            <Route path="/settings" element={<Settings />} />
-                            <Route path="/l1-technical-interview" element={<L1TechnicalInterview />} />
-                            <Route path="/interview-feedback" element={<InterviewFeedback />} />
-                            <Route path="/applications" element={<JobApplications />} />
-                            <Route path="/processing" element={<ProcessingScreen />} />
-                            <Route path="/terminated" element={<TerminatedScreen />} />
-                            <Route path="*" element={<NotFound />} />
-                          </Routes>
-                          <Chatbot />
-                        </BrowserRouter>
-                      </TooltipProvider>
+                      <OfferLetterProvider>
+                        <TooltipProvider>
+                          <Toaster />
+                          <Sonner />
+                          <BrowserRouter>
+                            <Routes>
+                              <Route path="/" element={<Index />} />
+                              <Route path="/login/:role" element={<Login />} />
+                              <Route path="/register/:role" element={<Register />} />
+                              <Route path="/internships" element={<Internships />} />
+                              <Route path="/internships/:id" element={<InternshipDetail />} />
+                              <Route path="/post-internship" element={<PostInternship />} />
+                              <Route path="/jobs" element={<Jobs />} />
+                              <Route path="/jobs/:id" element={<JobDetail />} />
+                              <Route path="/courses" element={<Courses />} />
+                              <Route path="/courses/:id" element={<CourseDetail />} />
+                              <Route path="/mock-interview" element={<MockInterview />} />
+                              <Route path="/mock-interview/:id" element={<MockInterviewSession />} />
+                              <Route path="/technical-challenge" element={<TechnicalChallenge />} />
+                              <Route path="/technical-challenge/:id" element={<TechnicalChallenge />} />
+                              <Route path="/dashboard" element={<Dashboard />} />
+                              <Route path="/employer/manage-jobs" element={<ManageJobs />} />
+                              <Route path="/employer/candidates" element={<CandidateMatching />} />
+                              <Route path="/employer/hackathons" element={<EmployerHackathons />} />
+                              <Route path="/market-trends" element={<MarketTrends />} />
+                              <Route path="/career-path" element={<CareerPath />} />
+                              <Route path="/career-roadmaps/:id" element={<CareerPath />} />
+                              <Route path="/career-roadmaps" element={<CareerPath />} />
+                              <Route path="/hackathons" element={<Hackathons />} />
+                              <Route path="/hackathons/:id" element={<HackathonDetail />} />
+                              <Route path="/hackathons/create" element={<CreateHackathon />} />
+                              <Route path="/hackathons/employer" element={<EmployerHackathons />} />
+                              <Route path="/hackathons/view/:id" element={<HackathonDetailPage />} />
+                              <Route path="/resume-builder" element={<ResumeBuilder />} />
+                              <Route path="/blog" element={<Blog />} />
+                              <Route path="/blog/:id" element={<BlogPost />} />
+                              <Route path="/companies" element={<CompanyProfiles />} />
+                              <Route path="/companies/:id" element={<CompanyDetail />} />
+                              <Route path="/profile" element={<Profile />} />
+                              <Route path="/settings" element={<Settings />} />
+                              <Route path="/l1-technical-interview" element={<L1TechnicalInterview />} />
+                              <Route path="/interview-feedback" element={<InterviewFeedback />} />
+                              <Route path="/applications" element={<JobApplications />} />
+                              <Route path="/offers" element={<OfferLetters />} />
+                              <Route path="/processing" element={<ProcessingScreen />} />
+                              <Route path="/terminated" element={<TerminatedScreen />} />
+                              <Route path="*" element={<NotFound />} />
+                            </Routes>
+                            <Chatbot />
+                          </BrowserRouter>
+                        </TooltipProvider>
+                      </OfferLetterProvider>
                     </JobApplicationProvider>
                   </FeedbackProvider>
                 </JobProvider>
