@@ -4,7 +4,7 @@ import { Badge } from "@/components/ui/badge";
 import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
 import { cn } from "@/lib/utils";
 import { motion } from "framer-motion";
-import { LayoutDashboard, Code, Briefcase, FileText } from "lucide-react";
+import { LayoutDashboard, Code, Briefcase, FileText, Building } from "lucide-react";
 
 interface JourneyStep {
   id: string;
@@ -55,6 +55,14 @@ const journeySteps: JourneyStep[] = [
     link: "/offers",
     bgColor: "bg-gradient-to-r from-amber-50 to-amber-100",
     icon: <FileText className="h-4 w-4 mr-1" />
+  },
+  {
+    id: "matchedcompanies",
+    title: "Matched Companies",
+    isNew: true,
+    link: "/matchedcompanies",
+    bgColor: "bg-gradient-to-r from-cyan-50 to-cyan-100",
+    icon: <Building className="h-4 w-4 mr-1" />
   },
   {
     id: "interview",

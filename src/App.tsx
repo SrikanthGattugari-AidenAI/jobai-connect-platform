@@ -46,6 +46,7 @@ import Blog from "./pages/blog/Blog";
 import BlogPost from "./pages/blog/BlogPost";
 import CompanyProfiles from "./pages/companies/CompanyProfiles";
 import CompanyDetail from "./pages/companies/CompanyDetail";
+import MatchedCompanies from "./pages/companies/MatchedCompanies";
 import Profile from "./pages/profile/Profile";
 import Settings from "./pages/settings/Settings";
 import L1TechnicalInterview from "./pages/technical-interview/L1TechnicalInterview";
@@ -106,6 +107,7 @@ const App = () => (
                               <Route path="/blog/:id" element={<BlogPost />} />
                               <Route path="/companies" element={<CompanyProfiles />} />
                               <Route path="/companies/:id" element={<CompanyDetail />} />
+                              <Route path="/matchedcompanies" element={<MatchedCompanies />} />
                               <Route path="/profile" element={<Profile />} />
                               <Route path="/settings" element={<Settings />} />
                               <Route path="/l1-technical-interview" element={<L1TechnicalInterview />} />

@@ -1,6 +1,6 @@
 
 import { useNavigate } from "react-router-dom";
-import { User, LogOut, Briefcase, BarChart, Settings, Heart, FileText } from "lucide-react";
+import { User, LogOut, Briefcase, BarChart, Settings, Heart, FileText, Building } from "lucide-react";
 import { 
   DropdownMenu,
   DropdownMenuContent,
@@ -55,6 +55,10 @@ export const UserMenu = () => {
             <DropdownMenuItem onClick={() => navigate("/offers")}>
               <FileText className="mr-2 h-4 w-4" />
               <span>Offer Letters</span>
+            </DropdownMenuItem>
+            <DropdownMenuItem onClick={() => navigate("/matchedcompanies")}>
+              <Building className="mr-2 h-4 w-4" />
+              <span>Matched Companies</span>
             </DropdownMenuItem>
           </>
         ) : (
